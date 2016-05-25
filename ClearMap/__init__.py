@@ -20,7 +20,7 @@ __author__ = 'Christoph Kirst'
 
 __license__ = 'GNU GENERAL PUBLIC LICENSE Version 3'
 
-__copyright__ = '2015 Christoph Kirst'
+__copyright__ = '2016 Christoph Kirst'
 
 __all__ = ["Settings", "Parameter", "IO", "ImageProcessing", "Analysis"]
 
