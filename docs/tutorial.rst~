@@ -1,0 +1,233 @@
+Tutorial
+========
+
+The goal of this tutorial is to explain the scripts we used to analyse samples. As an example, we will use a dataset from a Light Sheet imaged adult mouse brain stained for c-fos. The tutorial files also contain an autofluorescence file to enable the registration of the scan to the reference atlas. The tutorial files are found in the ClearMap/Scripts folder. They consist of :
+
+   * `The Parameter File`_ This sets the parameters individually for each sample
+   * `The Run File`_ This will run all the commands to process each sample individually
+   * `Analysis Tools`_ This scripts will run the analysis tools and group statistics for all samples in the batch
+
+A project will usually contain 1 parameter file for each sample, 1 run file for the whole experiment and 1 analysis file for the whole experiment.
+      
+The Parameter File
+------------------
+
+The parameter is a Python script that will contain all the necessary informations to process each sample. An example script, *parameter_file_template.py* is provided in the ClearMap/Scripts folder. It contains the following sections:
+
+=================== ===============================================================================
+Section             Description
+=================== ===============================================================================
+Import modules      load from ClearMap the functions used here
+Data parameters     points to the files used, their resolution and orientation
+Cell detection      parameters for the cell detection, and module used
+Heat map generation to generate a voxelized map of the detected cells
+Config Parameters   the parameters for memory and processors management
+Run Parameters      you would usually not change these. They specify how the data will be processed
+=================== ===============================================================================
+
+Import Modules
+^^^^^^^^^^^^^^
+You would usually not change these. They are all the functions that will be used later either in the parameter file or in the  execution file.
+
+Data parameters
+^^^^^^^^^^^^^^^
+
+This is where you point to the files used, their resolution and orientation. It also defines which atlas and annotation files to use.
+
+To set the directory where all files will be read and written for this sample:
+
+    >>> BaseDirectory = '/home/mtllab/exploration/sample1';
+
+To set the image files used for the processing:
+
+    >>> cFosFile = os.path.join(BaseDirectory, 'cfos/0_8x-cfos-Table Z\d{4}.ome.tif');
+    >>> AutofluoFile = os.path.join(BaseDirectory, 'autofluo/0_8xs3-autofluo-Table Z\d{4}.ome.tif');
+
+Note the use of the command ``os.path.join`` to link the set ``BaseDirectory`` with the folder where the files are. On the LaVision ultramicroscope system, the images files are generated not as stacks, but as numbered files in the ome.tif format. Each Z stack will end by ``-Table Z0000.ome.tif``. The 0000 is the plane number. To indicate **ClearMap** to read the next planes, replace the 4 digits with the command ``\d{4}``. On our system, files for each channel (here, c-fos and background fluorescence) are saved in a different stack, in a different folder.
+
+To restrict the range for the object detection:
+
+    >>> cFosFileRange = {'x' : all, 'y' : (180, 2600), 'z' : all};
+
+This range will only affect the region used for the cell detection. It will not be taken into account for the 3D image registration to the reference Atlas, nor for the voxelization or other analysis. This is useful to limit the amount of memory used. In our example, we use the full x range, the full z range, but restrict the y range. The camera on our system, an Andor sNEO CMOS, has a sensor size of 2160 x 2660. However, the lens used on for the acquisition, an Olympus 2X 0.5NA MVPLAPO, has a strong corner deformation, so we restrict the y range because no cells can be reliably detected outside of this range.
+
+As a reminder, in the image files, the (0, 0, 0) coordinate correspond to the upper left corner of the first plane. To the opposite, the (2160, 2660, 2400) coordinate will be the bottom right corner of the last plane (here 2400, but can vary).
+
+When optimizing the parameters for the object detection, you should dramatically restrict the range to speed up the detection. We recommend using 500 planes, 500 pixels on each side:
+
+     >>> cFosFileRange = {'x' : (500, 1000), 'y' : (500, 1000), 'z' : (500, 1000)};
+
+But of course adapting the range to where the relevant objects are on your sample.
+
+Next, to set the resolution of the original data (in µm / pixel):
+
+     >>> OriginalResolution = (4.0625, 4.0625, 3);
+
+In this example, this is set for a zoom factor of 0.8X on the LaVision system with the 2X lens. This information can be found in the metadata of the tif file usually. If you don’t know the pixel size, we recommend opening the stack with the plugin BioFormat on ImageJ, and go to « image » -> « show info » to read the metadata. On the LaVision file, this information is at the end of the list.
+
+The orientation of the sample has to be set to match the orientation of the Atlas reference files. It is not mandatory to acquire the sample in the same orientation as the atlas. For instance, you can acquire the left side of the brain, and map it onto the right side of the atlas:
+
+     >>> FinalOrientation = (1,2,3);
+
+The convention is as follow (examples given, any configuration is possible):
+
+=================== ========================================================
+Value of the tuple  Description
+=================== ========================================================
+(1, 2, 3)           The scan has the same orientation as the atlas reference
+(-1, 2, 3)          The x axis is mirrored compared to the atlas
+(1, -2, 3)          The y axis is mirrored compared to the atlas
+(2, 1, 3)           Performs a rotation by exchanging the x and y axis
+(3, 2, 1)           Performs a rotation by exchanging the z and x axis
+=================== ========================================================
+
+For our samples, we use the following orientation to match our atlas files:
+
+    * The right side of the brain is facing the objective, lateral side up.
+    * The rostral side of the brain is up
+    * The dorsal side is facing left
+    * The ventral side is facing right
+
+This means that in our scans, if we want to image the right hemisphere, we use (1, 2, 3) and if we want to image the left hemisphere, we use (-1, 2, 3).
+
+To set the output for the voxelized heat map file:
+
+    >>> VoxelizationFile = os.path.join(BaseDirectory, 'points_voxelized.tif');
+
+To set the resolution of the Atlas Files (in µm/ pixel):
+
+    >>> AtlasResolution = (25, 25, 25);
+
+To choose which atlas files you would like to use:
+
+    >>> PathReg        = '/home/mtllab/Documents/warping';
+    >>> AtlasFile      = os.path.join(PathReg, 'half_template_25_right.tif');
+    >>> AnnotationFile = os.path.join(PathReg, 'annotation_25_right.tif');
+
+It is important to make sure that the Atlas used is in the correct orientation (see above), but also don’t contain too much information outside of the field of view. While the registration program can deal with a bit of extra « bleed » outside of the sample, this should be kept to a minimum. We usually prepare different crops of the atlas file to match the usual field of views we acquire.
+
+Cell detection
+^^^^^^^^^^^^^^
+
+At this point, two detection methods exist: the ``SpotDetection`` and ``Ilastik``:
+
+    * ``SpotDetection`` is designed for globular objects, such as neuron cell bodies or nuclei. This is the fastest method, and offers a greater degree of fine controls over the sensibility of the detection. However, it is not well suited for complex objects.
+    * ``Ilastik`` is a framework that relies on the user generating a classifier through the graphical interface of the Ilastik program, by painting over a few objects and over the background. The program will then learn to classify the pixels between objects or backgrouns based on the user indications. This is a very easy way to tune very complex filters to detect complex objects or textures. However, the classification is a black box, and very dependent of the user’s classification.
+
+In this tutorial, we will use the SpotDetection method. To choose which method to use for the cell detection:
+
+    >>> ImageProcessingMethod = "SpotDetection";
+
+The parameters for the Spot Detection methods are then sorted in « dictionaries » by theme :
+
+============================ =======================================================================================================================
+Dictionary name              Description
+============================ =======================================================================================================================
+correctIlluminationParameter If you have an intensity profile for your microscope, you can correct variations in illuminations here  
+removeBackgroundParameter    To set the background subtraction via morphological opening
+filterDoGParameter           To set the parameters for the Difference of Gaussian filter
+findExtendedMaximaParameter  If the object contains multiple peaks of intensity, this will collapse them into one peak
+findIntensityParameter       Often, the center of the mass of an object is not the voxel of highest intensity. This is a correction for this
+detectCellShapeParameter     This set the parameters for the cell shape « painting » via the watershed
+============================ =======================================================================================================================
+
+
+Correcting the illumination:
+""""""""""""""""""""""""""""
+Because of the Gaussian shape of the light sheet and of the objecting lens vignetting, the sample illumination is not uniform. While correcting the illumination can improve the uniformity of the cell detection, it is usually not really necessary if all samples where imaged the same way, as the same anatomical features will be positioned in the same region of the lens across samples. Nevertheless, to correct for variation in the illumination use:
+
+    >>> correctIlluminationParameter = {
+    >>>    "flatfield"  : None,  
+    >>>    "background" : None,
+    >>>    "scaling"    : "Mean", 
+    >>>    "save"       : None,
+    >>>    "verbose"    : True
+    >>> }
+
+For this tutorial, we will not use the correction, so the ``flatfield`` parameter is set to ``None``. Please note that you need to generate an intensity profile for your system if you wish to use this function.
+
+Background Subtraction:
+"""""""""""""""""""""""
+This is the most important pre-treatment step, usually always turned on. The background subtraction via morphological opening is not very sensitive to the size parameter used, as long as it is in the range of the size of the objects detected. The parameters for the background subtraction are as follow:
+
+    >>> removeBackgroundParameter = {
+    >>>     "size"    : (7,7),
+    >>>     "save"    : None,
+    >>>     "verbose" : True       
+    >>> }
+
+The parameter ``size`` is a tuple with (x,y) in pixels and correspond to an ellipsoid of this size. Of importance, you can check the result of the background subtraction by setting the ``save`` parameter to a filename. This will output a series of tif images you can open with ImageJ to check the results. For instance you could set ``save`` like this:
+
+    >>>     "save"    : os.path.join(BaseDirectory, 'background/background\d{4}.ome.tif');
+
+You have to use the ``\d{4}`` notation to save the files as a series of images, otherwise only the first plane is saved!
+
+.. note:: Only use the ``save`` function when you analyse a small subset of your data, otherwise the full stack will be written to the disk. Don’t forget to turn off this parameter when you’re done optimizing the filters.
+
+
+Difference of Gaussians filter:
+"""""""""""""""""""""""""""""""
+This is an optional filter to improve the contrast of objects. This filter has a "Mexican Hat" shape that weighs negatively the intensity at the border of the objects. The main parameter to set here is the size, as an (x,y,z) tuple:
+
+   >>> filterDoGParameter = {
+   >>>     "size"    : None,
+   >>>     "sigma"   : None,
+   >>>     "sigma2"  : None,
+   >>>     "save"    : None,
+   >>>     "verbose" : True
+   >>> }
+
+For this tutorial, we will not use the DoG filter, as it is unnecessary. The signal from c-fos nuclear staining has enough contrast, and a simple shape that do not necessitate this additionnal filtering, but it could help increase the contrast of the relevant objects for other experiments.
+
+
+
+findExtendedMaximaParameter = {
+    "hMax"      : None,            # (float or None)     h parameter for the initial h-Max transform, if None, do not perform a h-max transform
+    "size"      : 5,             # (tuple)             size for the structure element for the local maxima filter
+    "threshold" : 0,        # (float or None)     include only maxima larger than a threshold, if None keep all localmaxima
+    "save"      : None,         # (str or None)       file name to save result of this operation if None dont save to file 
+    "verbose"   : True       # (bool or int)       print / plot information about this step
+}
+
+findIntensityParameter = {
+    "method" : 'Max',       # (str, func, None)   method to use to determine intensity (e.g. "Max" or "Mean") if None take intensities at the given pixels
+    "size"   : (3,3,3)       # (tuple)             size of the box on which to perform the *method*
+}
+
+detectCellShapeParameter = {
+    "threshold" : 700,     # (float or None)      threshold to determine mask, pixel below this are background if None no mask is generated
+    "save"      : None,        # (str or None)        file name to save result of this operation if None dont save to file 
+    "verbose"   : True      # (bool or int)        print / plot information about this step if None take intensities at the given pixels
+}
+
+## Parameters for cell detection using spot detection algorithm 
+detectSpotsParameter = {
+    "correctIlluminationParameter" : correctIlluminationParameter,
+    "removeBackgroundParameter"    : removeBackgroundParameter,
+    "filterDoGParameter"           : filterDoGParameter,
+    "findExtendedMaximaParameter"  : findExtendedMaximaParameter,
+    "findIntensityParameter"       : findIntensityParameter,
+    "detectCellShapeParameter"     : detectCellShapeParameter
+}
+
+
+
+
+
+Heat map generation
+^^^^^^^^^^^^^^^^^^^
+
+To set the output for the voxelized heat map file:
+
+    >>> VoxelizationFile = os.path.join(BaseDirectory, 'points_voxelized.tif');
+
+
+
+
+The Run File
+------------
+
+
+
+Analysis Tools
+--------------

@@ -1,0 +1,260 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="next" title="ClearMap.IO package" href="ClearMap.IO.html" />
+    <link rel="prev" title="ClearMap Image Analysis Tools" href="../imageanalysis.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.IO.html" title="ClearMap.IO package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../imageanalysis.html" title="ClearMap Image Analysis Tools"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="#">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">ClearMap package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../imageanalysis.html"
+                        title="previous chapter">ClearMap Image Analysis Tools</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.IO.html"
+                        title="next chapter">ClearMap.IO package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clearmap-package">
+<h1>ClearMap package<a class="headerlink" href="#clearmap-package" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-ClearMap"></span><p><em>ClearMap</em> is a python toolbox for the analysis and registration of volumetric
+data from cleared tissues obtained with Light Sheet microscopy.</p>
+<p>The ClearMap code package is structured into four main modules:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>IO</strong> for reading and writing images and data</li>
+<li><strong>Alignment</strong> for resampling, reorientation and registration of images onto references</li>
+<li><strong>Image Processing</strong> for correcting and quantifying the image data</li>
+<li><strong>Analysis</strong> for the statistical analysis of the data</li>
+</ul>
+</div></blockquote>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#image-data">Image data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#point-data">Point data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#summary">Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.IO">ClearMap.IO.IO module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.CSV">ClearMap.IO.CSV module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.FileList">ClearMap.IO.FileList module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.Imaris">ClearMap.IO.Imaris module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.NPY">ClearMap.IO.NPY module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.NRRD">ClearMap.IO.NRRD module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.RAW">ClearMap.IO.RAW module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.TIF">ClearMap.IO.TIF module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.IO.html#module-ClearMap.IO.VTK">ClearMap.IO.VTK module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Alignment.html#module-ClearMap.Alignment.Elastix">ClearMap.Alignment.Elastix module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Alignment.html#module-ClearMap.Alignment.Resampling">ClearMap.Alignment.Resampling module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#volumetric-image-processing">Volumetric Image Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#parallel-image-processing">Parallel Image Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#external-packages">External Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.StackProcessing">ClearMap.ImageProcessing.StackProcessing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.CellDetection">ClearMap.ImageProcessing.CellDetection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.CellSizeDetection">ClearMap.ImageProcessing.CellSizeDetection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.IlluminationCorrection">ClearMap.ImageProcessing.IlluminationCorrection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.BackgroundRemoval">ClearMap.ImageProcessing.BackgroundRemoval module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.GreyReconstruction">ClearMap.ImageProcessing.GreyReconstruction module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.SpotDetection">ClearMap.ImageProcessing.SpotDetection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.MaximaDetection">ClearMap.ImageProcessing.MaximaDetection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.IlastikClassification">ClearMap.ImageProcessing.IlastikClassification module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.ImageStatistics">ClearMap.ImageProcessing.ImageStatistics module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.html#subpackages">Subpackages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.html#module-ClearMap.Analysis.Label">ClearMap.Analysis.Label module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.html#module-ClearMap.Analysis.Statistics">ClearMap.Analysis.Statistics module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.html#module-ClearMap.Analysis.Voxelization">ClearMap.Analysis.Voxelization module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Visualization.html#module-ClearMap.Visualization.Plot">ClearMap.Visualization.Plot module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Utils.html#module-ClearMap.Utils.ParameterTools">ClearMap.Utils.ParameterTools module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Utils.html#module-ClearMap.Utils.ProcessWriter">ClearMap.Utils.ProcessWriter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Utils.html#module-ClearMap.Utils.Timer">ClearMap.Utils.Timer module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.IO.html" title="ClearMap.IO package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../imageanalysis.html" title="ClearMap Image Analysis Tools"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="#">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

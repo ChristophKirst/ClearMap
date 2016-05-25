@@ -1,0 +1,630 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.IO.Imaris &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.IO.Imaris</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Interface to Imaris Files </span>
+
+<span class="sd">Module to read data and write points to `Imaris &lt;http://www.bitplane.com/imaris/imaris&gt;`_</span>
+<span class="sd">files.</span>
+
+<span class="sd">Note: </span>
+<span class="sd">    To write points without errors make sure the original file has at least one spot object! You can create a fake point in Imaris, then save the file. The point will be overwritten by ClearMap.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; import os, numpy</span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.IO.Imaris as ims</span>
+<span class="sd">    &gt;&gt;&gt; from ClearMap.Settings import ClearMapPath</span>
+<span class="sd">    &gt;&gt;&gt; filename = os.path.join(ClearMapPath,&#39;Test/Data/Imaris/test for spots added spot.ims&#39;) </span>
+<span class="sd">    &gt;&gt;&gt; ims.dataSize(filename);</span>
+<span class="sd">    (256, 320, 256)</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="c">#Todo: </span>
+<span class="c">#    * Fix writing new spots to imaris file</span>
+<span class="c">#    * Get settings to directly render points as &#39;pixel&#39; and not as spheres</span>
+
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+
+
+<div class="viewcode-block" id="openFile"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.openFile">[docs]</a><span class="k">def</span> <span class="nf">openFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s">&quot;a&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Open Imaris file as hdf5 object</span>
+<span class="sd">        </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name</span>
+<span class="sd">        mode (str): argument to h5py.File</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        object: h5py object</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">return</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="p">);</span></div>
+
+    
+<div class="viewcode-block" id="closeFile"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.closeFile">[docs]</a><span class="k">def</span> <span class="nf">closeFile</span><span class="p">(</span><span class="n">h5file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Close Imaris hdf5 file object</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        h5file (object): h5py opject</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: success</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="k">return</span> <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">();</span></div>
+
+
+<div class="viewcode-block" id="readDataSet"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.readDataSet">[docs]</a><span class="k">def</span> <span class="nf">readDataSet</span><span class="p">(</span><span class="n">h5file</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">channel</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">timepoint</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Open Imaris file and returns hdf5 image data</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        h5file (object): h5py object</span>
+<span class="sd">        resolution (int): resolution level</span>
+<span class="sd">        channel (int): color channel</span>
+<span class="sd">        timepoint (int): time point</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: image data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">dsname</span> <span class="o">=</span> <span class="s">&quot;/DataSet/ResolutionLevel &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolution</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;/TimePoint &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">timepoint</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;/Channel &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">channel</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;/Data&quot;</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dsname</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="dataSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.dataSize">[docs]</a><span class="k">def</span> <span class="nf">dataSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">channel</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">timepoint</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read data size of the imaris image data set</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str):  imaris file name</span>
+<span class="sd">        resolution (int): resolution level</span>
+<span class="sd">        channel (int): color channel</span>
+<span class="sd">        timepoint (int): time point</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: image data size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">f</span> <span class="o">=</span> <span class="n">openFile</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">readDataSet</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">,</span> <span class="n">timepoint</span> <span class="o">=</span> <span class="n">timepoint</span><span class="p">);</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">shape</span><span class="p">);</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">dataSizeFromDataRange</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span></div>
+
+ 
+<div class="viewcode-block" id="dataZSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.dataZSize">[docs]</a><span class="k">def</span> <span class="nf">dataZSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read z data size of the imaris image data set</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str):  imaris file name</span>
+<span class="sd">        resolution (int): resolution level</span>
+<span class="sd">        channel (int): color channel</span>
+<span class="sd">        timepoint (int): time point</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        int: image z data size</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    
+    <span class="n">dsize</span> <span class="o">=</span> <span class="n">dataSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">dsize</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span></div>
+    
+
+
+<div class="viewcode-block" id="readData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.readData">[docs]</a><span class="k">def</span> <span class="nf">readData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">channel</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">timepoint</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read data from imaris file</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        x,y,z (tuple): data range specifications</span>
+<span class="sd">        resolution (int): resolution level</span>
+<span class="sd">        channel (int): color channel</span>
+<span class="sd">        timepoint (int): time point</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: image data</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&quot;r&quot;</span><span class="p">);</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">readDataSet</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">resolution</span> <span class="o">=</span> <span class="n">resolution</span><span class="p">,</span> <span class="n">channel</span> <span class="o">=</span> <span class="n">channel</span><span class="p">,</span> <span class="n">timepoint</span> <span class="o">=</span> <span class="n">timepoint</span><span class="p">);</span>
+    <span class="n">dsize</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span>
+    
+    <span class="n">rz</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataRange</span><span class="p">(</span><span class="n">dsize</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span>
+    <span class="n">ry</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataRange</span><span class="p">(</span><span class="n">dsize</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">r</span> <span class="o">=</span> <span class="n">y</span><span class="p">);</span>
+    <span class="n">rx</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataRange</span><span class="p">(</span><span class="n">dsize</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">r</span> <span class="o">=</span> <span class="n">x</span><span class="p">);</span>    
+    
+    <span class="n">data</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="n">rz</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">rz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">ry</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">ry</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">rx</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">rx</span><span class="p">[</span><span class="mi">1</span><span class="p">]];</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">));</span> <span class="c"># imaris stores files in reverse x,y,z ordering</span>
+    <span class="c">#data = dataset[x[0]:x[1],y[0]:y[1],z[0]:z[1]];</span>
+    
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+    
+    <span class="k">return</span> <span class="n">data</span><span class="p">;</span></div>
+
+   
+<div class="viewcode-block" id="getDataSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.getDataSize">[docs]</a><span class="k">def</span> <span class="nf">getDataSize</span><span class="p">(</span><span class="n">h5file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the full data size in pixel from h5py imaris object</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        h5file (object): h5py object</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: image data size</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="n">pn</span> <span class="o">=</span> <span class="s">&#39;/DataSetInfo/Image&#39;</span><span class="p">;</span>
+    <span class="n">ia</span> <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">;</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;X&quot;</span><span class="p">]));</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;Y&quot;</span><span class="p">]));</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;Z&quot;</span><span class="p">]));</span>
+    
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">]);</span></div>
+    
+
+
+<div class="viewcode-block" id="getDataExtent"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.getDataExtent">[docs]</a><span class="k">def</span> <span class="nf">getDataExtent</span><span class="p">(</span><span class="n">h5file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Get the spatial extent of data from h5py imaris object</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        h5file (object): h5py object</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: spatial extend of image</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+
+    <span class="n">pn</span> <span class="o">=</span> <span class="s">&#39;/DataSetInfo/Image&#39;</span><span class="p">;</span>
+    <span class="n">ia</span> <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pn</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span><span class="p">;</span>
+    
+    <span class="n">x1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;ExtMin0&quot;</span><span class="p">]));</span>
+    <span class="n">y1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;ExtMin1&quot;</span><span class="p">]));</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;ExtMin2&quot;</span><span class="p">]));</span>
+   
+    <span class="n">x2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;ExtMax0&quot;</span><span class="p">]));</span>
+    <span class="n">y2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;ExtMax1&quot;</span><span class="p">]));</span>
+    <span class="n">z2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ia</span><span class="p">[</span><span class="s">&quot;ExtMax2&quot;</span><span class="p">]));</span> 
+    
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">x1</span><span class="p">,</span><span class="n">y1</span><span class="p">,</span><span class="n">z1</span><span class="p">],</span> <span class="p">[</span><span class="n">x2</span><span class="p">,</span><span class="n">y2</span><span class="p">,</span><span class="n">z2</span><span class="p">]]);</span></div>
+
+
+
+<div class="viewcode-block" id="getScaleAndOffset"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.getScaleAndOffset">[docs]</a><span class="k">def</span> <span class="nf">getScaleAndOffset</span><span class="p">(</span><span class="n">h5file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine scale and offset to transform pixel to spatial coordinates as used by imaris</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        h5file (object): h5py object</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: image scale (length / pixel) and offset (from origin)</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">getDataSize</span><span class="p">(</span><span class="n">h5file</span><span class="p">);</span>
+    <span class="n">de</span> <span class="o">=</span> <span class="n">getDataExtent</span><span class="p">(</span><span class="n">h5file</span><span class="p">);</span>
+    
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">de</span><span class="p">[</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">-</span> <span class="n">de</span><span class="p">[</span><span class="mi">0</span><span class="p">,:];</span>
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">sc</span> <span class="o">/</span> <span class="n">ds</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">sc</span><span class="p">,</span> <span class="n">de</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]);</span></div>
+
+
+<div class="viewcode-block" id="transformPointsToImaris"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.transformPointsToImaris">[docs]</a><span class="k">def</span> <span class="nf">transformPointsToImaris</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="mf">4.0625</span><span class="p">,</span> <span class="mf">4.0625</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Transform pixel coordinates of cell centers to work in Imaris</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        points (array): point coordinate array</span>
+<span class="sd">        scale (tuple): spatial scale of the image data</span>
+<span class="sd">        offset (tuple): spatial offset of the image data</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: scaled points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">scale</span> <span class="o">=</span> <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">scale</span><span class="p">);</span>    
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">points</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">offset</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        
+    <span class="k">return</span> <span class="n">points</span></div>
+
+
+<div class="viewcode-block" id="writePoints"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.writePoints">[docs]</a><span class="k">def</span> <span class="nf">writePoints</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s">&quot;o&quot;</span><span class="p">,</span> <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write points to Imaris file </span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): imaris file name </span>
+<span class="sd">        points (array): point data</span>
+<span class="sd">        mode (str): &#39;o&#39;= override, &#39;a&#39;=add</span>
+<span class="sd">        radius (float): size of each point</span>
+<span class="sd">        scale (tuple or all): spatial scaling of points</span>
+<span class="sd">        offset (tuple or None): spatial offset of points</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name of imaris file</span>
+<span class="sd">        </span>
+<span class="sd">    Note:</span>
+<span class="sd">        This routine is still experimental !</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">openFile</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">h5file</span> <span class="o">=</span> <span class="n">filename</span><span class="p">;</span>
+      
+    <span class="c">#delete Scene8 info so do not need to write it</span>
+    <span class="n">s8</span> <span class="o">=</span> <span class="s">&quot;/Scene8&quot;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s8</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">h5file</span><span class="p">[</span><span class="n">s8</span><span class="p">];</span>
+    
+    <span class="c">#get number of point sets</span>
+    <span class="n">ct</span> <span class="o">=</span> <span class="s">&quot;Scene/Content&quot;</span><span class="p">;</span>
+    <span class="n">ca</span> <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span><span class="o">.</span><span class="n">attrs</span>
+    <span class="n">np</span> <span class="o">=</span> <span class="n">ca</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;NumberOfPoints&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">np</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ca</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;NumberOfPoints&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s">&quot;uint64&quot;</span><span class="p">)</span>
+        <span class="n">np</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">mode</span> <span class="o">=</span> <span class="s">&quot;a&quot;</span><span class="p">;</span>
+    
+    <span class="c">#write points</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;a&quot;</span><span class="p">:</span>  <span class="c"># add points -&gt; need to test further</span>
+        
+        <span class="c">#update number of points(4.0625, 4.0625, 3)</span>
+        <span class="n">np</span> <span class="o">=</span> <span class="n">np</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">ca</span><span class="p">[</span><span class="s">&quot;NumberOfPoints&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="p">;</span>
+        
+        <span class="c"># Create Pointset and attributes</span>
+        <span class="n">pn</span> <span class="o">=</span> <span class="n">ct</span> <span class="o">+</span> <span class="s">&quot;/Points&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+        
+        <span class="n">histlog</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S1&#39;</span><span class="p">);</span>        
+        <span class="n">name</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;Spots &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">))],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="mi">6</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="p">)))));</span>
+        <span class="n">material</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="s">&#39;&lt;bpMaterial mDiffusion=&quot;0.8 0.8 0.8&quot; mSpecular=&quot;0.2 0.2 0.2&quot; mEmission=&quot;0 0 0&quot; mAmbient=&quot;0 0 0&quot; mTransparency=&quot;0&quot; mShinyness=&quot;0.1&quot;/&gt;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S133&#39;</span><span class="p">);</span>       
+        <span class="n">iid</span> <span class="o">=</span> <span class="mi">200000</span> <span class="o">+</span> <span class="n">np</span> <span class="c"># int64</span>
+        <span class="n">unit</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;um&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S2&#39;</span><span class="p">);</span>
+        <span class="n">descrp</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s">&#39;&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S1&#39;</span><span class="p">);</span>
+                
+        <span class="n">pg</span> <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">create_group</span><span class="p">(</span><span class="n">pn</span><span class="p">);</span>
+        <span class="n">pa</span> <span class="o">=</span> <span class="n">pg</span><span class="o">.</span><span class="n">attrs</span><span class="p">;</span>
+        <span class="n">pa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;HistoryLog&quot;</span><span class="p">,</span> <span class="n">histlog</span><span class="p">);</span>
+        <span class="n">pa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Name&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">);</span>        
+        <span class="n">pa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Material&quot;</span><span class="p">,</span> <span class="n">material</span><span class="p">);</span>            
+        <span class="n">pa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Id&quot;</span><span class="p">,</span> <span class="n">iid</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="s">&#39;uint64&#39;</span><span class="p">);</span>
+        <span class="n">pa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Unit&quot;</span><span class="p">,</span> <span class="n">unit</span><span class="p">);</span>
+        <span class="n">pa</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s">&quot;Description&quot;</span><span class="p">,</span> <span class="n">descrp</span><span class="p">);</span>     
+        
+        <span class="c">#add TimeInfos</span>
+        
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;DataSetTimes/TimeBegin&#39;</span><span class="p">);</span>
+        <span class="n">tb</span> <span class="o">=</span> <span class="n">tb</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+        
+        <span class="c">#del h5file[pn + &quot;/TimeInfos&quot;]</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">pn</span> <span class="o">+</span> <span class="s">&quot;/TimeInfos&quot;</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tb</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">23</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;|S23&#39;</span><span class="p">))</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pn</span> <span class="o">=</span> <span class="n">ct</span> <span class="o">+</span> <span class="s">&quot;/Points&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+        
+    
+    <span class="c">#  make points</span>
+    <span class="n">npts</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">StandardError</span><span class="p">(</span><span class="s">&quot;Points shape is not (n,3)!&quot;</span><span class="p">);</span>
+    
+    <span class="c">#points = points[:,[0,1,2]]; # todo: check exchange of coordinates</span>
+    
+    <span class="c">#scale points frfom pixel to     </span>
+    <span class="k">if</span> <span class="n">scale</span> <span class="ow">is</span> <span class="nb">all</span><span class="p">:</span> <span class="c"># automatically determine scaling for points    </span>
+        <span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span> <span class="o">=</span> <span class="n">getScaleAndOffset</span><span class="p">(</span><span class="n">h5file</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span>
+     
+    <span class="n">pointsS</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span>
+    <span class="n">pointsS</span> <span class="o">=</span> <span class="n">transformPointsToImaris</span><span class="p">(</span><span class="n">pointsS</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="n">scale</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="n">offset</span><span class="p">);</span>
+    
+    <span class="k">print</span> <span class="n">pointsS</span>    
+    
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">pointsS</span><span class="p">,</span> <span class="n">radius</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">npts</span><span class="p">)];</span>
+    <span class="n">ts</span> <span class="o">=</span>  <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">npts</span><span class="p">);</span>
+    
+    <span class="c"># write points</span>
+    <span class="n">pnt</span> <span class="o">=</span> <span class="n">pn</span> <span class="o">+</span> <span class="s">&#39;/Time&#39;</span><span class="p">;</span>
+    <span class="n">pnc</span> <span class="o">=</span> <span class="n">pn</span> <span class="o">+</span> <span class="s">&#39;/CoordsXYZR&#39;</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pnt</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">h5file</span><span class="p">[</span><span class="n">pnt</span><span class="p">];</span>
+    <span class="n">h5file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">pnt</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">npts</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;i64&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ts</span><span class="p">);</span>
+    
+    
+    <span class="k">if</span> <span class="n">h5file</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pnc</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">del</span> <span class="n">h5file</span><span class="p">[</span><span class="n">pnc</span><span class="p">];</span>
+    <span class="n">h5file</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">pnc</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">pts</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s">&#39;f32&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">pts</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">h5file</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+    
+    <span class="k">return</span> <span class="n">filename</span><span class="p">;</span></div>
+    
+
+
+<div class="viewcode-block" id="writeData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.writeData">[docs]</a><span class="k">def</span> <span class="nf">writeData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write image data to imaris file</span>
+<span class="sd">    </span>
+<span class="sd">    Note:</span>
+<span class="sd">        Not implemented yet !</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Writing data to imaris file not implemented yet&quot;&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="readPoints"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.readPoints">[docs]</a><span class="k">def</span> <span class="nf">readPoints</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read points from imaris file</span>
+<span class="sd">    </span>
+<span class="sd">    Note:</span>
+<span class="sd">        Not implemented yet !</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Reading points form imaris file not implemented yet&quot;&quot;&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="copyData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.copyData">[docs]</a><span class="k">def</span> <span class="nf">copyData</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copy a imaris file from source to sink</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): file name pattern of source</span>
+<span class="sd">        sink (str): file name pattern of sink</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name patttern of the copy</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">io</span><span class="o">.</span><span class="n">copyFile</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">);</span></div>
+
+
+
+
+
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.Imaris.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test Imaris module&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">ClearMap.IO.Imaris</span> <span class="kn">as</span> <span class="nn">self</span>
+    <span class="nb">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="kn">from</span> <span class="nn">ClearMap.Settings</span> <span class="kn">import</span> <span class="n">ClearMapPath</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">numpy</span>
+
+    <span class="n">basedir</span> <span class="o">=</span> <span class="n">ClearMapPath</span><span class="p">;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span><span class="s">&#39;Test/Data/Imaris/test for spots with spot.ims&#39;</span><span class="p">)</span>  
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span><span class="s">&#39;Test/Data/Imaris/test for spots added spot.ims&#39;</span><span class="p">)</span> 
+    
+
+    <span class="kn">import</span> <span class="nn">h5py</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">);</span>    
+    
+    <span class="n">dsname</span> <span class="o">=</span> <span class="s">&quot;/DataSet/ResolutionLevel 0/TimePoint 0/Channel 0/Data&quot;</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">dsname</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">ds</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int32&#39;</span><span class="p">);</span>
+
+    <span class="c">#reload(self)</span>
+    <span class="k">print</span> <span class="s">&quot;writing raw image to: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>    
+    <span class="bp">self</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span></div>
+   
+    
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">();</span>
+    
+
+
+
+
+<span class="c">##Misc Code</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c">#    import h5py    </span>
+<span class="c">#    </span>
+<span class="c">#    fn = &quot;/home/ckirst/Data/Science/Projects/BrainActivityMap/iDISCO_2015_06/Adult cfos all shaved 20HF 150523.ims&quot;;</span>
+<span class="c">#    </span>
+<span class="c">#    dsname = &quot;/DataSet/ResolutionLevel 4/TimePoint 0/Channel 0/Data&quot;</span>
+<span class="c">#</span>
+<span class="c">#    </span>
+<span class="c">#    f = h5py.File(fn, &quot;a&quot;);</span>
+<span class="c">#    ds = f.get(dsname)</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c">#    fn = &quot;/home/ckirst/Data/Science/Projects/BrainActivityMap/ImarisTest/test for spots added spot.ims&quot;;</span>
+<span class="c">#    f = h5py.File(fn, &quot;a&quot;);</span>
+<span class="c">#</span>
+<span class="c">#### write spots to file with spots</span>
+<span class="c">#</span>
+<span class="c">##Scene</span>
+<span class="c">#pn = &#39;/Scene/Content/Points0&#39;</span>
+<span class="c">#</span>
+<span class="c">#pnt = pn + &#39;/Time&#39;;</span>
+<span class="c">#pnc = pn + &#39;/CoordsXYZR&#39;;</span>
+<span class="c">#</span>
+<span class="c">#pts = numpy.arange(1, 10);</span>
+<span class="c">#npts = pts.size;</span>
+<span class="c">#</span>
+<span class="c">#pts = numpy.array([1900 + 50 * numpy.sin(2 * numpy.pi * pts / npts), 2000 + 50 * numpy.cos(2 * numpy.pi * pts / npts), 1700  + numpy.zeros(npts), 2.5  + numpy.zeros(npts)])</span>
+<span class="c">#pts = numpy.transpose(pts);</span>
+<span class="c">#t = numpy.zeros(npts);</span>
+<span class="c">#</span>
+<span class="c">#del f[pnt]</span>
+<span class="c">#dt = f.create_dataset(pnt, shape=(npts,1), dtype=&#39;i64&#39;, data=t)</span>
+<span class="c">#</span>
+<span class="c">#del f[pnc]</span>
+<span class="c">#dc = f.create_dataset(pnc, shape=pts.shape, dtype=&#39;f32&#39;, data=pts)</span>
+<span class="c">#</span>
+<span class="c">#</span>
+<span class="c">#fn = &#39;/home/nicolas/Windows/Nico/cfosRegistrations/Adult cfos C row 20HF 150524.ims&#39;;</span>
+<span class="c">#</span>
+<span class="c">##</span>
+<span class="c">#pts = np.arange(1, 10);</span>
+<span class="c">#npts = pts.size;</span>
+<span class="c">#</span>
+<span class="c">#pts2 = np.array([1900 + 50 * np.sin(2 * np.pi * pts / npts), 2000 + 50 * np.cos(2 * np.pi * pts / npts), 1700  + np.zeros(npts), 2.5  + np.zeros(npts)])</span>
+<span class="c">#pts2 = np.transpose(pts2);</span>
+<span class="c">#t = np.zeros(npts);</span>
+<span class="c">#</span>
+<span class="c">#ti = &#39;2015-03-13 21:16:16.000&#39;;</span>
+<span class="c">#ti = np.array([ti.encode(&quot;ascii&quot;, &quot;ignore&quot;)])</span>
+<span class="c">#</span>
+<span class="c">## open hdf5 file</span>
+<span class="c">#f = h5py.File(fn, &quot;a&quot;)</span>
+<span class="c">#dt = f.create_dataset(pnt, shape=(npts,1), dtype=&#39;i64&#39;, data=t)</span>
+<span class="c">#dc = f.create_dataset(pnc, shape=pts2.shape, dtype=&#39;f32&#39;, data=pts2)</span>
+<span class="c">#di = f.create_dataset(pni, data = ti)</span>
+<span class="c">#</span>
+<span class="c">##attributes</span>
+<span class="c">#</span>
+<span class="c">#f.close()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

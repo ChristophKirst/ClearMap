@@ -1,0 +1,54 @@
+/*
+ * clearmap.css
+ * ~~~~~~~~~~~~
+ *
+ * ClearMap Style sheet
+ *
+ * :copyright: Copyright 2015 by Christoph Kirst 
+ * :license: GNU, see LICENSE.txt for details.
+ *
+ */
+
+@import url("sphinxdoc.css"); 
+
+
+body {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva',
+                 'Verdana', sans-serif;
+    font-size: 14px;
+    letter-spacing: -0.005em;
+    line-height: 150%;
+    text-align: center;
+    background-color: #f2ede3;
+    color: black;
+    padding: 0;
+    border: 1px solid #aaa;
+
+    margin: 0px 80px 0px 80px;
+    min-width: 740px;
+}
+
+
+dl.function, dl.data, dl.class {
+   border: 1px #86989B;
+   border-style: solid none none none;
+   padding: 0.5em;
+  }
+
+dt:target, .highlighted {
+    background-color: #fbe54e;
+}
+
+h1 {
+   font-size: 1.6em;
+}
+
+h2 {
+    color: #ffffff;
+    margin: 1.3em 0 0.2em 0;
+    font-size: 1.35em;
+    padding: 0.2em;
+    border: 1px solid #86989B;
+    /*border-style: solid none none none;*/
+    background-color: #AFC1C4;
+}

@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.Filter.StructureElement &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../../index.html"><img src="../../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.ImageProcessing.Filter.StructureElement</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Routines to generate various structure elements</span>
+
+
+<span class="sd">Structured elements defined by the ``setype`` key include: </span>
+
+<span class="sd">.. _StructureElementTypes:</span>
+
+<span class="sd">Structure Element Types</span>
+<span class="sd">-----------------------</span>
+
+<span class="sd">=============== =====================================</span>
+<span class="sd">Type            Descrition</span>
+<span class="sd">=============== =====================================</span>
+<span class="sd">``sphere``      Sphere structure</span>
+<span class="sd">``disk``        Disk structure</span>
+<span class="sd">=============== =====================================</span>
+
+<span class="sd">Note:</span>
+<span class="sd">    To be extended!</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<div class="viewcode-block" id="structureElement"><a class="viewcode-back" href="../../../../api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElement">[docs]</a><span class="k">def</span> <span class="nf">structureElement</span><span class="p">(</span><span class="n">setype</span> <span class="o">=</span> <span class="s">&#39;Disk&#39;</span><span class="p">,</span> <span class="n">sesize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Creates specific 2d and 3d structuring elements</span>
+<span class="sd">      </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        setype (str): structure element type, see :ref:`StructureElementTypes`</span>
+<span class="sd">        sesize (array or tuple): size of the structure element</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: structure element</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">ndim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span> 
+    <span class="k">if</span> <span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">structureElement2D</span><span class="p">(</span><span class="n">setype</span><span class="p">,</span> <span class="n">sesize</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">structureElement3D</span><span class="p">(</span><span class="n">setype</span><span class="p">,</span> <span class="n">sesize</span><span class="p">);</span></div>
+
+
+
+<div class="viewcode-block" id="structureElementOffsets"><a class="viewcode-back" href="../../../../api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElementOffsets">[docs]</a><span class="k">def</span> <span class="nf">structureElementOffsets</span><span class="p">(</span><span class="n">sesize</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates offsets for a structural element given its size</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        sesize (array or tuple): size of the structure element</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: offsets to center taking care of even/odd ummber of elements</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">sesize</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span>
+    
+    <span class="n">o</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)));</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">ndim</span><span class="p">):</span>   
+        <span class="k">if</span> <span class="n">sesize</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">sesize</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+            <span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">sesize</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">sesize</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span>
+            <span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">o</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="n">o</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="structureElement2D"><a class="viewcode-back" href="../../../../api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElement2D">[docs]</a><span class="k">def</span> <span class="nf">structureElement2D</span><span class="p">(</span><span class="n">setype</span> <span class="o">=</span> <span class="s">&#39;Disk&#39;</span><span class="p">,</span> <span class="n">sesize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Creates specific 2d structuring elements</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        setype (str): structure element type, see :ref:`StructureElementTypes`</span>
+<span class="sd">        sesize (array or tuple): size of the structure element</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: structure element</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">setype</span> <span class="o">=</span> <span class="n">setype</span><span class="o">.</span><span class="n">lower</span><span class="p">();</span>
+           
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sesize</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">StandardError</span><span class="p">(</span><span class="s">&#39;structureElement2D: sesize is not 2d&#39;</span><span class="p">);</span>
+        
+    <span class="n">o</span> <span class="o">=</span> <span class="n">structureElementOffsets</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span>
+    <span class="n">omax</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">sesize</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">setype</span> <span class="o">==</span> <span class="s">&#39;sphere&#39;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]];</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="p">((</span><span class="n">sesize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="n">se</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+        <span class="n">se</span><span class="p">[</span><span class="n">se</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">se</span> <span class="o">/</span> <span class="n">se</span><span class="o">.</span><span class="n">sum</span><span class="p">();</span>
+
+    <span class="k">elif</span> <span class="n">setype</span> <span class="o">==</span> <span class="s">&#39;disk&#39;</span><span class="p">:</span>
+       
+        <span class="n">g</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]];</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="p">((</span><span class="n">sesize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">;</span>  
+        
+        <span class="n">x</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="n">se</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">]));</span>
+        <span class="n">se</span><span class="p">[</span><span class="n">se</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">se</span><span class="p">[</span><span class="n">se</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">se</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">);</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="structureElement3D"><a class="viewcode-back" href="../../../../api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElement3D">[docs]</a><span class="k">def</span> <span class="nf">structureElement3D</span><span class="p">(</span><span class="n">setype</span> <span class="o">=</span> <span class="s">&#39;Disk&#39;</span><span class="p">,</span> <span class="n">sesize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)):</span>
+    <span class="sd">&quot;&quot;&quot;Creates specific 3d structuring elements</span>
+<span class="sd">        </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        setype (str): structure element type, see :ref:`StructureElementTypes`</span>
+<span class="sd">        sesize (array or tuple): size of the structure element</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: structure element</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">setype</span> <span class="o">=</span> <span class="n">setype</span><span class="o">.</span><span class="n">lower</span><span class="p">();</span>
+           
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sesize</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">StandardError</span><span class="p">(</span><span class="s">&#39;structureElement3D: sesize is not 3d&#39;</span><span class="p">);</span>
+            
+    <span class="n">o</span> <span class="o">=</span> <span class="n">structureElementOffsets</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span>
+    <span class="n">omax</span> <span class="o">=</span> <span class="n">o</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">sesize</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">setype</span> <span class="o">==</span> <span class="s">&#39;sphere&#39;</span><span class="p">:</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]];</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="p">((</span><span class="n">sesize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+
+        <span class="n">se</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">2</span><span class="p">]));</span>
+        <span class="n">se</span><span class="p">[</span><span class="n">se</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">se</span> <span class="o">/</span> <span class="n">se</span><span class="o">.</span><span class="n">sum</span><span class="p">();</span>
+        
+    <span class="k">elif</span> <span class="n">setype</span> <span class="o">==</span> <span class="s">&#39;disk&#39;</span><span class="p">:</span>
+        
+        <span class="n">g</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]:</span><span class="n">o</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]];</span>
+        <span class="n">add</span> <span class="o">=</span> <span class="p">((</span><span class="n">sesize</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span><span class="p">;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">1</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">g</span><span class="p">[</span><span class="mi">2</span><span class="p">,:,:,:]</span> <span class="o">+</span> <span class="n">add</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+        
+        <span class="n">se</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">x</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="n">y</span> <span class="o">*</span> <span class="n">y</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">z</span> <span class="o">*</span> <span class="n">z</span> <span class="o">/</span> <span class="p">(</span><span class="n">omax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">omax</span><span class="p">[</span><span class="mi">2</span><span class="p">]));</span>
+        <span class="n">se</span><span class="p">[</span><span class="n">se</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">se</span><span class="p">[</span><span class="n">se</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">se</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int&#39;</span><span class="p">);</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">sesize</span><span class="p">);</span></div>
+        
+
+    
+     
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

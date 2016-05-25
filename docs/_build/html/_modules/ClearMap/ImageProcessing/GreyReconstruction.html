@@ -1,0 +1,354 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.GreyReconstruction &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.ImageProcessing.GreyReconstruction</h1><div class="highlight"><pre>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Grey reconstruction module</span>
+
+<span class="sd">This morphological reconstruction routine was adapted from </span>
+<span class="sd">`CellProfiler &lt;http://www.cellprofiler.org&gt;`_.</span>
+
+<span class="sd">Author</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    Original author: Lee Kamentsky </span>
+<span class="s">    Copyright (c) 2003-2009 Massachusetts Institute of Technology</span>
+<span class="s">    Copyright (c) 2009-2011 Broad Institute</span>
+
+<span class="s">    Modified by Chirstoph Kirst to optimize integration</span>
+<span class="s">    into ClearMap, The Rockefeller University, New York City, 2015</span>
+<span class="s">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.Filter.StructureElement</span> <span class="kn">import</span> <span class="n">structureElement</span>
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.StackProcessing</span> <span class="kn">import</span> <span class="n">writeSubStack</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.Timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.ParameterTools</span> <span class="kn">import</span> <span class="n">getParameter</span><span class="p">,</span> <span class="n">writeParameter</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.Visualization.Plot</span> <span class="kn">import</span> <span class="n">plotTiling</span>
+
+
+
+<span class="kn">from</span> <span class="nn">skimage.filters._rank_order</span> <span class="kn">import</span> <span class="n">rank_order</span>
+
+<div class="viewcode-block" id="reconstruct"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.GreyReconstruction.reconstruct">[docs]</a><span class="k">def</span> <span class="nf">reconstruct</span><span class="p">(</span><span class="n">seed</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s">&#39;dilation&#39;</span><span class="p">,</span> <span class="n">selem</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">offset</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Performs a morphological reconstruction of an image.</span>
+
+<span class="sd">    Reconstruction uses a seed image, which specifies the values</span>
+<span class="sd">    to dilate and a mask image that gives the maximum allowed dilated value at</span>
+<span class="sd">    each pixel.</span>
+<span class="sd">    </span>
+<span class="sd">    The algorithm is taken from [1]_. Applications for greyscale </span>
+<span class="sd">    reconstruction are discussed in [2]_ and [3]_.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        seed (array): seed image to be dilated or eroded.</span>
+<span class="sd">        mask (array): maximum (dilation) / minimum (erosion) allowed</span>
+<span class="sd">        method (str): {&#39;dilation&#39;|&#39;erosion&#39;}</span>
+<span class="sd">        selem (array): structuring element</span>
+<span class="sd">        offset (array or None): offset of the structuring element, None is centered</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        array: result of morphological reconstruction.</span>
+<span class="sd">        </span>
+<span class="sd">    Note: </span>
+<span class="sd">        Operates on 2d images.</span>
+<span class="sd">    </span>
+<span class="sd">    Reference:</span>
+<span class="sd">    </span>
+<span class="sd">    .. [1] Robinson, &quot;Efficient morphological reconstruction: a downhill</span>
+<span class="sd">           filter&quot;, Pattern Recognition Letters 25 (2004) 1759-1767.</span>
+<span class="sd">    .. [2] Vincent, L., &quot;Morphological Grayscale Reconstruction in Image</span>
+<span class="sd">           Analysis: Applications and Efficient Algorithms&quot;, IEEE Transactions</span>
+<span class="sd">           on Image Processing (1993)</span>
+<span class="sd">    .. [3] Soille, P., &quot;Morphological Image Analysis: Principles and</span>
+<span class="sd">           Applications&quot;, Chapter 6, 2nd edition (2003), ISBN 3540429883.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">assert</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">seed</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;dilation&#39;</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">seed</span> <span class="o">&gt;</span> <span class="n">mask</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Intensity of seed image must be less than that &quot;</span>
+                         <span class="s">&quot;of the mask image for reconstruction by dilation.&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;erosion&#39;</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">seed</span> <span class="o">&lt;</span> <span class="n">mask</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Intensity of seed image must be greater than that &quot;</span>
+                         <span class="s">&quot;of the mask image for reconstruction by erosion.&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">skimage.morphology._greyreconstruct</span> <span class="kn">import</span> <span class="n">reconstruction_loop</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span><span class="s">&quot;_greyreconstruct extension not available.&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">selem</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">selem</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">([</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">seed</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">selem</span> <span class="o">=</span> <span class="n">selem</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">offset</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">([</span><span class="n">d</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">selem</span><span class="o">.</span><span class="n">shape</span><span class="p">]):</span>
+            <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Footprint dimensions must all be odd&quot;</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">d</span> <span class="o">//</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">selem</span><span class="o">.</span><span class="n">shape</span><span class="p">])</span>
+    
+    <span class="c"># Cross out the center of the selem</span>
+    <span class="n">selem</span><span class="p">[[</span><span class="nb">slice</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">offset</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="c"># Make padding for edges of reconstructed image so we can ignore boundaries</span>
+    <span class="n">padding</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">selem</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">seed</span><span class="o">.</span><span class="n">ndim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">seed</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">padding</span>
+    <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">inside_slices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="o">-</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">padding</span><span class="p">]</span>
+    <span class="c"># Set padded region to minimum image intensity and mask along first axis so</span>
+    <span class="c"># we can interleave image and mask pixels when sorting.</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;dilation&#39;</span><span class="p">:</span>
+        <span class="n">pad_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;erosion&#39;</span><span class="p">:</span>
+        <span class="n">pad_value</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">seed</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">pad_value</span>
+    <span class="n">images</span><span class="p">[[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">inside_slices</span><span class="p">]</span> <span class="o">=</span> <span class="n">seed</span>
+    <span class="n">images</span><span class="p">[[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">inside_slices</span><span class="p">]</span> <span class="o">=</span> <span class="n">mask</span>
+
+    <span class="c"># Create a list of strides across the array to get the neighbors within</span>
+    <span class="c"># a flattened array</span>
+    <span class="n">value_stride</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="n">images</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span>
+    <span class="n">image_stride</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">strides</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="n">images</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">itemsize</span>
+    <span class="n">selem_mgrid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[[</span><span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="n">o</span><span class="p">,</span> <span class="n">d</span> <span class="o">-</span> <span class="n">o</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">d</span><span class="p">,</span> <span class="n">o</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">selem</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">offset</span><span class="p">)]]</span>
+    <span class="n">selem_offsets</span> <span class="o">=</span> <span class="n">selem_mgrid</span><span class="p">[:,</span> <span class="n">selem</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span>
+    <span class="n">nb_strides</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">value_stride</span> <span class="o">*</span> <span class="n">selem_offset</span><span class="p">)</span>
+                           <span class="k">for</span> <span class="n">selem_offset</span> <span class="ow">in</span> <span class="n">selem_offsets</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+
+    <span class="n">images</span> <span class="o">=</span> <span class="n">images</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+    <span class="c"># Erosion goes smallest to largest; dilation goes largest to smallest.</span>
+    <span class="n">index_sorted</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">images</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;dilation&#39;</span><span class="p">:</span>
+        <span class="n">index_sorted</span> <span class="o">=</span> <span class="n">index_sorted</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c"># Make a linked list of pixels sorted by value. -1 is the list terminator.</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="nb">next</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">images</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+    <span class="n">prev</span><span class="p">[</span><span class="n">index_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span> <span class="o">=</span> <span class="n">index_sorted</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="nb">next</span><span class="p">[</span><span class="n">index_sorted</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">index_sorted</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+    <span class="c"># Cython inner-loop compares the rank of pixel values.</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;dilation&#39;</span><span class="p">:</span>
+        <span class="n">value_rank</span><span class="p">,</span> <span class="n">value_map</span> <span class="o">=</span> <span class="n">rank_order</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;erosion&#39;</span><span class="p">:</span>
+        <span class="n">value_rank</span><span class="p">,</span> <span class="n">value_map</span> <span class="o">=</span> <span class="n">rank_order</span><span class="p">(</span><span class="o">-</span><span class="n">images</span><span class="p">)</span>
+        <span class="n">value_map</span> <span class="o">=</span> <span class="o">-</span><span class="n">value_map</span>
+
+    <span class="n">start</span> <span class="o">=</span> <span class="n">index_sorted</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">reconstruction_loop</span><span class="p">(</span><span class="n">value_rank</span><span class="p">,</span> <span class="n">prev</span><span class="p">,</span> <span class="nb">next</span><span class="p">,</span> <span class="n">nb_strides</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">image_stride</span><span class="p">)</span>
+
+    <span class="c"># Reshape reconstructed image to original image shape and remove padding.</span>
+    <span class="n">rec_img</span> <span class="o">=</span> <span class="n">value_map</span><span class="p">[</span><span class="n">value_rank</span><span class="p">[:</span><span class="n">image_stride</span><span class="p">]]</span>
+    <span class="n">rec_img</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">seed</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">padding</span>
+    
+    <span class="k">return</span> <span class="n">rec_img</span><span class="p">[</span><span class="n">inside_slices</span><span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="greyReconstruction"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.GreyReconstruction.greyReconstruction">[docs]</a><span class="k">def</span> <span class="nf">greyReconstruction</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">greyReconstructionParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span>
+                       <span class="n">subStack</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the grey reconstruction of the image </span>
+<span class="sd">    </span>
+<span class="sd">    Reconstruction is done z-slice by z-slice.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        img (array): image data</span>
+<span class="sd">        removeBackGroundParameter (dict):</span>
+<span class="sd">            ========= ==================== ===========================================================</span>
+<span class="sd">            Name      Type                 Descritption</span>
+<span class="sd">            ========= ==================== ===========================================================</span>
+<span class="sd">            *method*  (tuple or None)      &#39;dilation&#39; or &#39;erosion&#39;, if None return original image</span>
+<span class="sd">            *size*    (int or tuple)       size of structuring element</span>
+<span class="sd">            *save*    (str or None)        file name to save result of this operation</span>
+<span class="sd">                                           if None dont save to file </span>
+<span class="sd">            *verbose* (bool or int)        print / plot information about this step </span>
+<span class="sd">            ========= ==================== ===========================================================</span>
+<span class="sd">        subStack (dict or None): sub-stack information </span>
+<span class="sd">        verbose (bool): print progress info </span>
+<span class="sd">        out (object): object to write progress info to</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: grey reconstructed image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">method</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">greyReconstructionParameter</span><span class="p">,</span> <span class="s">&quot;method&quot;</span><span class="p">,</span> <span class="n">method</span><span class="p">);</span>
+    <span class="n">size</span>   <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">greyReconstructionParameter</span><span class="p">,</span> <span class="s">&quot;size&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">);</span>
+    <span class="n">save</span>   <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">greyReconstructionParameter</span><span class="p">,</span> <span class="s">&quot;save&quot;</span><span class="p">,</span> <span class="n">save</span><span class="p">);</span>    
+    <span class="n">verbose</span><span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">greyReconstructionParameter</span><span class="p">,</span> <span class="s">&quot;verbose&quot;</span><span class="p">,</span> <span class="n">verbose</span><span class="p">);</span>   
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">writeParameter</span><span class="p">(</span><span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="n">head</span> <span class="o">=</span> <span class="s">&#39;Grey reconstruction:&#39;</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="n">size</span><span class="p">,</span> <span class="n">save</span> <span class="o">=</span> <span class="n">save</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">img</span><span class="p">;</span>
+    
+    <span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">();</span>
+    
+    <span class="c"># background subtraction in each slice</span>
+    <span class="n">se</span> <span class="o">=</span> <span class="n">structureElement</span><span class="p">(</span><span class="s">&#39;Disk&#39;</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">);</span>
+    <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]):</span>
+         <span class="c">#img[:,:,z] = img[:,:,z] - grey_opening(img[:,:,z], structure = structureElement(&#39;Disk&#39;, (30,30)));</span>
+         <span class="c">#img[:,:,z] = img[:,:,z] - morph.grey_opening(img[:,:,z], structure = self.structureELement(&#39;Disk&#39;, (150,150)));</span>
+         <span class="n">img</span><span class="p">[:,:,</span><span class="n">z</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[:,:,</span><span class="n">z</span><span class="p">]</span> <span class="o">-</span> <span class="n">reconstruct</span><span class="p">(</span><span class="n">img</span><span class="p">[:,:,</span><span class="n">z</span><span class="p">],</span> <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="p">,</span> <span class="n">selem</span> <span class="o">=</span> <span class="n">se</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">writeSubStack</span><span class="p">(</span><span class="n">save</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">subStack</span> <span class="o">=</span> <span class="n">subStack</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">plotTiling</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">(</span><span class="n">head</span> <span class="o">=</span> <span class="s">&#39;Grey reconstruction:&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">img</span> </div>
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

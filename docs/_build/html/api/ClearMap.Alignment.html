@@ -1,0 +1,1221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Alignment package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap package" href="ClearMap.html" />
+    <link rel="next" title="ClearMap.ImageProcessing package" href="ClearMap.ImageProcessing.html" />
+    <link rel="prev" title="ClearMap.IO package" href="ClearMap.IO.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.html" title="ClearMap.ImageProcessing package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.IO.html" title="ClearMap.IO package"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" accesskey="U">ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">ClearMap.Alignment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.IO.html"
+                        title="previous chapter">ClearMap.IO package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.ImageProcessing.html"
+                        title="next chapter">ClearMap.ImageProcessing package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.Alignment.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="clearmap-alignment-package">
+<h1>ClearMap.Alignment package<a class="headerlink" href="#clearmap-alignment-package" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-ClearMap.Alignment"></span><p>This sub-package provides an interface to alignment tools in order to
+register cleared samples to atlases or reference samples.</p>
+<p>Supported functionality:</p>
+<blockquote>
+<div><ul class="simple">
+<li>resampling and reorientation of large volumetric images in the
+<a class="reference internal" href="#module-ClearMap.Alignment.Resampling" title="ClearMap.Alignment.Resampling"><code class="xref py py-mod docutils literal"><span class="pre">Resampling</span></code></a> module.</li>
+<li>registering volumetric data onto references via
+<a class="reference external" href="http://elastix.isi.uu.nl/">Elastix</a> in the
+<a class="reference internal" href="#module-ClearMap.Alignment.Elastix" title="ClearMap.Alignment.Elastix"><code class="xref py py-mod docutils literal"><span class="pre">Elastix</span></code></a> module.</li>
+</ul>
+</div></blockquote>
+<p>Main routines for resampling are:
+<a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleData" title="ClearMap.Alignment.Resampling.resampleData"><code class="xref py py-func docutils literal"><span class="pre">resampleData()</span></code></a>
+and <a class="reference internal" href="#ClearMap.Alignment.Resampling.resamplePoints" title="ClearMap.Alignment.Resampling.resamplePoints"><code class="xref py py-func docutils literal"><span class="pre">resamplePoints()</span></code></a>.</p>
+<p>Main routines for elastix registration are:
+<a class="reference internal" href="#ClearMap.Alignment.Elastix.alignData" title="ClearMap.Alignment.Elastix.alignData"><code class="xref py py-func docutils literal"><span class="pre">alignData()</span></code></a>,
+<a class="reference internal" href="#ClearMap.Alignment.Elastix.transformData" title="ClearMap.Alignment.Elastix.transformData"><code class="xref py py-func docutils literal"><span class="pre">transformData()</span></code></a> and
+<a class="reference internal" href="#ClearMap.Alignment.Elastix.transformPoints" title="ClearMap.Alignment.Elastix.transformPoints"><code class="xref py py-func docutils literal"><span class="pre">transformPoints()</span></code></a>.</p>
+<div class="section" id="module-ClearMap.Alignment.Elastix">
+<span id="clearmap-alignment-elastix-module"></span><h2>ClearMap.Alignment.Elastix module<a class="headerlink" href="#module-ClearMap.Alignment.Elastix" title="Permalink to this headline">¶</a></h2>
+<p>Interface to Elastix for alignment of volumetric data</p>
+<p>The elastix documentation can be found <a class="reference external" href="http://elastix.isi.uu.nl/">here</a>.</p>
+<p>In essence, a transformation <img src="../_images/mathmpl/math-7a5eb78742.png" style="position: relative; bottom: -8px"/> is sought so that for a fixed image
+<img src="../_images/mathmpl/math-3f36e9e970.png" style="position: relative; bottom: -8px"/> and a moving image <img src="../_images/mathmpl/math-343ba13550.png" style="position: relative; bottom: -8px"/>:</p>
+<img src="../_images/mathmpl/math-64ac2db0c7.png" class="center" /><p>Once the map <img src="../_images/mathmpl/math-fa4ff731d3.png" style="position: relative; bottom: -3px"/> is estimated via elastix, transformix maps an image
+<img src="../_images/mathmpl/math-2acb17d5f4.png" style="position: relative; bottom: -8px"/> from the moving image frame to the fixed image frame, i.e.:</p>
+<img src="../_images/mathmpl/math-0713a4bfa3.png" class="center" /><p>To register an image onto a reference image, the fixed image is typically
+choosed to be the image to be registered, while the moving image is the
+reference image. In this way an object identified in the data at position x
+is mapped via transformix as:</p>
+<img src="../_images/mathmpl/math-558bbdc154.png" class="center" /><div class="section" id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><ul class="simple">
+<li>elastix finds a transformation <img src="../_images/mathmpl/math-e104cde851.png" style="position: relative; bottom: -7px"/></li>
+<li>the fixed image is image to be registered</li>
+<li>the moving image is typically the reference image</li>
+<li>the result folder may contain an image (mhd file) that is <img src="../_images/mathmpl/math-7d5e31ce92.png" style="position: relative; bottom: -8px"/>,
+i.e. has the size of the fixed image</li>
+<li>transformix applied to data gives <img src="../_images/mathmpl/math-5c6d136090.png" style="position: relative; bottom: -8px"/> !</li>
+<li>transformix applied to points gives <img src="../_images/mathmpl/math-bf518e9b97.png" style="position: relative; bottom: -8px"/> !</li>
+<li>point arrays are assumed to be in (x,y,z) coordinates consistent with (x,y,z) array represenation of images in ClearMap</li>
+</ul>
+</div></blockquote>
+<p>Main routines are: <a class="reference internal" href="#ClearMap.Alignment.Elastix.alignData" title="ClearMap.Alignment.Elastix.alignData"><code class="xref py py-func docutils literal"><span class="pre">alignData()</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.transformData" title="ClearMap.Alignment.Elastix.transformData"><code class="xref py py-func docutils literal"><span class="pre">transformData()</span></code></a> and <a class="reference internal" href="#ClearMap.Alignment.Elastix.transformPoints" title="ClearMap.Alignment.Elastix.transformPoints"><code class="xref py py-func docutils literal"><span class="pre">transformPoints()</span></code></a>.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://elastix.isi.uu.nl/">Elastix documentation</a>
+<a class="reference internal" href="#module-ClearMap.Alignment.Resampling" title="ClearMap.Alignment.Resampling"><code class="xref py py-mod docutils literal"><span class="pre">Resampling</span></code></a></p>
+</div>
+<dl class="data">
+<dt id="ClearMap.Alignment.Elastix.ElastixBinary">
+<code class="descname">ElastixBinary</code><em class="property"> = '/usr/local/elastix/bin/elastix'</em><a class="headerlink" href="#ClearMap.Alignment.Elastix.ElastixBinary" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: the elastix executable</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>setup in <a class="reference internal" href="#ClearMap.Alignment.Elastix.initializeElastix" title="ClearMap.Alignment.Elastix.initializeElastix"><code class="xref py py-func docutils literal"><span class="pre">initializeElastix()</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Alignment.Elastix.ElastixLib">
+<code class="descname">ElastixLib</code><em class="property"> = '/usr/local/elastix/lib'</em><a class="headerlink" href="#ClearMap.Alignment.Elastix.ElastixLib" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: path to the elastix library</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>setup in <a class="reference internal" href="#ClearMap.Alignment.Elastix.initializeElastix" title="ClearMap.Alignment.Elastix.initializeElastix"><code class="xref py py-func docutils literal"><span class="pre">initializeElastix()</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Alignment.Elastix.TransformixBinary">
+<code class="descname">TransformixBinary</code><em class="property"> = '/usr/local/elastix/bin/transformix'</em><a class="headerlink" href="#ClearMap.Alignment.Elastix.TransformixBinary" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: the transformix executable</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>setup in <a class="reference internal" href="#ClearMap.Alignment.Elastix.initializeElastix" title="ClearMap.Alignment.Elastix.initializeElastix"><code class="xref py py-func docutils literal"><span class="pre">initializeElastix()</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Alignment.Elastix.Initialized">
+<code class="descname">Initialized</code><em class="property"> = True</em><a class="headerlink" href="#ClearMap.Alignment.Elastix.Initialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>bool: True if the elastixs binarys and paths are setup</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>setup in <a class="reference internal" href="#ClearMap.Alignment.Elastix.initializeElastix" title="ClearMap.Alignment.Elastix.initializeElastix"><code class="xref py py-func docutils literal"><span class="pre">initializeElastix()</span></code></a></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.printSettings">
+<code class="descname">printSettings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#printSettings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.printSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prints the current elastix configuration</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#ClearMap.Alignment.Elastix.ElastixBinary" title="ClearMap.Alignment.Elastix.ElastixBinary"><code class="xref py py-const docutils literal"><span class="pre">ElastixBinary</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.ElastixLib" title="ClearMap.Alignment.Elastix.ElastixLib"><code class="xref py py-const docutils literal"><span class="pre">ElastixLib</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.TransformixBinary" title="ClearMap.Alignment.Elastix.TransformixBinary"><code class="xref py py-const docutils literal"><span class="pre">TransformixBinary</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.Initialized" title="ClearMap.Alignment.Elastix.Initialized"><code class="xref py py-const docutils literal"><span class="pre">Initialized</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.setElastixLibraryPath">
+<code class="descname">setElastixLibraryPath</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#setElastixLibraryPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.setElastixLibraryPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add elastix library path to the LD_LIBRARY_PATH variable in linux</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str or None</em>) &#8211;
+path to elastix root directory if None <a class="reference internal" href="ClearMap.Settings.html#ClearMap.Settings.ElastixPath" title="ClearMap.Settings.ElastixPath"><code class="xref py py-const docutils literal"><span class="pre">ClearMap.Settings.ElastixPath</span></code></a> is used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.initializeElastix">
+<code class="descname">initializeElastix</code><span class="sig-paren">(</span><em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#initializeElastix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.initializeElastix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize all paths and binaries of elastix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>path</strong> (<em>str or None</em>) &#8211;
+path to elastix root directory, if None</li>
+<li><strong>:const:`ClearMap.Settings.ElastixPath` is used.</strong></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#ClearMap.Alignment.Elastix.ElastixBinary" title="ClearMap.Alignment.Elastix.ElastixBinary"><code class="xref py py-const docutils literal"><span class="pre">ElastixBinary</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.ElastixLib" title="ClearMap.Alignment.Elastix.ElastixLib"><code class="xref py py-const docutils literal"><span class="pre">ElastixLib</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.TransformixBinary" title="ClearMap.Alignment.Elastix.TransformixBinary"><code class="xref py py-const docutils literal"><span class="pre">TransformixBinary</span></code></a>,
+<a class="reference internal" href="#ClearMap.Alignment.Elastix.Initialized" title="ClearMap.Alignment.Elastix.Initialized"><code class="xref py py-const docutils literal"><span class="pre">Initialized</span></code></a>, <a class="reference internal" href="#ClearMap.Alignment.Elastix.setElastixLibraryPath" title="ClearMap.Alignment.Elastix.setElastixLibraryPath"><code class="xref py py-func docutils literal"><span class="pre">setElastixLibraryPath()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.checkElastixInitialized">
+<code class="descname">checkElastixInitialized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#checkElastixInitialized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.checkElastixInitialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if elastix is initialized</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211;
+True if elastix paths are set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.getTransformParameterFile">
+<code class="descname">getTransformParameterFile</code><span class="sig-paren">(</span><em>resultdir</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#getTransformParameterFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.getTransformParameterFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Finds and returns the transformation parameter file generated by elastix</p>
+<p class="rubric">Notes</p>
+<p>In case of multiple transformation parameter files the top level file is returned</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resultdir</strong> (<em>str</em>) &#8211;
+path to directory of elastix results</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+file name of the first transformation parameter file</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.setPathTransformParameterFiles">
+<code class="descname">setPathTransformParameterFiles</code><span class="sig-paren">(</span><em>resultdir</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#setPathTransformParameterFiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.setPathTransformParameterFiles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces relative with abolsute path in the parameter files in the result directory</p>
+<p class="rubric">Notes</p>
+<p>When elastix is not run in the directory of the transformation files
+the aboslute path needs to be given in each transformation file
+to point to the subsequent transformation files. This is done via this
+routine</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resultdir</strong> (<em>str</em>) &#8211;
+path to directory of elastix results</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.parseElastixOutputPoints">
+<code class="descname">parseElastixOutputPoints</code><span class="sig-paren">(</span><em>filename</em>, <em>indices=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#parseElastixOutputPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.parseElastixOutputPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parses the output points from the output file of transformix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<em>str</em>) &#8211;
+file name of the transformix output file</li>
+<li><strong>indices</strong> (<em>bool</em>) &#8211;
+if True return pixel indices otherwise float coordinates</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>points</strong> (<em>array</em>) &#8211;
+the transformed coordinates</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.getTransformFileSizeAndSpacing">
+<code class="descname">getTransformFileSizeAndSpacing</code><span class="sig-paren">(</span><em>transformfile</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#getTransformFileSizeAndSpacing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.getTransformFileSizeAndSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse the image size and spacing from a transformation parameter file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>transformfile</strong> (<em>str</em>) &#8211;
+File name of the transformix parameter file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>(float, float)</em> &#8211;
+the image size and spacing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.getResultDataFile">
+<code class="descname">getResultDataFile</code><span class="sig-paren">(</span><em>resultdir</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#getResultDataFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.getResultDataFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the mhd result file in a result directory</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>resultdir</strong> (<em>str</em>) &#8211;
+Path to elastix result directory.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+The mhd file in the result directory.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.setTransformFileSizeAndSpacing">
+<code class="descname">setTransformFileSizeAndSpacing</code><span class="sig-paren">(</span><em>transformfile</em>, <em>size</em>, <em>spacing</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#setTransformFileSizeAndSpacing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.setTransformFileSizeAndSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces size and scale in the transformation parameter file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>transformfile</strong> (<em>str</em>) &#8211;
+transformation parameter file</li>
+<li><strong>size</strong> (<em>tuple</em>) &#8211;
+the new image size</li>
+<li><strong>spacing</strong> (<em>tuplr</em>) &#8211;
+the new image spacing</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.rescaleSizeAndSpacing">
+<code class="descname">rescaleSizeAndSpacing</code><span class="sig-paren">(</span><em>size</em>, <em>spacing</em>, <em>scale</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#rescaleSizeAndSpacing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.rescaleSizeAndSpacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rescales the size and spacing</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>size</strong> (<em>tuple</em>) &#8211;
+image size</li>
+<li><strong>spacing</strong> (<em>tuple</em>) &#8211;
+image spacing</li>
+<li><strong>scale</strong> (<em>tuple</em>) &#8211;
+the scale factor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(tuple, tuple)</em> &#8211;
+new size and spacing</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.alignData">
+<code class="descname">alignData</code><span class="sig-paren">(</span><em>fixedImage</em>, <em>movingImage</em>, <em>affineParameterFile</em>, <em>bSplineParameterFile=None</em>, <em>resultDirectory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#alignData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.alignData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Align images using elastix, estimates a transformation <img src="../_images/mathmpl/math-d8b8a20969.png" style="position: relative; bottom: -3px"/> fixed image <img src="../_images/mathmpl/math-fb1cbbd43f.png" style="position: relative; bottom: -3px"/> moving image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>fixedImage</strong> (<em>str</em>) &#8211;
+image source of the fixed image (typically the reference image)</li>
+<li><strong>movingImage</strong> (<em>str</em>) &#8211;
+image source of the moving image (typically the image to be registered)</li>
+<li><strong>affineParameterFile</strong> (<em>str or None</em>) &#8211;
+elastix parameter file for the primary affine transformation</li>
+<li><strong>bSplineParameterFile</strong> (<em>str or None</em>) &#8211;
+elastix parameter file for the secondary non-linear transformation</li>
+<li><strong>resultDirectory</strong> (<em>str or None</em>) &#8211;
+elastic result directory</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211;
+path to elastix result directory</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.transformData">
+<code class="descname">transformData</code><span class="sig-paren">(</span><em>source</em>, <em>sink=[]</em>, <em>transformParameterFile=None</em>, <em>transformDirectory=None</em>, <em>resultDirectory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#transformData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.transformData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform a raw data set to reference using the elastix alignment results</p>
+<p>If the map determined by elastix is
+<img src="../_images/mathmpl/math-ae3c6503a4.png" style="position: relative; bottom: -7px"/>,
+transformix on data works as <img src="../_images/mathmpl/math-5c6d136090.png" style="position: relative; bottom: -8px"/>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str or array</em>) &#8211;
+image source to be transformed</li>
+<li><strong>sink</strong> (<em>str, [] or None</em>) &#8211;
+image sink to save transformed image to. if [] return the default name of the data file generated by transformix.</li>
+<li><strong>transformParameterFile</strong> (<em>str or None</em>) &#8211;
+parameter file for the primary transformation, if None, the file is determined from the transformDirectory.</li>
+<li><strong>transformDirectory</strong> (<em>str or None</em>) &#8211;
+result directory of elastix alignment, if None the transformParameterFile has to be given.</li>
+<li><strong>resultDirectory</strong> (<em>str or None</em>) &#8211;
+the directorty for the transformix results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array or str</em> &#8211;
+array or file name of the transformed data</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.deformationField">
+<code class="descname">deformationField</code><span class="sig-paren">(</span><em>sink=[]</em>, <em>transformParameterFile=None</em>, <em>transformDirectory=None</em>, <em>resultDirectory=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#deformationField"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.deformationField" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the deformation field T(x) - x</p>
+<p>The map determined by elastix is
+<img src="../_images/mathmpl/math-ae3c6503a4.png" style="position: relative; bottom: -7px"/></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sink</strong> (<em>str, [] or None</em>) &#8211;
+image sink to save the transformation field; if [] return the default name of the data file generated by transformix.</li>
+<li><strong>transformParameterFile</strong> (<em>str or None</em>) &#8211;
+parameter file for the primary transformation, if None, the file is determined from the transformDirectory.</li>
+<li><strong>transformDirectory</strong> (<em>str or None</em>) &#8211;
+result directory of elastix alignment, if None the transformParameterFile has to be given.</li>
+<li><strong>resultDirectory</strong> (<em>str or None</em>) &#8211;
+the directorty for the transformix results</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array or str</em> &#8211;
+array or file name of the transformed data</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.deformationDistance">
+<code class="descname">deformationDistance</code><span class="sig-paren">(</span><em>deformationField</em>, <em>sink=None</em>, <em>scale=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#deformationDistance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.deformationDistance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the distance field from a deformation vector field</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>deformationField</strong> (<em>str or array</em>) &#8211;
+source of the deformation field determined by <a class="reference internal" href="#ClearMap.Alignment.Elastix.deformationField" title="ClearMap.Alignment.Elastix.deformationField"><code class="xref py py-func docutils literal"><span class="pre">deformationField()</span></code></a></li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+image sink to save the deformation field to</li>
+<li><strong>scale</strong> (<em>tuple or None</em>) &#8211;
+scale factor for each dimension, if None = (1,1,1)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array or str</em> &#8211;
+array or file name of the transformed data</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.writePoints">
+<code class="descname">writePoints</code><span class="sig-paren">(</span><em>filename</em>, <em>points</em>, <em>indices=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#writePoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.writePoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write points as elastix/transformix point file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<em>str</em>) &#8211;
+file name of the elastix point file.</li>
+<li><strong>points</strong> (<em>array or str</em>) &#8211;
+source of the points.</li>
+<li><strong>indices</strong> (<em>bool</em>) &#8211;
+write as pixel indices or physical coordiantes</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str</em> &#8211;
+file name of the elastix point file</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.transformPoints">
+<code class="descname">transformPoints</code><span class="sig-paren">(</span><em>source</em>, <em>sink=None</em>, <em>transformParameterFile=None</em>, <em>transformDirectory=None</em>, <em>indices=True</em>, <em>resultDirectory=None</em>, <em>tmpFile=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#transformPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.transformPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform coordinates math:<cite>x</cite> via elastix estimated transformation to <img src="../_images/mathmpl/math-7a5eb78742.png" style="position: relative; bottom: -8px"/></p>
+<p>Note the transformation is from the fixed image coorindates to the moving image coordiantes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211;
+source of the points</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+sink for transformed points</li>
+<li><strong>transformParameterFile</strong> (<em>str or None</em>) &#8211;
+parameter file for the primary transformation, if None, the file is determined from the transformDirectory.</li>
+<li><strong>transformDirectory</strong> (<em>str or None</em>) &#8211;
+result directory of elastix alignment, if None the transformParameterFile has to be given.</li>
+<li><strong>indices</strong> (<em>bool</em>) &#8211;
+if True use points as pixel coordinates otherwise spatial coordinates.</li>
+<li><strong>resultDirectory</strong> (<em>str or None</em>) &#8211;
+elastic result directory</li>
+<li><strong>tmpFile</strong> (<em>str or None</em>) &#8211;
+file name for the elastix point file.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array or str</em> &#8211;
+array or file name of transformed points</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Elastix.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Elastix.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Elastix.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test Elastix module</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-ClearMap.Alignment.Resampling">
+<span id="clearmap-alignment-resampling-module"></span><h2>ClearMap.Alignment.Resampling module<a class="headerlink" href="#module-ClearMap.Alignment.Resampling" title="Permalink to this headline">¶</a></h2>
+<p>The <em>Resampling</em> module provides methods to resample and reorient volumetric
+and point data.</p>
+<p>Resampling the data is usually necessary as the first step to match the
+resolution and orientation of the reference object.</p>
+<p>Main routines for resampling are: <a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleData" title="ClearMap.Alignment.Resampling.resampleData"><code class="xref py py-func docutils literal"><span class="pre">resampleData()</span></code></a>
+and <a class="reference internal" href="#ClearMap.Alignment.Resampling.resamplePoints" title="ClearMap.Alignment.Resampling.resamplePoints"><code class="xref py py-func docutils literal"><span class="pre">resamplePoints()</span></code></a>.</p>
+<div class="section" id="image-representation-and-size">
+<h3>Image Representation and Size<a class="headerlink" href="#image-representation-and-size" title="Permalink to this headline">¶</a></h3>
+<p>The module assumes that images in arrays are arranged as</p>
+<blockquote>
+<div><ul class="simple">
+<li>[x,y] or</li>
+<li>[x,y,z]</li>
+</ul>
+</div></blockquote>
+<p>where x,y,z correspond to the x,y,z coordinates as displayed in e.g. ImageJ.
+For example an image of size (512,512) stored in an array <code class="docutils literal"><span class="pre">img</span></code> will have:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(512,512)</span>
+</pre></div>
+</div>
+<p>Points are assumed to be given as x,y,z coordinates</p>
+<p>Parameters such as <em>resolution</em> or <em>dataSize</em> are assumed to be given in (x,y)
+or (x,y,z) format, e.g.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">dataSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">512</span><span class="p">,</span><span class="mi">512</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="orientation">
+<h3>Orientation<a class="headerlink" href="#orientation" title="Permalink to this headline">¶</a></h3>
+<p>The <em>orientation</em> parameter is a tuple of d numbers from 1 to d that specifies
+the permutation of the axes, a minus sign infront of a numbeer indicates
+inversion of that axes. For exmaple</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">orientation</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>indicates that x and y should be exchanged and the new y axes should be reversed.</p>
+<p>Generally a re-orientation is composed of first a permutation of the axes and then
+inverting the indicated axes.</p>
+<p>A <em>permutation</em> is an orientation without signs and with numbers from 0 to d-1.</p>
+<p class="rubric">Examples</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ClearMap.Settings</span> <span class="kn">import</span> <span class="n">ClearMapPath</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ClearMap.Alignment.Resampling</span> <span class="kn">import</span> <span class="n">resampleData</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ClearMapPath</span><span class="p">,</span><span class="s">&#39;Test/Data/OME/16-17-27_0_8X-s3-20HF_UltraII_C00_xyz-Table Z\d{4}.ome.tif&#39;</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">io</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="go">(2160, 2560, 21)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">resampleData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">resolutionSource</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">orientation</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">resolutionSink</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(216, 256, 10)</span>
+</pre></div>
+</div>
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.fixOrientation">
+<code class="descname">fixOrientation</code><span class="sig-paren">(</span><em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#fixOrientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.fixOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert orientation to standard format number sequence</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>tuple</em> &#8211;
+orientation sequence</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.inverseOrientation">
+<code class="descname">inverseOrientation</code><span class="sig-paren">(</span><em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#inverseOrientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.inverseOrientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inverse permuation of the permutation orientation taking axis inversions into account.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>tuple</em> &#8211;
+orientation sequence</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.orientationToPermuation">
+<code class="descname">orientationToPermuation</code><span class="sig-paren">(</span><em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#orientationToPermuation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.orientationToPermuation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts the permuation from an orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>tuple</em> &#8211;
+premutation sequence</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.orientResolution">
+<code class="descname">orientResolution</code><span class="sig-paren">(</span><em>resolution</em>, <em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#orientResolution"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.orientResolution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permutes a resolution tuple according to the given orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resolution</strong> (<em>tuple</em>) &#8211;
+resolution specification</li>
+<li><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+oriented resolution sequence</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.orientResolutionInverse">
+<code class="descname">orientResolutionInverse</code><span class="sig-paren">(</span><em>resolution</em>, <em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#orientResolutionInverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.orientResolutionInverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permutes a resolution tuple according to the inverse of a given orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>resolution</strong> (<em>tuple</em>) &#8211;
+resolution specification</li>
+<li><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+oriented resolution sequence</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.orientDataSize">
+<code class="descname">orientDataSize</code><span class="sig-paren">(</span><em>dataSize</em>, <em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#orientDataSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.orientDataSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permutes a data size tuple according to the given orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataSize</strong> (<em>tuple</em>) &#8211;
+resolution specification</li>
+<li><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+oriented dataSize sequence</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.orientDataSizeInverse">
+<code class="descname">orientDataSizeInverse</code><span class="sig-paren">(</span><em>dataSize</em>, <em>orientation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#orientDataSizeInverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.orientDataSizeInverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Permutes a dataSize tuple according to the inverse of a given orientation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataSize</strong> (<em>tuple</em>) &#8211;
+dataSize specification</li>
+<li><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+orientation specification</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+oriented dataSize sequence</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.resampleDataSize">
+<code class="descname">resampleDataSize</code><span class="sig-paren">(</span><em>dataSizeSource</em>, <em>dataSizeSink=None</em>, <em>resolutionSource=None</em>, <em>resolutionSink=None</em>, <em>orientation=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#resampleDataSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.resampleDataSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate scaling factors and data sizes for resampling.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>dataSizeSource</strong> (<em>tuple</em>) &#8211;
+data size of the original image</li>
+<li><strong>dataSizeSink</strong> (<em>tuple or None</em>) &#8211;
+data size of the resmapled image</li>
+<li><strong>resolutionSource</strong> (<em>tuple or None</em>) &#8211;
+resolution of the source image</li>
+<li><strong>resolutionSink</strong> (<em>tuple or None</em>) &#8211;
+resolution of the sink image</li>
+<li><strong>orientation</strong> (<em>tuple or str</em>) &#8211;
+re-orientation specification</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+data size of the source
+tuple: data size of the sink
+tuple: resolution of source
+tuple: resolution of sink</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#orientation">Orientation</a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.fixInterpolation">
+<code class="descname">fixInterpolation</code><span class="sig-paren">(</span><em>interpolation</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#fixInterpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.fixInterpolation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts interpolation given as string to cv2 interpolation object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>interpolation</strong> (<em>str or object</em>) &#8211;
+interpolation string or cv2 object</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>object</em> &#8211;
+cv2 interpolation type</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.resampleXY">
+<code class="descname">resampleXY</code><span class="sig-paren">(</span><em>source</em>, <em>dataSizeSink</em>, <em>sink=None</em>, <em>interpolation='linear'</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#resampleXY"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.resampleXY" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample a 2d image slice</p>
+<p>This routine is used for resampling a large stack in parallel in xy or xz direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str or array</em>) &#8211;
+2d image source</li>
+<li><strong>dataSizeSink</strong> (<em>tuple</em>) &#8211;
+size of the resmapled image</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+location for the resmapled image</li>
+<li><strong>interpolation</strong> (<em>str</em>) &#8211;
+interpolation method to use: &#8216;linear&#8217; or None (nearest pixel)</li>
+<li><strong>out</strong> (<em>stdout</em>) &#8211;
+where to write progress information</li>
+<li><strong>vebose</strong> (<em>bool</em>) &#8211;
+write progress info if true</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array or str</em> &#8211;
+resampled data or file name</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.resampleData">
+<code class="descname">resampleData</code><span class="sig-paren">(</span><em>source</em>, <em>sink=None</em>, <em>orientation=None</em>, <em>dataSizeSink=None</em>, <em>resolutionSource=(4.0625</em>, <em>4.0625</em>, <em>3)</em>, <em>resolutionSink=(25</em>, <em>25</em>, <em>25)</em>, <em>processingDirectory=None</em>, <em>processes=1</em>, <em>cleanup=True</em>, <em>verbose=True</em>, <em>interpolation='linear'</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#resampleData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.resampleData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample data of source in resolution and orientation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str or array</em>) &#8211;
+image to be resampled</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination of resampled image</li>
+<li><strong>orientation</strong> (<em>tuple</em>) &#8211;
+orientation specified by permuation and change in sign of (1,2,3)</li>
+<li><strong>dataSizeSink</strong> (<em>tuple or None</em>) &#8211;
+target size of the resampled image</li>
+<li><strong>resolutionSource</strong> (<em>tuple</em>) &#8211;
+resolution of the source image (in length per pixel)</li>
+<li><strong>resolutionSink</strong> (<em>tuple</em>) &#8211;
+resolution of the resampled image (in length per pixel)</li>
+<li><strong>processingDirectory</strong> (<em>str or None</em>) &#8211;
+directory in which to perform resmapling in parallel, None a temporary directry will be created</li>
+<li><strong>processes</strong> (<em>int</em>) &#8211;
+number of processes to use for parallel resampling</li>
+<li><strong>cleanup</strong> (<em>bool</em>) &#8211;
+remove temporary files</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+display progress information</li>
+<li><strong>interpolation</strong> (<em>str</em>) &#8211;
+method to use for interpolating to the resmapled image</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(array or str)</em> &#8211;
+data or file name of resampled image</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>resolutions are assumed to be given for the axes of the intrinsic
+orientation of the data and reference as when viewed by matplotlib or ImageJ</li>
+<li>orientation: permuation of 1,2,3 with potential sign, indicating which
+axes map onto the reference axes, a negative sign indicates reversal
+of that particular axes</li>
+<li>only a minimal set of information to detremine the resampling parameter
+has to be given, e.g. dataSizeSource and dataSizeSink</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.resampleDataInverse">
+<code class="descname">resampleDataInverse</code><span class="sig-paren">(</span><em>sink</em>, <em>source=None</em>, <em>dataSizeSource=None</em>, <em>orientation=None</em>, <em>resolutionSource=(4.0625</em>, <em>4.0625</em>, <em>3)</em>, <em>resolutionSink=(25</em>, <em>25</em>, <em>25)</em>, <em>processingDirectory=None</em>, <em>processes=1</em>, <em>cleanup=True</em>, <em>verbose=True</em>, <em>interpolation='linear'</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#resampleDataInverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.resampleDataInverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample data inversely to <a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleData" title="ClearMap.Alignment.Resampling.resampleData"><code class="xref py py-func docutils literal"><span class="pre">resampleData()</span></code></a> routine</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+image to be inversly resampled (=sink in <a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleData" title="ClearMap.Alignment.Resampling.resampleData"><code class="xref py py-func docutils literal"><span class="pre">resampleData()</span></code></a>)</li>
+<li><strong>source</strong> (<em>str or array</em>) &#8211;
+destination for inversly resmapled image (=source in <a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleData" title="ClearMap.Alignment.Resampling.resampleData"><code class="xref py py-func docutils literal"><span class="pre">resampleData()</span></code></a>)</li>
+<li><strong>dataSizeSource</strong> (<em>tuple or None</em>) &#8211;
+target size of the resampled image</li>
+<li><strong>orientation</strong> (<em>tuple</em>) &#8211;
+orientation specified by permuation and change in sign of (1,2,3)</li>
+<li><strong>resolutionSource</strong> (<em>tuple</em>) &#8211;
+resolution of the source image (in length per pixel)</li>
+<li><strong>resolutionSink</strong> (<em>tuple</em>) &#8211;
+resolution of the resampled image (in length per pixel)</li>
+<li><strong>processingDirectory</strong> (<em>str or None</em>) &#8211;
+directory in which to perform resmapling in parallel, None a temporary directry will be created</li>
+<li><strong>processes</strong> (<em>int</em>) &#8211;
+number of processes to use for parallel resampling</li>
+<li><strong>cleanup</strong> (<em>bool</em>) &#8211;
+remove temporary files</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+display progress information</li>
+<li><strong>interpolation</strong> (<em>str</em>) &#8211;
+method to use for interpolating to the resmapled image</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(array or str)</em> &#8211;
+data or file name of resampled image</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>resolutions are assumed to be given for the axes of the intrinsic
+orientation of the data and reference as when viewed by matplotlib or ImageJ</li>
+<li>orientation: permuation of 1,2,3 with potential sign, indicating which
+axes map onto the reference axes, a negative sign indicates reversal
+of that particular axes</li>
+<li>only a minimal set of information to detremine the resampling parameter
+has to be given, e.g. dataSizeSource and dataSizeSink</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.resamplePoints">
+<code class="descname">resamplePoints</code><span class="sig-paren">(</span><em>pointSource</em>, <em>pointSink=None</em>, <em>dataSizeSource=None</em>, <em>dataSizeSink=None</em>, <em>orientation=None</em>, <em>resolutionSource=(4.0625</em>, <em>4.0625</em>, <em>3)</em>, <em>resolutionSink=(25</em>, <em>25</em>, <em>25)</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#resamplePoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.resamplePoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample Points to map from original data to the coordinates of the resampled image</p>
+<p>The resampling of points here corresponds to he resampling of an image in <a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleData" title="ClearMap.Alignment.Resampling.resampleData"><code class="xref py py-func docutils literal"><span class="pre">resampleData()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pointSource</strong> (<em>str or array</em>) &#8211;
+image to be resampled</li>
+<li><strong>pointSink</strong> (<em>str or None</em>) &#8211;
+destination of resampled image</li>
+<li><strong>orientation</strong> (<em>tuple</em>) &#8211;
+orientation specified by permuation and change in sign of (1,2,3)</li>
+<li><strong>dataSizeSource</strong> (<em>str, tuple or None</em>) &#8211;
+size of the data source</li>
+<li><strong>dataSizeSink</strong> (<em>str, tuple or None</em>) &#8211;
+target size of the resampled image</li>
+<li><strong>resolutionSource</strong> (<em>tuple</em>) &#8211;
+resolution of the source image (in length per pixel)</li>
+<li><strong>resolutionSink</strong> (<em>tuple</em>) &#8211;
+resolution of the resampled image (in length per pixel)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(array or str)</em> &#8211;
+data or file name of resampled points</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>resolutions are assumed to be given for the axes of the intrinsic
+orientation of the data and reference as when viewed by matplotlib or ImageJ</li>
+<li>orientation: permuation of 1,2,3 with potential sign, indicating which
+axes map onto the reference axes, a negative sign indicates reversal
+of that particular axes</li>
+<li>only a minimal set of information to detremine the resampling parameter
+has to be given, e.g. dataSizeSource and dataSizeSink</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.resamplePointsInverse">
+<code class="descname">resamplePointsInverse</code><span class="sig-paren">(</span><em>pointSource</em>, <em>pointSink=None</em>, <em>dataSizeSource=None</em>, <em>dataSizeSink=None</em>, <em>orientation=None</em>, <em>resolutionSource=(4.0625</em>, <em>4.0625</em>, <em>3)</em>, <em>resolutionSink=(25</em>, <em>25</em>, <em>25)</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#resamplePointsInverse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.resamplePointsInverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resample points from the coordinates of the resampled image to the original data</p>
+<p>The resampling of points here corresponds to he resampling of an image in <a class="reference internal" href="#ClearMap.Alignment.Resampling.resampleDataInverse" title="ClearMap.Alignment.Resampling.resampleDataInverse"><code class="xref py py-func docutils literal"><span class="pre">resampleDataInverse()</span></code></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pointSource</strong> (<em>str or array</em>) &#8211;
+image to be resampled</li>
+<li><strong>pointSink</strong> (<em>str or None</em>) &#8211;
+destination of resampled image</li>
+<li><strong>orientation</strong> (<em>tuple</em>) &#8211;
+orientation specified by permuation and change in sign of (1,2,3)</li>
+<li><strong>dataSizeSource</strong> (<em>str, tuple or None</em>) &#8211;
+size of the data source</li>
+<li><strong>dataSizeSink</strong> (<em>str, tuple or None</em>) &#8211;
+target size of the resampled image</li>
+<li><strong>resolutionSource</strong> (<em>tuple</em>) &#8211;
+resolution of the source image (in length per pixel)</li>
+<li><strong>resolutionSink</strong> (<em>tuple</em>) &#8211;
+resolution of the resampled image (in length per pixel)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(array or str)</em> &#8211;
+data or file name of inversely resampled points</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>resolutions are assumed to be given for the axes of the intrinsic
+orientation of the data and reference as when viewed by matplotlib or ImageJ</li>
+<li>orientation: permuation of 1,2,3 with potential sign, indicating which
+axes map onto the reference axes, a negative sign indicates reversal
+of that particular axes</li>
+<li>only a minimal set of information to detremine the resampling parameter
+has to be given, e.g. dataSizeSource and dataSizeSink</li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Alignment.Resampling.sagittalToCoronalData">
+<code class="descname">sagittalToCoronalData</code><span class="sig-paren">(</span><em>source</em>, <em>sink=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Alignment/Resampling.html#sagittalToCoronalData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Alignment.Resampling.sagittalToCoronalData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change from saggital to coronal orientation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str or array</em>) &#8211;
+source data to be reoriented</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination for reoriented image</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str or array</em> &#8211;
+reoriented data</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.html" title="ClearMap.ImageProcessing package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.IO.html" title="ClearMap.IO package"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

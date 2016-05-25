@@ -1,0 +1,395 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Utils package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap package" href="ClearMap.html" />
+    <link rel="prev" title="ClearMap.Settings module" href="ClearMap.Settings.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Settings.html" title="ClearMap.Settings module"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" accesskey="U">ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.Settings.html"
+                        title="previous chapter">ClearMap.Settings module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.Utils.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ClearMap.Utils">
+<span id="clearmap-utils-package"></span><h1>ClearMap.Utils package<a class="headerlink" href="#module-ClearMap.Utils" title="Permalink to this headline">¶</a></h1>
+<p>This sub-package provides utility functions used throughout the package</p>
+<div class="section" id="module-ClearMap.Utils.ParameterTools">
+<span id="clearmap-utils-parametertools-module"></span><h2>ClearMap.Utils.ParameterTools module<a class="headerlink" href="#module-ClearMap.Utils.ParameterTools" title="Permalink to this headline">¶</a></h2>
+<p>ParameterTools</p>
+<p>Provides simple formatting tools to handle / print parameter dictionaries
+organized as key:value pairs.</p>
+<dl class="function">
+<dt id="ClearMap.Utils.ParameterTools.getParameter">
+<code class="descname">getParameter</code><span class="sig-paren">(</span><em>parameter</em>, <em>key</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/ParameterTools.html#getParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.ParameterTools.getParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a parameter from a dict, returns default value if not defined</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parameter</strong> (<em>dict</em>) &#8211;
+parameter dictionary</li>
+<li><strong>key</strong> (<em>object</em>) &#8211;
+key</li>
+<li><strong>default</strong> (<em>object</em>) &#8211;
+deault return value if parameter not defined</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>object</em> &#8211;
+parameter value for key</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Utils.ParameterTools.writeParameter">
+<code class="descname">writeParameter</code><span class="sig-paren">(</span><em>head=None</em>, <em>out=None</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/ParameterTools.html#writeParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.ParameterTools.writeParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes parameter settings in a formatted way</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>head</strong> (<em>str or None</em>) &#8211;
+prefix of each line</li>
+<li><strong>out</strong> (<em>object or None</em>) &#8211;
+write to a specific output, if None return string</li>
+<li><strong>**args</strong> &#8211;
+the parameter values as key=value arguments</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str or None</em> &#8211;
+a formated string with parameter info</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Utils.ParameterTools.joinParameter">
+<code class="descname">joinParameter</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/ParameterTools.html#joinParameter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.ParameterTools.joinParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Joins dictionaries in a consitent way</p>
+<p>For multiple occurences of a key the  value is defined by the first key : value pair.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>*args</strong> &#8211;
+list of parameter dictonaries</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>dict</em> &#8211;
+the joined dictionary</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.Utils.ProcessWriter">
+<span id="clearmap-utils-processwriter-module"></span><h2>ClearMap.Utils.ProcessWriter module<a class="headerlink" href="#module-ClearMap.Utils.ProcessWriter" title="Permalink to this headline">¶</a></h2>
+<p>Provides simple formatting tools to print text with parallel process header</p>
+<dl class="class">
+<dt id="ClearMap.Utils.ProcessWriter.ProcessWriter">
+<em class="property">class </em><code class="descname">ProcessWriter</code><span class="sig-paren">(</span><em>process=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/ProcessWriter.html#ProcessWriter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.ProcessWriter.ProcessWriter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to handle writing from parallel processes</p>
+<dl class="attribute">
+<dt id="ClearMap.Utils.ProcessWriter.ProcessWriter.process">
+<code class="descname">process</code><a class="headerlink" href="#ClearMap.Utils.ProcessWriter.ProcessWriter.process" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em></p>
+<p>the process number</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.ProcessWriter.ProcessWriter.writeString">
+<code class="descname">writeString</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/ProcessWriter.html#ProcessWriter.writeString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.ProcessWriter.ProcessWriter.writeString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate string with process prefix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211;
+the text input</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+text with [process prefix</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.ProcessWriter.ProcessWriter.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/ProcessWriter.html#ProcessWriter.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.ProcessWriter.ProcessWriter.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write string with process prefix to sys.stdout</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<em>str</em>) &#8211;
+the text input</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.Utils.Timer">
+<span id="clearmap-utils-timer-module"></span><h2>ClearMap.Utils.Timer module<a class="headerlink" href="#module-ClearMap.Utils.Timer" title="Permalink to this headline">¶</a></h2>
+<p>Provides tools for timing</p>
+<dl class="class">
+<dt id="ClearMap.Utils.Timer.Timer">
+<em class="property">class </em><code class="descname">Timer</code><span class="sig-paren">(</span><em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/Timer.html#Timer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.Timer.Timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class to stop time and print results in formatted way</p>
+<dl class="attribute">
+<dt id="ClearMap.Utils.Timer.Timer.time">
+<code class="descname">time</code><a class="headerlink" href="#ClearMap.Utils.Timer.Timer.time" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em></p>
+<p>the time since the timer was started</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.Timer.Timer.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/Timer.html#Timer.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.Timer.Timer.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the timer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.Timer.Timer.reset">
+<code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/Timer.html#Timer.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.Timer.Timer.reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset the timer</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.Timer.Timer.elapsedTime">
+<code class="descname">elapsedTime</code><span class="sig-paren">(</span><em>head=None</em>, <em>asstring=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/Timer.html#Timer.elapsedTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.Timer.Timer.elapsedTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate elapsed time and return as formated string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>head</strong> (<em>str or None</em>) &#8211;
+prefix to the string</li>
+<li><strong>asstring</strong> (<em>bool</em>) &#8211;
+return as string or float</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str or float</em> &#8211;
+elapsed time</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.Timer.Timer.printElapsedTime">
+<code class="descname">printElapsedTime</code><span class="sig-paren">(</span><em>head=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/Timer.html#Timer.printElapsedTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.Timer.Timer.printElapsedTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print elapsed time as formated string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>head</strong> (<em>str or None</em>) &#8211;
+prefix to the string</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Utils.Timer.Timer.formatElapsedTime">
+<code class="descname">formatElapsedTime</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Utils/Timer.html#Timer.formatElapsedTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Utils.Timer.Timer.formatElapsedTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Format time to string</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>t</strong> (<em>float</em>) &#8211;
+time in seconds prefix</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>str</em> &#8211;
+time as hours:minutes:seconds</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Settings.html" title="ClearMap.Settings module"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.2.
+    </div>
+  </body>
+</html>

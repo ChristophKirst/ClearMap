@@ -1,0 +1,2041 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap package" href="ClearMap.html" />
+    <link rel="next" title="ClearMap.ImageProcessing.Filter package" href="ClearMap.ImageProcessing.Filter.html" />
+    <link rel="prev" title="ClearMap.Alignment package" href="ClearMap.Alignment.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.Filter.html" title="ClearMap.ImageProcessing.Filter package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Alignment.html" title="ClearMap.Alignment package"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" accesskey="U">ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.Alignment.html"
+                        title="previous chapter">ClearMap.Alignment package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.ImageProcessing.Filter.html"
+                        title="next chapter">ClearMap.ImageProcessing.Filter package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.ImageProcessing.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ClearMap.ImageProcessing">
+<span id="clearmap-imageprocessing-package"></span><h1>ClearMap.ImageProcessing package<a class="headerlink" href="#module-ClearMap.ImageProcessing" title="Permalink to this headline">¶</a></h1>
+<p>This sub-package provides routines for volumetric image processing in parallel</p>
+<p>This part of the <em>ClearMap</em> toolbox is designed in a modular way to allow for
+fast and flexible extension and addition of specific image processing
+algorithms.</p>
+<dl class="docutils">
+<dt>The toolbox part consists of two parts:</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#volumetric-image-processing">Volumetric Image Processing</a></li>
+<li><a class="reference internal" href="#parallel-image-processing">Parallel Image Processing</a></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="volumetric-image-processing">
+<h2>Volumetric Image Processing<a class="headerlink" href="#volumetric-image-processing" title="Permalink to this headline">¶</a></h2>
+<p>The image processing routines provided in the standard package are listed below</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="43%" />
+<col width="57%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Module</th>
+<th class="head">Descrition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.BackgroundRemoval" title="ClearMap.ImageProcessing.BackgroundRemoval"><code class="xref py py-mod docutils literal"><span class="pre">BackgroundRemoval</span></code></a></td>
+<td>Background estimation and removal via morphological opening</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.IlluminationCorrection" title="ClearMap.ImageProcessing.IlluminationCorrection"><code class="xref py py-mod docutils literal"><span class="pre">IlluminationCorrection</span></code></a></td>
+<td>Correction of vignetting and other illumination errors</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.GreyReconstruction" title="ClearMap.ImageProcessing.GreyReconstruction"><code class="xref py py-mod docutils literal"><span class="pre">GreyReconstruction</span></code></a></td>
+<td>Reconstruction of images</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter" title="ClearMap.ImageProcessing.Filter"><code class="xref py py-mod docutils literal"><span class="pre">Filter</span></code></a></td>
+<td>Filtering of images via a large set of filter kernels</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.MaximaDetection" title="ClearMap.ImageProcessing.MaximaDetection"><code class="xref py py-mod docutils literal"><span class="pre">MaximaDetection</span></code></a></td>
+<td>Detection of maxima and h-max transforms</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.SpotDetection" title="ClearMap.ImageProcessing.SpotDetection"><code class="xref py py-mod docutils literal"><span class="pre">SpotDetection</span></code></a></td>
+<td>Detection of local peaks / spots / nuclei</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.CellDetection" title="ClearMap.ImageProcessing.CellDetection"><code class="xref py py-mod docutils literal"><span class="pre">CellDetection</span></code></a></td>
+<td>Detection of cells</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.CellSizeDetection" title="ClearMap.ImageProcessing.CellSizeDetection"><code class="xref py py-mod docutils literal"><span class="pre">CellSizeDetection</span></code></a></td>
+<td>Detection of cell shapes and volumes via e.g. watershed</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.ImageProcessing.IlastikClassification" title="ClearMap.ImageProcessing.IlastikClassification"><code class="xref py py-mod docutils literal"><span class="pre">IlastikClassification</span></code></a></td>
+<td>Classification of voxels via interface to <a class="reference external" href="http://ilastik.org/">Ilastik</a></td>
+</tr>
+</tbody>
+</table>
+<p>While some of these modules provide basic volumetric image processing
+functionality some routines combine those functions to provide predefined
+higher level cell detection, cell size and intensity measurements.</p>
+<p>The higher level routines are optimized for iDISCO+ cleared mouse brain samples
+stained for c-Fos expression. Other data sets might require a redesign of these
+higher level functions.</p>
+</div>
+<div class="section" id="parallel-image-processing">
+<h2>Parallel Image Processing<a class="headerlink" href="#parallel-image-processing" title="Permalink to this headline">¶</a></h2>
+<p>For large volumetric image data sets from e.g. light sheet microscopy
+parallel processing is essential to speed up calculations.</p>
+<p>In this toolbox the image processing is parallelized via splitting a volumetric
+image stack into several sub-stacks, typically in z-direction. Because most of
+the image processing steps are non-local sub-stacks are created with overlaps
+and the results rejoined accordingly to minimize boundary effects.</p>
+<p>Parallel processing is handled via the
+<a class="reference internal" href="#module-ClearMap.ImageProcessing.StackProcessing" title="ClearMap.ImageProcessing.StackProcessing"><code class="xref py py-mod docutils literal"><span class="pre">StackProcessing</span></code></a> module.</p>
+</div>
+<div class="section" id="external-packages">
+<h2>External Packages<a class="headerlink" href="#external-packages" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="#module-ClearMap.ImageProcessing" title="ClearMap.ImageProcessing"><code class="xref py py-mod docutils literal"><span class="pre">ImageProcessing</span></code></a> module makes use of external image
+processing packages including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://opencv.org/">Open Cv2</a></li>
+<li><a class="reference external" href="http://www.scipy.org/">Scipy</a></li>
+<li><a class="reference external" href="http://scikit-image.org/docs/dev/api/skimage.html">Scikit-Image</a></li>
+<li><a class="reference external" href="http://ilastik.org/">Ilastik</a></li>
+</ul>
+</div></blockquote>
+<p>Routines form these packages were freely chosen to optimize for speed and
+memory consumption</p>
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.StackProcessing">
+<span id="clearmap-imageprocessing-stackprocessing-module"></span><h2>ClearMap.ImageProcessing.StackProcessing module<a class="headerlink" href="#module-ClearMap.ImageProcessing.StackProcessing" title="Permalink to this headline">¶</a></h2>
+<p>Process a image stack in parallel or sequentially</p>
+<p>In this toolbox image processing is parallized via splitting a volumetric
+image stack into several sub-stacks, typically in z-direction. As most of
+the image processig steps are non-local sub-stacks are created with overlaps
+and the results rejoined accordingly to minimize boundary effects.</p>
+<p>Parallel processing is handled via this module.</p>
+<div class="section" id="sub-stacks">
+<span id="substack"></span><h3>Sub-Stacks<a class="headerlink" href="#sub-stacks" title="Permalink to this headline">¶</a></h3>
+<p>The parallel processing module creates a dictionary with information on
+the sub-stack as follows:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="34%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Key</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">stackId</span></code></td>
+<td>id of the sub-stack</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">nStacks</span></code></td>
+<td>total number of sub-stacks</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">source</span></code></td>
+<td>source file/folder/pattern of the stack</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">x</span></code>, <code class="docutils literal"><span class="pre">y</span></code>, <code class="docutils literal"><span class="pre">z</span></code></td>
+<td>the range of the sub-stack with in the full image</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">zCenters</span></code></td>
+<td>tuple of the centers of the overlaps</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">zCenterIndices</span></code></td>
+<td>tuple of the original indices of the centers of
+the overlaps</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">zSubStackCenterIndices</span></code></td>
+<td>tuple of the indices of the sub-stack that
+correspond to the overlap centers</td>
+</tr>
+</tbody>
+</table>
+<p>For exmaple the <a class="reference internal" href="#ClearMap.ImageProcessing.StackProcessing.writeSubStack" title="ClearMap.ImageProcessing.StackProcessing.writeSubStack"><code class="xref py py-func docutils literal"><span class="pre">writeSubStack()</span></code></a> routine makes uses of this information
+to write out only the sub-parts of the image that is will contribute to the
+final total image.</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.printSubStackInfo">
+<code class="descname">printSubStackInfo</code><span class="sig-paren">(</span><em>subStack</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#printSubStackInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.printSubStackInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print information about the sub-stack</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>subStack</strong> (<em>dict</em>) &#8211;
+the sub-stack info</li>
+<li><strong>out</strong> (<em>object</em>) &#8211;
+the object to write the information to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.writeSubStack">
+<code class="descname">writeSubStack</code><span class="sig-paren">(</span><em>filename</em>, <em>img</em>, <em>subStack=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#writeSubStack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.writeSubStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the non-redundant part of a sub-stack to disk</p>
+<p>The routine is used to write out images when porcessed in parallel.
+It assumes that the filename is a patterned file name.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>filename</strong> (<em>str or None</em>) &#8211;
+file name pattern as described in
+<code class="xref py py-mod docutils literal"><span class="pre">FileList</span></code>, if None return as array</li>
+<li><strong>img</strong> (<em>array</em>) &#8211;
+image data of sub-stack</li>
+<li><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information, if None write entire image
+see <a class="reference internal" href="#substack"><span>Sub-Stacks</span></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str or array</em> &#8211;
+the file name pattern or image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.joinPoints">
+<code class="descname">joinPoints</code><span class="sig-paren">(</span><em>results</em>, <em>subStacks=None</em>, <em>shiftPoints=True</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#joinPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.joinPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Joins a list of points obtained from processing a stack in chunks</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>results</strong> (<em>list</em>) &#8211;
+list of point results from the individual sub-processes</li>
+<li><strong>subStacks</strong> (<em>list or None</em>) &#8211;
+list of all sub-stack information, see <a class="reference internal" href="#substack"><span>Sub-Stacks</span></a></li>
+<li><strong>shiftPoints</strong> (<em>bool</em>) &#8211;
+if True shift points to refer to origin of the image stack considered
+when range specification is given. If False, absolute
+position in entire image stack.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+joined points, joined intensities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.calculateChunkSize">
+<code class="descname">calculateChunkSize</code><span class="sig-paren">(</span><em>size</em>, <em>processes=2</em>, <em>chunkSizeMax=100</em>, <em>chunkSizeMin=30</em>, <em>chunkOverlap=15</em>, <em>chunkOptimization=True</em>, <em>chunkOptimizationSize=&lt;built-in function all&gt;</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#calculateChunkSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.calculateChunkSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the chunksize and other info for parallel processing</p>
+<p>The sub stack information is described in <a class="reference internal" href="#substack"><span>Sub-Stacks</span></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>processes</strong> (<em>int</em>) &#8211;
+number of parallel processes</li>
+<li><strong>chunkSizeMax</strong> (<em>int</em>) &#8211;
+maximal size of a sub-stack</li>
+<li><strong>chunkSizeMin</strong> (<em>int</em>) &#8211;
+minial size of a sub-stack</li>
+<li><strong>chunkOverlap</strong> (<em>int</em>) &#8211;
+minimal sub-stack overlap</li>
+<li><strong>chunkOptimization</strong> (<em>bool</em>) &#8211;
+optimize chunck sizes to best fit number of processes</li>
+<li><strong>chunkOptimizationSize</strong> (<em>bool or all</em>) &#8211;
+if True only decrease the chunk size when optimizing</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print information on sub-stack generation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+number of chunks, z-ranges of each chunk, z-centers in overlap regions</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.calculateSubStacks">
+<code class="descname">calculateSubStacks</code><span class="sig-paren">(</span><em>source</em>, <em>z=&lt;built-in function all&gt;</em>, <em>x=&lt;built-in function all&gt;</em>, <em>y=&lt;built-in function all&gt;</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#calculateSubStacks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.calculateSubStacks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the chunksize and other info for parallel processing and returns a list of sub-stack objects</p>
+<p>The sub-stack information is described in <a class="reference internal" href="#substack"><span>Sub-Stacks</span></a></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211;
+image source</li>
+<li><strong>x,y,z</strong> (<em>tuple or all</em>) &#8211;
+range specifications</li>
+<li><strong>processes</strong> (<em>int</em>) &#8211;
+number of parallel processes</li>
+<li><strong>chunkSizeMax</strong> (<em>int</em>) &#8211;
+maximal size of a sub-stack</li>
+<li><strong>chunkSizeMin</strong> (<em>int</em>) &#8211;
+minial size of a sub-stack</li>
+<li><strong>chunkOverlap</strong> (<em>int</em>) &#8211;
+minimal sub-stack overlap</li>
+<li><strong>chunkOptimization</strong> (<em>bool</em>) &#8211;
+optimize chunck sizes to best fit number of processes</li>
+<li><strong>chunkOptimizationSize</strong> (<em>bool or all</em>) &#8211;
+if True only decrease the chunk size when optimizing</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print information on sub-stack generation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list</em> &#8211;
+list of sub-stack objects</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.noProcessing">
+<code class="descname">noProcessing</code><span class="sig-paren">(</span><em>img</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#noProcessing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.noProcessing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform no image processing at all and return original image</p>
+<p>Used as the default functon in <a class="reference internal" href="#ClearMap.ImageProcessing.StackProcessing.parallelProcessStack" title="ClearMap.ImageProcessing.StackProcessing.parallelProcessStack"><code class="xref py py-func docutils literal"><span class="pre">parallelProcessStack()</span></code></a> and
+<a class="reference internal" href="#ClearMap.ImageProcessing.StackProcessing.sequentiallyProcessStack" title="ClearMap.ImageProcessing.StackProcessing.sequentiallyProcessStack"><code class="xref py py-func docutils literal"><span class="pre">sequentiallyProcessStack()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>img</strong> (<em>array</em>) &#8211;
+imag</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>(array)</em> &#8211;
+the original image</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.parallelProcessStack">
+<code class="descname">parallelProcessStack</code><span class="sig-paren">(</span><em>source</em>, <em>x=&lt;built-in function all&gt;</em>, <em>y=&lt;built-in function all&gt;</em>, <em>z=&lt;built-in function all&gt;</em>, <em>sink=None</em>, <em>processes=2</em>, <em>chunkSizeMax=100</em>, <em>chunkSizeMin=30</em>, <em>chunkOverlap=15</em>, <em>chunkOptimization=True</em>, <em>chunkOptimizationSize=&lt;built-in function all&gt;</em>, <em>function=&lt;function noProcessing&gt;</em>, <em>join=&lt;function joinPoints&gt;</em>, <em>verbose=False</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#parallelProcessStack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.parallelProcessStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parallel process a image stack</p>
+<p>Main routine that distributes image processing on paralllel processes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211;
+image source</li>
+<li><strong>x,y,z</strong> (<em>tuple or all</em>) &#8211;
+range specifications</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination for the result</li>
+<li><strong>processes</strong> (<em>int</em>) &#8211;
+number of parallel processes</li>
+<li><strong>chunkSizeMax</strong> (<em>int</em>) &#8211;
+maximal size of a sub-stack</li>
+<li><strong>chunkSizeMin</strong> (<em>int</em>) &#8211;
+minial size of a sub-stack</li>
+<li><strong>chunkOverlap</strong> (<em>int</em>) &#8211;
+minimal sub-stack overlap</li>
+<li><strong>chunkOptimization</strong> (<em>bool</em>) &#8211;
+optimize chunck sizes to best fit number of processes</li>
+<li><strong>chunkOptimizationSize</strong> (<em>bool or all</em>) &#8211;
+if True only decrease the chunk size when optimizing</li>
+<li><strong>function</strong> (<em>function</em>) &#8211;
+the main image processing script</li>
+<li><strong>join</strong> (<em>function</em>) &#8211;
+the fuction to join the results from the image processing script</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print information on sub-stack generation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str or array</em> &#8211;
+results of the image processing</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.StackProcessing.sequentiallyProcessStack">
+<code class="descname">sequentiallyProcessStack</code><span class="sig-paren">(</span><em>source</em>, <em>x=&lt;built-in function all&gt;</em>, <em>y=&lt;built-in function all&gt;</em>, <em>z=&lt;built-in function all&gt;</em>, <em>sink=None</em>, <em>chunkSizeMax=100</em>, <em>chunkSizeMin=30</em>, <em>chunkOverlap=15</em>, <em>function=&lt;function noProcessing&gt;</em>, <em>join=&lt;function joinPoints&gt;</em>, <em>verbose=False</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/StackProcessing.html#sequentiallyProcessStack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.StackProcessing.sequentiallyProcessStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sequential image processing on a stack</p>
+<p>Main routine that sequentially processes a large image on sub-stacks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>source</strong> (<em>str</em>) &#8211;
+image source</li>
+<li><strong>x,y,z</strong> (<em>tuple or all</em>) &#8211;
+range specifications</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination for the result</li>
+<li><strong>processes</strong> (<em>int</em>) &#8211;
+number of parallel processes</li>
+<li><strong>chunkSizeMax</strong> (<em>int</em>) &#8211;
+maximal size of a sub-stack</li>
+<li><strong>chunkSizeMin</strong> (<em>int</em>) &#8211;
+minial size of a sub-stack</li>
+<li><strong>chunkOverlap</strong> (<em>int</em>) &#8211;
+minimal sub-stack overlap</li>
+<li><strong>chunkOptimization</strong> (<em>bool</em>) &#8211;
+optimize chunck sizes to best fit number of processes</li>
+<li><strong>chunkOptimizationSize</strong> (<em>bool or all</em>) &#8211;
+if True only decrease the chunk size when optimizing</li>
+<li><strong>function</strong> (<em>function</em>) &#8211;
+the main image processing script</li>
+<li><strong>join</strong> (<em>function</em>) &#8211;
+the fuction to join the results from the image processing script</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print information on sub-stack generation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>str or array</em> &#8211;
+results of the image processing</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.CellDetection">
+<span id="clearmap-imageprocessing-celldetection-module"></span><h2>ClearMap.ImageProcessing.CellDetection module<a class="headerlink" href="#module-ClearMap.ImageProcessing.CellDetection" title="Permalink to this headline">¶</a></h2>
+<p>Cell Detection Module</p>
+<p>This is the main routine to run the individual routines to detect cells om
+volumetric image data.</p>
+<p>ClearMap supports two predefined image processing pipelines which will extend
+in the future:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="44%" />
+<col width="45%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Description</th>
+<th class="head">Reference</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;SpotDetection&#8221;</td>
+<td>uses predefined spot detection pipline</td>
+<td><a class="reference internal" href="#ClearMap.ImageProcessing.CellDetection.detectCells" title="ClearMap.ImageProcessing.CellDetection.detectCells"><code class="xref py py-func docutils literal"><span class="pre">detectCells()</span></code></a></td>
+</tr>
+<tr class="row-odd"><td>&#8220;Ilastik&#8221;</td>
+<td>uses predefined pipline with cell classification via Ilastik</td>
+<td><code class="xref py py-func docutils literal"><span class="pre">classifyCells()</span></code></td>
+</tr>
+<tr class="row-even"><td>function</td>
+<td>a user defined function</td>
+<td>NA</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ClearMap.Settings</span> <span class="kn">as</span> <span class="nn">settings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.CellDetection</span> <span class="kn">import</span> <span class="n">detectCells</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">ClearMapPath</span><span class="p">,</span> <span class="s">&#39;Test/Data/Synthetic/test_iDISCO_\d{3}.tif&#39;</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parameter</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;filterDoGParameter&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s">&quot;size&quot;</span><span class="p">:</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">)},</span> <span class="s">&quot;findExtendedMaximaParameter&quot;</span> <span class="p">:</span> <span class="p">{</span><span class="s">&quot;threshold&quot;</span> <span class="p">:</span> <span class="mi">5</span><span class="p">}};</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int16&#39;</span><span class="p">);</span> <span class="c"># converting data to smaller integer types can be more memory efficient!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">detectCells</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">parameter</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#module-ClearMap.ImageProcessing" title="ClearMap.ImageProcessing"><code class="xref py py-mod docutils literal"><span class="pre">ImageProcessing</span></code></a></p>
+</div>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.CellDetection.detectCells">
+<code class="descname">detectCells</code><span class="sig-paren">(</span><em>source</em>, <em>sink=None</em>, <em>method='SpotDetection'</em>, <em>processMethod=&lt;built-in function all&gt;</em>, <em>verbose=False</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/CellDetection.html#detectCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.CellDetection.detectCells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect cells in data</p>
+<p>This is a main script to start running the cell detection.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last">
+<li><p class="first"><strong>source</strong> (<em>str or array</em>) &#8211;
+Image source</p>
+</li>
+<li><p class="first"><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination for the results</p>
+</li>
+<li><p class="first"><strong>method</strong> (<em>str or function</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="79%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>&#8220;SpotDetection&#8221;</td>
+<td>uses predefined spot detection pipline</td>
+</tr>
+<tr class="row-odd"><td>&#8220;Ilastik&#8221;</td>
+<td>uses predefined pipline with cell classification via Ilastik</td>
+</tr>
+<tr class="row-even"><td>function</td>
+<td>a user defined function</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>processMethod</strong> (<em>str or all</em>) &#8211;
+&#8216;sequential&#8217; or &#8216;parallel&#8217;. if all its choosen
+automatically</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print info</p>
+</li>
+<li><p class="first"><strong>**parameter</strong> (<em>dict</em>) &#8211;
+parameter for the image procesing sub-routines</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Returns:</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.CellSizeDetection">
+<span id="clearmap-imageprocessing-cellsizedetection-module"></span><h2>ClearMap.ImageProcessing.CellSizeDetection module<a class="headerlink" href="#module-ClearMap.ImageProcessing.CellSizeDetection" title="Permalink to this headline">¶</a></h2>
+<p>Cell shape and size detection routines</p>
+<p>The cell shape detection is based on a seeded and masked watershed.</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.CellSizeDetection.detectCellShape">
+<code class="descname">detectCellShape</code><span class="sig-paren">(</span><em>img</em>, <em>peaks</em>, <em>detectCellShapeParameter=None</em>, <em>threshold=None</em>, <em>save=None</em>, <em>verbose=False</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/CellSizeDetection.html#detectCellShape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.CellSizeDetection.detectCellShape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find cell shapes as labeled image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>peaks</strong> (<em>array</em>) &#8211;
+point data of cell centers / seeds</p>
+</li>
+<li><p class="first"><strong>detectCellShape</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="21%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>threshold</em></td>
+<td>(float or None)</td>
+<td>threshold to determine mask, pixel below this are background
+if None no mask is generated</td>
+</tr>
+<tr class="row-odd"><td><em>save</em></td>
+<td>(tuple)</td>
+<td>size of the box on which to perform the <em>method</em></td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+labeled image where each label indicates a cell</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.CellSizeDetection.findCellSize">
+<code class="descname">findCellSize</code><span class="sig-paren">(</span><em>imglabel</em>, <em>findCelSizeParameter=None</em>, <em>maxLabel=None</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/CellSizeDetection.html#findCellSize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.CellSizeDetection.findCellSize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find cell size given cell shapes as labled image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>imglabel</strong> (<em>array or str</em>) &#8211;
+labeled image, where each cell has its own label</p>
+</li>
+<li><p class="first"><strong>findCelSizeParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="21%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>maxLabel</em></td>
+<td>(int or None)</td>
+<td>maximal label to include, if None determine automatically</td>
+</tr>
+<tr class="row-odd"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+measured intensities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity">
+<code class="descname">findCellIntensity</code><span class="sig-paren">(</span><em>img</em>, <em>imglabel</em>, <em>findCellIntensityParameter=None</em>, <em>maxLabel=None</em>, <em>method='Sum'</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/CellSizeDetection.html#findCellIntensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find integrated cell intensity given cell shapes as labled image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array or str</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>imglabel</strong> (<em>array or str</em>) &#8211;
+labeled image, where each cell has its own label</p>
+</li>
+<li><p class="first"><strong>findCellIntensityParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="21%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>maxLabel</em></td>
+<td>(int or None)</td>
+<td>maximal label to include, if None determine automatically</td>
+</tr>
+<tr class="row-odd"><td><em>method</em></td>
+<td>(str)</td>
+<td>method to use for measurment: &#8216;Sum&#8217;, &#8216;Mean&#8217;, &#8216;Max&#8217;, &#8216;Min&#8217;</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+measured intensities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html">ClearMap.ImageProcessing.Filter package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.LinearFilter">ClearMap.ImageProcessing.Filter.LinearFilter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.DoGFilter">ClearMap.ImageProcessing.Filter.DoGFilter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.Convolution">ClearMap.ImageProcessing.Filter.Convolution module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.FilterKernel">ClearMap.ImageProcessing.Filter.FilterKernel module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#filter-type">Filter Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.StructureElement">ClearMap.ImageProcessing.Filter.StructureElement module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#structure-element-types">Structure Element Types</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.IlluminationCorrection">
+<span id="clearmap-imageprocessing-illuminationcorrection-module"></span><h2>ClearMap.ImageProcessing.IlluminationCorrection module<a class="headerlink" href="#module-ClearMap.ImageProcessing.IlluminationCorrection" title="Permalink to this headline">¶</a></h2>
+<p>Illumination correction toolbox.</p>
+<p>The module provides a function to correct illumination/vignetting systematic
+variations in intensity.</p>
+<p>The intensity image <img src="../_images/mathmpl/math-2acb17d5f4.png" style="position: relative; bottom: -8px"/> given a flat field <img src="../_images/mathmpl/math-3f36e9e970.png" style="position: relative; bottom: -8px"/> and
+a background <img src="../_images/mathmpl/math-2f2e26a252.png" style="position: relative; bottom: -8px"/> the image is corrected to <img src="../_images/mathmpl/math-d72ba15f35.png" style="position: relative; bottom: -8px"/> as:</p>
+<p>The module also has functionality to create flat field corections from measured
+intensity changes in a single direction, useful e.g. for lightsheet images,
+see e.g. <a class="reference internal" href="#ClearMap.ImageProcessing.IlluminationCorrection.flatfieldLineFromRegression" title="ClearMap.ImageProcessing.IlluminationCorrection.flatfieldLineFromRegression"><code class="xref py py-func docutils literal"><span class="pre">flatfieldLineFromRegression()</span></code></a>.</p>
+<p class="rubric">References</p>
+<p>Fundamentals of Light Microscopy and Electronic Imaging, p. 421</p>
+<dl class="data">
+<dt id="ClearMap.ImageProcessing.IlluminationCorrection.DefaultFlatFieldLineFile">
+<code class="descname">DefaultFlatFieldLineFile</code><em class="property"> = '/home/mtllab/Programs/ClearMap/idisco/ClearMap/Data/lightsheet_flatfield_correction.csv'</em><a class="headerlink" href="#ClearMap.ImageProcessing.IlluminationCorrection.DefaultFlatFieldLineFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Default file of points along the illumination changing line for the flat field correction</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination" title="ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination"><code class="xref py py-func docutils literal"><span class="pre">correctIllumination()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination">
+<code class="descname">correctIllumination</code><span class="sig-paren">(</span><em>img</em>, <em>correctIlluminationParameter=None</em>, <em>flatfield=None</em>, <em>background=None</em>, <em>scaling=None</em>, <em>save=None</em>, <em>verbose=False</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlluminationCorrection.html#correctIllumination"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination" title="Permalink to this definition">¶</a></dt>
+<dd><p>Correct illumination variations</p>
+<blockquote>
+<div><p>The intensity image <img src="../_images/mathmpl/math-2acb17d5f4.png" style="position: relative; bottom: -8px"/> given a flat field <img src="../_images/mathmpl/math-3f36e9e970.png" style="position: relative; bottom: -8px"/> and
+a background <img src="../_images/mathmpl/math-2f2e26a252.png" style="position: relative; bottom: -8px"/> the image is corrected to <img src="../_images/mathmpl/math-d72ba15f35.png" style="position: relative; bottom: -8px"/> as:</p>
+<p>If the background is not given <img src="../_images/mathmpl/math-9c1c3ea0f2.png" style="position: relative; bottom: -8px"/>.</p>
+<p>The correction is done slice by slice assuming the data was collected with
+a light sheet microscope.</p>
+<p>The image is finally optionally scaled.</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>findCenterOfMaximaParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="22%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>flatfield</em></td>
+<td>(str, None or array)</td>
+<td>flat field intensities, if None d onot correct image for
+illumination, if True the</td>
+</tr>
+<tr class="row-odd"><td><em>background</em></td>
+<td>(str, None or array)</td>
+<td>background image as file name or array
+if None background is assumed to be zero</td>
+</tr>
+<tr class="row-even"><td><em>scaling</em></td>
+<td>(str or None)</td>
+<td>scale the corrected result by this factor
+if &#8216;max&#8217;/&#8217;mean&#8217; scale to keep max/mean invariant</td>
+</tr>
+<tr class="row-odd"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>save the corrected image to file</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+illumination corrected image</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<p>Fundamentals of Light Microscopy and Electronic Imaging, p 421</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#ClearMap.ImageProcessing.IlluminationCorrection.DefaultFlatFieldLineFile" title="ClearMap.ImageProcessing.IlluminationCorrection.DefaultFlatFieldLineFile"><code class="xref py py-const docutils literal"><span class="pre">DefaultFlatFieldLineFile</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlluminationCorrection.flatfieldFromLine">
+<code class="descname">flatfieldFromLine</code><span class="sig-paren">(</span><em>line</em>, <em>xsize</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlluminationCorrection.html#flatfieldFromLine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlluminationCorrection.flatfieldFromLine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a 2d flat field image from a 1d line of estimated intensities</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lines</strong> (<em>array</em>) &#8211;
+array of intensities along y axis</li>
+<li><strong>xsize</strong> (<em>int</em>) &#8211;
+size of image in x dimension</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+full 2d flat field</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlluminationCorrection.flatfieldLineFromRegression">
+<code class="descname">flatfieldLineFromRegression</code><span class="sig-paren">(</span><em>data</em>, <em>sink=None</em>, <em>method='polynomial'</em>, <em>reverse=None</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlluminationCorrection.html#flatfieldLineFromRegression"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlluminationCorrection.flatfieldLineFromRegression" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create flat field line fit from a list of positions and intensities</p>
+<p>The fit is either to be assumed to be a Gaussian:</p>
+<p>or follows a order 6 radial polynomial</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> (<em>array</em>) &#8211;
+intensity data as vector of intensities or (n,2) dim array of positions d=0 and intensities measurements d=1:-1</li>
+<li><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination to write the result of the fit</li>
+<li><strong>method</strong> (<em>str</em>) &#8211;
+method to fit intensity data, &#8216;Gaussian&#8217; or &#8216;Polynomial&#8217;</li>
+<li><strong>reverse</strong> (<em>bool</em>) &#8211;
+reverse the line fit after fitting</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print and plot information for the fit</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+fitted intensities on points</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.BackgroundRemoval">
+<span id="clearmap-imageprocessing-backgroundremoval-module"></span><h2>ClearMap.ImageProcessing.BackgroundRemoval module<a class="headerlink" href="#module-ClearMap.ImageProcessing.BackgroundRemoval" title="Permalink to this headline">¶</a></h2>
+<p>Functions to remove background in images</p>
+<p>The main routine subtracts a morphological opening from the original image
+for background removal.</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.BackgroundRemoval.removeBackground">
+<code class="descname">removeBackground</code><span class="sig-paren">(</span><em>img</em>, <em>removeBackgroundParameter=None</em>, <em>size=None</em>, <em>save=None</em>, <em>verbose=False</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/BackgroundRemoval.html#removeBackground"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.BackgroundRemoval.removeBackground" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove background via subtracting a morphological opening from the original image</p>
+<p>Background removal is done z-slice by z-slice.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>removeBackGroundParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="23%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>size</em></td>
+<td>(tuple or None)</td>
+<td>size for the structure element of the morphological opening
+if None, do not correct for any background</td>
+</tr>
+<tr class="row-odd"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>file name to save result of this operation
+if None dont save to file</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+background corrected image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.GreyReconstruction">
+<span id="clearmap-imageprocessing-greyreconstruction-module"></span><h2>ClearMap.ImageProcessing.GreyReconstruction module<a class="headerlink" href="#module-ClearMap.ImageProcessing.GreyReconstruction" title="Permalink to this headline">¶</a></h2>
+<p>Grey reconstruction module</p>
+<p>This morphological reconstruction routine was adapted from
+<a class="reference external" href="http://www.cellprofiler.org">CellProfiler</a>.</p>
+<p>Author</p>
+<blockquote>
+<div><p>Original author: Lee Kamentsky
+Copyright (c) 2003-2009 Massachusetts Institute of Technology
+Copyright (c) 2009-2011 Broad Institute</p>
+<p>Modified by Chirstoph Kirst to optimize integration
+into ClearMap, The Rockefeller University, New York City, 2015</p>
+</div></blockquote>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.GreyReconstruction.reconstruct">
+<code class="descname">reconstruct</code><span class="sig-paren">(</span><em>seed</em>, <em>mask</em>, <em>method='dilation'</em>, <em>selem=None</em>, <em>offset=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/GreyReconstruction.html#reconstruct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.GreyReconstruction.reconstruct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs a morphological reconstruction of an image.</p>
+<p>Reconstruction uses a seed image, which specifies the values
+to dilate and a mask image that gives the maximum allowed dilated value at
+each pixel.</p>
+<p>The algorithm is taken from <a class="footnote-reference" href="#id5" id="id2">[1]</a>. Applications for greyscale
+reconstruction are discussed in <a class="footnote-reference" href="#id6" id="id3">[2]</a> and <a class="footnote-reference" href="#id7" id="id4">[3]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seed</strong> (<em>array</em>) &#8211;
+seed image to be dilated or eroded.</li>
+<li><strong>mask</strong> (<em>array</em>) &#8211;
+maximum (dilation) / minimum (erosion) allowed</li>
+<li><strong>method</strong> (<em>str</em>) &#8211;
+{&#8216;dilation&#8217;|&#8217;erosion&#8217;}</li>
+<li><strong>selem</strong> (<em>array</em>) &#8211;
+structuring element</li>
+<li><strong>offset</strong> (<em>array or None</em>) &#8211;
+offset of the structuring element, None is centered</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+result of morphological reconstruction.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Operates on 2d images.</p>
+</div>
+<p>Reference:</p>
+<table class="docutils footnote" frame="void" id="id5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[1]</a></td><td>Robinson, &#8220;Efficient morphological reconstruction: a downhill
+filter&#8221;, Pattern Recognition Letters 25 (2004) 1759-1767.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Vincent, L., &#8220;Morphological Grayscale Reconstruction in Image
+Analysis: Applications and Efficient Algorithms&#8221;, IEEE Transactions
+on Image Processing (1993)</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id4">[3]</a></td><td>Soille, P., &#8220;Morphological Image Analysis: Principles and
+Applications&#8221;, Chapter 6, 2nd edition (2003), ISBN 3540429883.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.GreyReconstruction.greyReconstruction">
+<code class="descname">greyReconstruction</code><span class="sig-paren">(</span><em>img</em>, <em>mask</em>, <em>greyReconstructionParameter=None</em>, <em>method=None</em>, <em>size=3</em>, <em>save=None</em>, <em>verbose=False</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/GreyReconstruction.html#greyReconstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.GreyReconstruction.greyReconstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the grey reconstruction of the image</p>
+<p>Reconstruction is done z-slice by z-slice.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>removeBackGroundParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="23%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method</em></td>
+<td>(tuple or None)</td>
+<td>&#8216;dilation&#8217; or &#8216;erosion&#8217;, if None return original image</td>
+</tr>
+<tr class="row-odd"><td><em>size</em></td>
+<td>(int or tuple)</td>
+<td>size of structuring element</td>
+</tr>
+<tr class="row-even"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>file name to save result of this operation
+if None dont save to file</td>
+</tr>
+<tr class="row-odd"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+grey reconstructed image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.SpotDetection">
+<span id="clearmap-imageprocessing-spotdetection-module"></span><h2>ClearMap.ImageProcessing.SpotDetection module<a class="headerlink" href="#module-ClearMap.ImageProcessing.SpotDetection" title="Permalink to this headline">¶</a></h2>
+<p>Functions to detect spots in images</p>
+<p>The main routine <code class="xref py py-func docutils literal"><span class="pre">detectCells()</span></code> uses a difference of gaussian filter (see
+<a class="reference internal" href="ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter" title="ClearMap.ImageProcessing.Filter"><code class="xref py py-mod docutils literal"><span class="pre">Filter</span></code></a>) followed by a peak detection step.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ClearMap.Settings</span> <span class="kn">as</span> <span class="nn">settings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ClearMap.ImageProcessing.SpotDetection</span> <span class="kn">as</span> <span class="nn">sd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">ClearMapPath</span><span class="p">,</span> <span class="s">&#39;Test/Data/Synthetic/test_iDISCO_\d{3}.tif&#39;</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int16&#39;</span><span class="p">);</span> <span class="c"># converting data to smaller integer types can be more memory efficient!</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">res</span> <span class="o">=</span> <span class="n">sd</span><span class="o">.</span><span class="n">detectSpots</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">dogSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">flatfield</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">threshold</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">cellShapeThreshold</span> <span class="o">=</span> <span class="mi">1</span><span class="p">);</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span> <span class="s">&#39;Found </span><span class="si">%d</span><span class="s"> cells !&#39;</span> <span class="o">%</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="go">Illumination: flatfield          : None</span>
+<span class="go">Illumination: illuminationScaling: True</span>
+<span class="go">Illumination: background         : None</span>
+<span class="go">Background: backgroundSize: (15, 15)</span>
+<span class="go">Background: elapsed time: 0:00:00</span>
+<span class="go">DoG: dogSize: (5, 5, 5)</span>
+<span class="go">DoG: elapsed time: 0:00:00</span>
+<span class="go">Extended Max: threshold   : 5</span>
+<span class="go">Extended Max: localMaxSize: 5</span>
+<span class="go">Extended Max: hMax        : None</span>
+<span class="go">Extended Max: elapsed time: 0:00:00</span>
+<span class="go">Cell Centers: elapsed time: 0:00:00</span>
+<span class="go">Cell Shape: cellShapeThreshold: 1</span>
+<span class="go">Cell Shape:: elapsed time: 0:00:00</span>
+<span class="go">Cell Size:: elapsed time: 0:00:00</span>
+<span class="go">Cell Intensity: cellIntensityMethod: Max</span>
+<span class="go">Cell Intensity:: elapsed time: 0:00:00</span>
+<span class="go">Cell Intensity: cellIntensityMethod: Max</span>
+<span class="go">Cell Intensity:: elapsed time: 0:00:00</span>
+<span class="go">Cell Intensity: cellIntensityMethod: Max</span>
+<span class="go">Cell Intensity:: elapsed time: 0:00:00</span>
+<span class="go">Found 38 cells !</span>
+</pre></div>
+</div>
+<p>After execution this example inspect the result of the cell detection in
+the folder &#8216;Test/Data/CellShape/cellshape_d{3}.tif&#8217;.</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.SpotDetection.detectSpots">
+<code class="descname">detectSpots</code><span class="sig-paren">(</span><em>img</em>, <em>detectSpotsParameter=None</em>, <em>correctIlluminationParameter=None</em>, <em>removeBackgroundParameter=None</em>, <em>filterDoGParameter=None</em>, <em>findExtendedMaximaParameter=None</em>, <em>detectCellShapeParameter=None</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/SpotDetection.html#detectSpots"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.SpotDetection.detectSpots" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect Cells in 3d grayscale image using DoG filtering and maxima detection</p>
+<dl class="docutils">
+<dt>Effectively this function performs the following steps:</dt>
+<dd><ul class="first last simple">
+<li>illumination correction via <a class="reference internal" href="#ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination" title="ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination"><code class="xref py py-func docutils literal"><span class="pre">correctIllumination()</span></code></a></li>
+<li>background removal via <a class="reference internal" href="#ClearMap.ImageProcessing.BackgroundRemoval.removeBackground" title="ClearMap.ImageProcessing.BackgroundRemoval.removeBackground"><code class="xref py py-func docutils literal"><span class="pre">removeBackground()</span></code></a></li>
+<li>difference of Gaussians (DoG) filter via <code class="xref py py-func docutils literal"><span class="pre">filterDoG()</span></code></li>
+<li>maxima detection via <a class="reference internal" href="#ClearMap.ImageProcessing.MaximaDetection.findExtendedMaxima" title="ClearMap.ImageProcessing.MaximaDetection.findExtendedMaxima"><code class="xref py py-func docutils literal"><span class="pre">findExtendedMaxima()</span></code></a></li>
+<li>cell shape detection via <a class="reference internal" href="#ClearMap.ImageProcessing.CellSizeDetection.detectCellShape" title="ClearMap.ImageProcessing.CellSizeDetection.detectCellShape"><code class="xref py py-func docutils literal"><span class="pre">detectCellShape()</span></code></a></li>
+<li>cell intensity and size measurements via: <a class="reference internal" href="#ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity" title="ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity"><code class="xref py py-func docutils literal"><span class="pre">findCellIntensity()</span></code></a>,
+<a class="reference internal" href="#ClearMap.ImageProcessing.CellSizeDetection.findCellSize" title="ClearMap.ImageProcessing.CellSizeDetection.findCellSize"><code class="xref py py-func docutils literal"><span class="pre">findCellSize()</span></code></a>.</li>
+</ul>
+</dd>
+</dl>
+<p>detectCells
+.. note:: Processing steps are done in place to save memory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> (<em>array</em>) &#8211;
+image data</li>
+<li><strong>detectSpotParameter</strong> &#8211;
+image processing parameter as described in the individual sub-routines</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress information</li>
+<li><strong>out</strong> (<em>object</em>) &#8211;
+object to print progress information to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+tuple of arrays (cell coordinates, raw intensity, fully filtered intensty, illumination and background corrected intensity [, cell size])</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.SpotDetection.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/SpotDetection.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.SpotDetection.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test Spot Detection Module</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.MaximaDetection">
+<span id="clearmap-imageprocessing-maximadetection-module"></span><h2>ClearMap.ImageProcessing.MaximaDetection module<a class="headerlink" href="#module-ClearMap.ImageProcessing.MaximaDetection" title="Permalink to this headline">¶</a></h2>
+<p>Collection of routines to detect maxima</p>
+<p>Used for finding cells or intensity peaks.</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.hMaxTransform">
+<code class="descname">hMaxTransform</code><span class="sig-paren">(</span><em>img</em>, <em>hMax</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#hMaxTransform"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.hMaxTransform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates h-maximum transform of an image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> (<em>array</em>) &#8211;
+image</li>
+<li><strong>hMax</strong> (<em>float or None</em>) &#8211;
+h parameter of h-max transform</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+h-max transformed image if h is not None</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.localMax">
+<code class="descname">localMax</code><span class="sig-paren">(</span><em>img</em>, <em>size=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#localMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.localMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates local maxima of an image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> (<em>array</em>) &#8211;
+image</li>
+<li><strong>size</strong> (<em>float or None</em>) &#8211;
+size of volume to search for maxima</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+mask that is True at local maxima</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.extendedMax">
+<code class="descname">extendedMax</code><span class="sig-paren">(</span><em>img</em>, <em>hMax=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#extendedMax"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.extendedMax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates extened h maxima of an image</p>
+<p>Extended maxima are the local maxima of the h-max transform</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> (<em>array</em>) &#8211;
+image</li>
+<li><strong>hMax</strong> (<em>float or None</em>) &#8211;
+h parameter of h-max transform</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+extended maxima of the image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.findExtendedMaxima">
+<code class="descname">findExtendedMaxima</code><span class="sig-paren">(</span><em>img</em>, <em>findExtendedMaximaParameter=None</em>, <em>hMax=None</em>, <em>size=5</em>, <em>threshold=None</em>, <em>save=None</em>, <em>verbose=None</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#findExtendedMaxima"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.findExtendedMaxima" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find extended maxima in an image</p>
+<p>Effectively this routine performs a h-max transfrom, followed by a local maxima search and
+thresholding of the maxima.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>findExtendedMaximaParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="21%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>hMax</em></td>
+<td>(float or None)</td>
+<td>h parameter for the initial h-Max transform
+if None, do not perform a h-max transform</td>
+</tr>
+<tr class="row-odd"><td><em>size</em></td>
+<td>(tuple)</td>
+<td>size for the structure element for the local maxima filter</td>
+</tr>
+<tr class="row-even"><td><em>threshold</em></td>
+<td>(float or None)</td>
+<td>include only maxima larger than a threshold
+if None keep all localmaxima</td>
+</tr>
+<tr class="row-odd"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>file name to save result of this operation
+if None do not save result to file</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+binary image with True pixel at extended maxima</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#ClearMap.ImageProcessing.MaximaDetection.hMaxTransform" title="ClearMap.ImageProcessing.MaximaDetection.hMaxTransform"><code class="xref py py-func docutils literal"><span class="pre">hMaxTransform()</span></code></a>, <a class="reference internal" href="#ClearMap.ImageProcessing.MaximaDetection.localMax" title="ClearMap.ImageProcessing.MaximaDetection.localMax"><code class="xref py py-func docutils literal"><span class="pre">localMax()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.findCenterOfMaxima">
+<code class="descname">findCenterOfMaxima</code><span class="sig-paren">(</span><em>img</em>, <em>imgmax=None</em>, <em>label=None</em>, <em>findCenterOfMaximaParameter=None</em>, <em>save=None</em>, <em>verbose=False</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#findCenterOfMaxima"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.findCenterOfMaxima" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find center of detected maxima weighted by intensity</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>findCenterOfMaximaParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="23%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>saves result of labeling the differnet maxima
+if None, do the lableling is not saved</td>
+</tr>
+<tr class="row-odd"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+coordinates of centers of maxima, shape is (n,d) where n is number of maxima and d the dimension of the image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.findPixelCoordinates">
+<code class="descname">findPixelCoordinates</code><span class="sig-paren">(</span><em>imgmax</em>, <em>subStack=None</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#findPixelCoordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.findPixelCoordinates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find coordinates of all pixel in an image with positive or True value</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>img</strong> (<em>array</em>) &#8211;
+image data</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</li>
+<li><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+coordinates of centers of True pixels, shape is (n,d)  where n is number of maxima and d the dimension of the image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.MaximaDetection.findIntensity">
+<code class="descname">findIntensity</code><span class="sig-paren">(</span><em>img</em>, <em>centers</em>, <em>findIntensityParameter=None</em>, <em>method=None</em>, <em>size=(3</em>, <em>3</em>, <em>3)</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/MaximaDetection.html#findIntensity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.MaximaDetection.findIntensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find instensity value around centers in the image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>findIntensityParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="21%" />
+<col width="66%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method</em></td>
+<td>(str, func, None)</td>
+<td>method to use to determine intensity (e.g. &#8220;Max&#8221; or &#8220;Mean&#8221;)
+if None take intensities at the given pixels</td>
+</tr>
+<tr class="row-odd"><td><em>size</em></td>
+<td>(tuple)</td>
+<td>size of the box on which to perform the <em>method</em></td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+measured intensities</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.IlastikClassification">
+<span id="clearmap-imageprocessing-ilastikclassification-module"></span><h2>ClearMap.ImageProcessing.IlastikClassification module<a class="headerlink" href="#module-ClearMap.ImageProcessing.IlastikClassification" title="Permalink to this headline">¶</a></h2>
+<p>Inteface to Illastik pixel classification</p>
+<p>This module allows to integrate ilastik pixel classification into the <em>ClearMap</em>
+pipeline.</p>
+<p>To train a classifier ilastik should be used:</p>
+<blockquote>
+<div><ul class="simple">
+<li></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that ilastik classification works in parallel, thus it is advised to
+process the data sequentially, see
+<code class="xref py py-func docutils literal"><span class="pre">sequentiallyProcessStack()</span></code></p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Ilastik 0.5 works for images in uint8 format !</p>
+</div>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><a class="reference external" href="http://ilastik.org/">Ilastik</a></li>
+<li>Based on the ilastik interface from <a class="reference external" href="http://www.cellprofiler.org/">cell profiler</a></li>
+</ul>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlastikClassification.isInitialized">
+<code class="descname">isInitialized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlastikClassification.html#isInitialized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlastikClassification.isInitialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if Ilastik is useable</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211;
+True if Ilastik is installed and useable by <em>ClearMap</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlastikClassification.checkInitialized">
+<code class="descname">checkInitialized</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlastikClassification.html#checkInitialized"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlastikClassification.checkInitialized" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if ilastik is initialized</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211;
+True if ilastik paths are set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlastikClassification.classifyPixel">
+<code class="descname">classifyPixel</code><span class="sig-paren">(</span><em>img</em>, <em>classifyPixelParameter=None</em>, <em>subStack=None</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlastikClassification.html#classifyPixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlastikClassification.classifyPixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect Cells Using a trained classifier in Ilastik</p>
+<dl class="docutils">
+<dt>Arguments:from ClearMap.ImageProcessing.CellSizeDetection import detectCellShape, findCellSize, findCellIntensity</dt>
+<dd><p class="first">img (array): image data
+classifyPixelParameter (dict):</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="22%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>classifier</em></td>
+<td>(str or  None)</td>
+<td>Ilastik project file with trained pixel classifier</td>
+</tr>
+<tr class="row-odd"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>save the classification propabilities to a file</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p class="last">subStack (dict or None): sub-stack information
+verbose (bool): print progress info
+out (object): object to write progress info to</p>
+</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>array</em> &#8211;
+probabilities for each pixel to belong to a class in the classifier, shape is (img.shape, number of classes)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.IlastikClassification.classifyCells">
+<code class="descname">classifyCells</code><span class="sig-paren">(</span><em>img</em>, <em>classifyCellsParameter=None</em>, <em>classifier=None</em>, <em>classindex=0</em>, <em>save=None</em>, <em>verbose=False</em>, <em>detectCellShapeParameter=None</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/IlastikClassification.html#classifyCells"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.IlastikClassification.classifyCells" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detect Cells Using a trained classifier in Ilastik</p>
+<p>The routine assumes that the first class is identifying the cells.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>classifyPixelParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="22%" />
+<col width="65%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>classifier</em></td>
+<td>(str or  None)</td>
+<td>Ilastik project file with trained pixel classifier</td>
+</tr>
+<tr class="row-odd"><td><em>classindex</em></td>
+<td>(int)</td>
+<td>class index considered to be cells</td>
+</tr>
+<tr class="row-even"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>save the detected cell pixel to a file</td>
+</tr>
+<tr class="row-odd"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple</em> &#8211;
+centers of the cells, intensity measurments</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The routine could be potentially refined to make use of background
+detection in ilastik</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.ImageStatistics">
+<span id="clearmap-imageprocessing-imagestatistics-module"></span><h2>ClearMap.ImageProcessing.ImageStatistics module<a class="headerlink" href="#module-ClearMap.ImageProcessing.ImageStatistics" title="Permalink to this headline">¶</a></h2>
+<p>Functions to gather iamge statistics in large volumetric images</p>
+<p>The main routines extract information from a large volumetric image, such as
+the maximum or mean.</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.ImageStatistics.calculateStatistics">
+<code class="descname">calculateStatistics</code><span class="sig-paren">(</span><em>source</em>, <em>sink=None</em>, <em>calculateStatisticsParameter=None</em>, <em>method='Max'</em>, <em>remove=True</em>, <em>processMethod=&lt;built-in function all&gt;</em>, <em>verbose=False</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/ImageStatistics.html#calculateStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.ImageStatistics.calculateStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate statisticsfrom image data</p>
+<p>This is a main script to start extracting statistics of volumetric image data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>source</strong> (<em>str or array</em>) &#8211;
+Image source</p>
+</li>
+<li><p class="first"><strong>sink</strong> (<em>str or None</em>) &#8211;
+destination for the results</p>
+</li>
+<li><p class="first"><strong>calculateStatisticsParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="22%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method</em></td>
+<td>(str or function)</td>
+<td>function to extract statistic, must be trivially distributable
+if None, do not extract information</td>
+</tr>
+<tr class="row-odd"><td><em>remove</em></td>
+<td>(bool)</td>
+<td>remove redundant overlap</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>method</strong> (<em>str or function</em>)</p>
+</li>
+<li><p class="first"><strong>processMethod</strong> (<em>str or all</em>) &#8211;
+&#8216;sequential&#8217; or &#8216;parallel&#8217;. if all its choosen automatically</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print info</p>
+</li>
+<li><p class="first"><strong>**parameter</strong> (<em>dict</em>) &#8211;
+parameter for the image processing sub-routines</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">list of statistics</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.ImageStatistics.calculateStatisticsOnStack">
+<code class="descname">calculateStatisticsOnStack</code><span class="sig-paren">(</span><em>img</em>, <em>calculateStatisticsParameter=None</em>, <em>method='Max'</em>, <em>remove=True</em>, <em>verbose=False</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/ImageStatistics.html#calculateStatisticsOnStack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.ImageStatistics.calculateStatisticsOnStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate a statistics from a large volumetric image</p>
+<p>The statistics is assumed to be trivially distributable, i.e. max or mean.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>calculateStatisticsParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="22%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method</em></td>
+<td>(str or function)</td>
+<td>function to extract statistic, must be trivially distributable
+if None, do not extract information</td>
+</tr>
+<tr class="row-odd"><td><em>remove</em></td>
+<td>(bool)</td>
+<td>remove redundant overlap</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print / plot information about this step</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array or number</em> &#8211;
+extracted statistics</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">One might need to choose zero overlap in the stacks to function properly!</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.ImageStatistics.joinStatistics">
+<code class="descname">joinStatistics</code><span class="sig-paren">(</span><em>results</em>, <em>calculateStatisticsParameter=None</em>, <em>method='Max'</em>, <em>subStacks=None</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/ImageStatistics.html#joinStatistics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.ImageStatistics.joinStatistics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Joins a list of calculated statistics</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>results</strong> (<em>list</em>) &#8211;
+list of statics results from the individual sub-processes</p>
+</li>
+<li><p class="first"><strong>calculateStatisticsParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="22%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method</em></td>
+<td>(str or function)</td>
+<td>function to extract statistic, must be trivially distributable
+if None, do not extract information</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStacks</strong> (<em>list or None</em>) &#8211;
+list of all sub-stack information, see <a class="reference internal" href="#substack"><span>Sub-Stacks</span></a></p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list or object</em> &#8211;
+joined statistics</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.Filter.html" title="ClearMap.ImageProcessing.Filter package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Alignment.html" title="ClearMap.Alignment package"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

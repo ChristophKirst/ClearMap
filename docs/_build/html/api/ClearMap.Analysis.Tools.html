@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Analysis.Tools package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap.Analysis package" href="ClearMap.Analysis.html" />
+    <link rel="next" title="ClearMap.Visualization package" href="ClearMap.Visualization.html" />
+    <link rel="prev" title="ClearMap.Analysis package" href="ClearMap.Analysis.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Visualization.html" title="ClearMap.Visualization package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Analysis.html" title="ClearMap.Analysis package"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="ClearMap.Analysis.html" accesskey="U">ClearMap.Analysis package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.Analysis.html"
+                        title="previous chapter">ClearMap.Analysis package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.Visualization.html"
+                        title="next chapter">ClearMap.Visualization package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.Analysis.Tools.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ClearMap.Analysis.Tools">
+<span id="clearmap-analysis-tools-package"></span><h1>ClearMap.Analysis.Tools package<a class="headerlink" href="#module-ClearMap.Analysis.Tools" title="Permalink to this headline">¶</a></h1>
+<p>Analysis and statistics tools not in standard python packages.</p>
+<div class="section" id="module-ClearMap.Analysis.Tools.Extrapolate">
+<span id="clearmap-analysis-tools-extrapolate-module"></span><h2>ClearMap.Analysis.Tools.Extrapolate module<a class="headerlink" href="#module-ClearMap.Analysis.Tools.Extrapolate" title="Permalink to this headline">¶</a></h2>
+<p>Method to extend interpolation objects to constantly / linearly extrapolate.</p>
+<dl class="function">
+<dt id="ClearMap.Analysis.Tools.Extrapolate.extrap1d">
+<code class="descname">extrap1d</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>interpolation='linear'</em>, <em>exterpolation='constant'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Tools/Extrapolate.html#extrap1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Tools.Extrapolate.extrap1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Interpolate on given values and extrapolate outside the given data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>numpy.array</em>) &#8211;
+x values of the data to interpolate</li>
+<li><strong>y</strong> (<em>numpy.array</em>) &#8211;
+y values of the data to interpolate</li>
+<li><strong>interpolation</strong> (<em>Optional[str]</em>) &#8211;
+interpolation method, see kind of scipy.interpolate.interp1d, default: &#8220;linear&#8221;</li>
+<li><strong>exterpolation</strong> (<em>Optional[str]</em>) &#8211;
+interpolation method, either &#8220;linear&#8221; or &#8220;constant&#8221;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(function)</em> &#8211;
+inter- and extra-polation function</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Tools.Extrapolate.extrap1dFromInterp1d">
+<code class="descname">extrap1dFromInterp1d</code><span class="sig-paren">(</span><em>interpolator</em>, <em>exterpolation='constant'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Tools/Extrapolate.html#extrap1dFromInterp1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Tools.Extrapolate.extrap1dFromInterp1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extend interpolation function to extrapolate outside the given data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>interpolator</strong> (<em>function</em>) &#8211;
+interpolating function, see e.g. scipy.interpolate.interp1d</li>
+<li><strong>exterpolation</strong> (<em>Optional[str]</em>) &#8211;
+interpolation method, either &#8220;linear&#8221; or &#8220;constant&#8221;</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(function)</em> &#8211;
+inter- and extra-polation function</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.Analysis.Tools.MultipleComparisonCorrection">
+<span id="clearmap-analysis-tools-multiplecomparisoncorrection-module"></span><h2>ClearMap.Analysis.Tools.MultipleComparisonCorrection module<a class="headerlink" href="#module-ClearMap.Analysis.Tools.MultipleComparisonCorrection" title="Permalink to this headline">¶</a></h2>
+<p>Correction methods for multiple comparison tests</p>
+<dl class="function">
+<dt id="ClearMap.Analysis.Tools.MultipleComparisonCorrection.correctPValues">
+<code class="descname">correctPValues</code><span class="sig-paren">(</span><em>pvalues</em>, <em>method='BH'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Tools/MultipleComparisonCorrection.html#correctPValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Tools.MultipleComparisonCorrection.correctPValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Corrects p-values for multiple testing using various methods</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pvalues</strong> (<em>array</em>) &#8211;
+list of p values to be corrected</li>
+<li><strong>method</strong> (<em>Optional[str]</em>) &#8211;
+method to use: BH = FDR = Benjamini-Hochberg, B = FWER = Bonferoni</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.jstor.org/stable/2346101?seq=1#page_scan_tab_contents">Benjamini Hochberg, 1995</a></li>
+<li><a class="reference external" href="http://www.tandfonline.com/doi/abs/10.1080/01621459.1961.10482090#.VmHWUHbH6KE">Bonferoni correction</a></li>
+<li><a class="reference external" href="https://www.r-project.org/">R statistics package</a></li>
+</ul>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>modified from <a class="reference external" href="http://statsmodels.sourceforge.net/ipdirective/generated/scikits.statsmodels.sandbox.stats.multicomp.multipletests.html">http://statsmodels.sourceforge.net/ipdirective/generated/scikits.statsmodels.sandbox.stats.multicomp.multipletests.html</a></li>
+</ul>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Tools.MultipleComparisonCorrection.estimateQValues">
+<code class="descname">estimateQValues</code><span class="sig-paren">(</span><em>pvalues</em>, <em>m=None</em>, <em>pi0=None</em>, <em>verbose=False</em>, <em>lowMemory=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Tools/MultipleComparisonCorrection.html#estimateQValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Tools.MultipleComparisonCorrection.estimateQValues" title="Permalink to this definition">¶</a></dt>
+<dd><p>Estimates q-values from p-values</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pvalues</strong> (<em>array</em>) &#8211;
+list of p-values</li>
+<li><strong>m</strong> (<em>int or None</em>) &#8211;
+number of tests. If None, m = pvalues.size</li>
+<li><strong>pi0</strong> (<em>float or None</em>) &#8211;
+estimate of m_0 / m which is the (true null / total tests) ratio, if None estimation via cubic spline.</li>
+<li><strong>verbose</strong> (<em>bool</em>) &#8211;
+print info during execution</li>
+<li><strong>lowMemory</strong> (<em>bool</em>) &#8211;
+if true use low memory version</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>The q-value of a particular feature can be described as the expected proportion of
+false  positives  among  all  features  as  or  more  extreme  than  the observed one</li>
+<li>The estimated q-values are increasing in the same order as the p-values</li>
+</ul>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><a class="reference external" href="http://www.pnas.org/content/100/16/9440.full">Storey and Tibshirani, 2003</a></li>
+<li>modified from <a class="reference external" href="https://github.com/nfusi/qvalue">https://github.com/nfusi/qvalue</a></li>
+</ul>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.Analysis.Tools.StatisticalTests">
+<span id="clearmap-analysis-tools-statisticaltests-module"></span><h2>ClearMap.Analysis.Tools.StatisticalTests module<a class="headerlink" href="#module-ClearMap.Analysis.Tools.StatisticalTests" title="Permalink to this headline">¶</a></h2>
+<p>Some statistics tests not in standard python packages</p>
+<dl class="function">
+<dt id="ClearMap.Analysis.Tools.StatisticalTests.testCramerVonMises2Sample">
+<code class="descname">testCramerVonMises2Sample</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Tools/StatisticalTests.html#testCramerVonMises2Sample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Tools.StatisticalTests.testCramerVonMises2Sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the Cramer von Mises two sample test.</p>
+<p>This is a two-sided test for the null hypothesis that 2 independent samples
+are drawn from the same continuous distribution.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x, y</strong> (<em>sequence of 1-D ndarrays</em>) &#8211;
+two arrays of sample observations</li>
+<li><strong>assumed to be drawn from a continuous distribution, sample sizes</strong></li>
+<li><strong>can be different</strong></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(float, float)</em> &#8211;
+T statistic, two-tailed p-value</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<ul class="simple">
+<li>modified from <a class="reference external" href="https://github.com/scipy/scipy/pull/3659">https://github.com/scipy/scipy/pull/3659</a></li>
+</ul>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Visualization.html" title="ClearMap.Visualization package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Analysis.html" title="ClearMap.Analysis package"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="ClearMap.Analysis.html" >ClearMap.Analysis package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

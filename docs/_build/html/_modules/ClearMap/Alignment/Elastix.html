@@ -1,0 +1,981 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Alignment.Elastix &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.Alignment.Elastix</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Interface to Elastix for alignment of volumetric data</span>
+
+<span class="sd">The elastix documentation can be found `here &lt;http://elastix.isi.uu.nl/&gt;`_.</span>
+
+<span class="sd">In essence, a transformation :math:`T(x)` is sought so that for a fixed image </span>
+<span class="sd">:math:`F(x)` and a moving image :math:`M(x)`:</span>
+
+<span class="sd">.. math::</span>
+<span class="sd">    F(x) = M(T(x))</span>
+
+<span class="sd">Once the map :math:`T` is estimated via elastix, transformix maps an image</span>
+<span class="sd">:math:`I(x)` from the moving image frame to the fixed image frame, i.e.:</span>
+
+<span class="sd">.. math::</span>
+<span class="sd">    I(x) \\rightarrow I(T(x)) </span>
+
+<span class="sd">To register an image onto a reference image, the fixed image is typically </span>
+<span class="sd">choosed to be the image to be registered, while the moving image is the </span>
+<span class="sd">reference image. In this way an object identified in the data at position x</span>
+<span class="sd">is mapped via transformix as:</span>
+
+<span class="sd">.. math::</span>
+<span class="sd">    x \\rightarrow T(x)</span>
+<span class="sd">    </span>
+
+
+
+<span class="sd">Summary</span>
+<span class="sd">-------</span>
+<span class="sd">    * elastix finds a transformation :math:`T: \\mathrm{fixed image} \\rightarrow \\mathrm{moving image}`</span>
+<span class="sd">    * the fixed image is image to be registered</span>
+<span class="sd">    * the moving image is typically the reference image</span>
+<span class="sd">    * the result folder may contain an image (mhd file) that is :math:`T^{-1}(\\mathrm{moving})`,</span>
+<span class="sd">      i.e. has the size of the fixed image</span>
+<span class="sd">    * transformix applied to data gives :math:`T^{-1}(\\mathrm{data})` !</span>
+<span class="sd">    * transformix applied to points gives :math:`T(\\mathrm{points})` !</span>
+<span class="sd">    * point arrays are assumed to be in (x,y,z) coordinates consistent with (x,y,z) array represenation of images in ClearMap</span>
+<span class="sd">    </span>
+<span class="sd">Main routines are: :func:`alignData`, :func:`transformData` and :func:`transformPoints`.</span>
+<span class="sd">    </span>
+<span class="sd">See Also:</span>
+<span class="sd">    `Elastix documentation &lt;http://elastix.isi.uu.nl/&gt;`_</span>
+<span class="sd">    :mod:`~ClearMap.Alignment.Resampling`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.Settings</span> <span class="kn">as</span> <span class="nn">settings</span>
+<span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+
+<span class="c">##############################################################################</span>
+<span class="c"># Initialization and Enviroment Settings</span>
+<span class="c">##############################################################################</span>
+
+<span class="n">ElastixBinary</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+<span class="sd">&quot;&quot;&quot;str: the elastix executable</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    - setup in :func:`initializeElastix`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">ElastixLib</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+<span class="sd">&quot;&quot;&quot;str: path to the elastix library</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    - setup in :func:`initializeElastix`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">TransformixBinary</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+<span class="sd">&quot;&quot;&quot;str: the transformix executable</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    - setup in :func:`initializeElastix`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+    
+<span class="n">Initialized</span> <span class="o">=</span> <span class="bp">False</span><span class="p">;</span>
+<span class="sd">&quot;&quot;&quot;bool: True if the elastixs binarys and paths are setup</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    - setup in :func:`initializeElastix`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+    
+<div class="viewcode-block" id="printSettings"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.printSettings">[docs]</a><span class="k">def</span> <span class="nf">printSettings</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Prints the current elastix configuration</span>
+<span class="sd">    </span>
+<span class="sd">    See also:</span>
+<span class="sd">        :const:`ElastixBinary`, :const:`ElastixLib`, :const:`TransformixBinary`, :const:`Initialized`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">global</span> <span class="n">ElastixBinary</span><span class="p">,</span> <span class="n">ElastixLib</span><span class="p">,</span> <span class="n">TransformixBinary</span><span class="p">,</span> <span class="n">Initialized</span>
+    
+    <span class="k">if</span> <span class="n">Initialized</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;ElastixBinary     = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ElastixBinary</span><span class="p">;</span>
+        <span class="k">print</span> <span class="s">&quot;ElastixLib        = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ElastixLib</span><span class="p">;</span>
+        <span class="k">print</span> <span class="s">&quot;TransformixBinary = </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">TransformixBinary</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Elastix not initialized&quot;</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="setElastixLibraryPath"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.setElastixLibraryPath">[docs]</a><span class="k">def</span> <span class="nf">setElastixLibraryPath</span><span class="p">(</span><span class="n">path</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span> 
+    <span class="sd">&quot;&quot;&quot;Add elastix library path to the LD_LIBRARY_PATH variable in linux</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        path (str or None): path to elastix root directory if None :const:`ClearMap.Settings.ElastixPath` is used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+     
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ElastixPath</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">has_key</span><span class="p">(</span><span class="s">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">):</span>
+        <span class="n">lp</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">];</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">lp</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lp</span> <span class="o">+</span> <span class="s">&#39;:&#39;</span> <span class="o">+</span> <span class="n">path</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s">&#39;LD_LIBRARY_PATH&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">path</span></div>
+
+
+<div class="viewcode-block" id="initializeElastix"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.initializeElastix">[docs]</a><span class="k">def</span> <span class="nf">initializeElastix</span><span class="p">(</span><span class="n">path</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Initialize all paths and binaries of elastix</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        path (str or None): path to elastix root directory, if None </span>
+<span class="sd">        :const:`ClearMap.Settings.ElastixPath` is used.</span>
+<span class="sd">        </span>
+<span class="sd">    See also:</span>
+<span class="sd">        :const:`ElastixBinary`, :const:`ElastixLib`, :const:`TransformixBinary`,</span>
+<span class="sd">        :const:`Initialized`, :func:`setElastixLibraryPath`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">global</span> <span class="n">ElastixBinary</span><span class="p">,</span> <span class="n">ElastixLib</span><span class="p">,</span> <span class="n">TransformixBinary</span><span class="p">,</span> <span class="n">Initialized</span>
+    
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ElastixPath</span><span class="p">;</span>
+    
+    <span class="c">#search for elastix binary</span>
+    <span class="n">elastixbin</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;bin/elastix&#39;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">elastixbin</span><span class="p">):</span>
+        <span class="n">ElastixBinary</span> <span class="o">=</span> <span class="n">elastixbin</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Cannot find elastix binary </span><span class="si">%s</span><span class="s">, set path in Settings.py accordingly!&quot;</span> <span class="o">%</span> <span class="n">elastixbin</span><span class="p">);</span>
+    
+    <span class="c">#search for transformix binarx</span>
+    <span class="n">transformixbin</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;bin/transformix&#39;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">transformixbin</span><span class="p">):</span>
+        <span class="n">TransformixBinary</span> <span class="o">=</span> <span class="n">transformixbin</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Cannot find transformix binary </span><span class="si">%s</span><span class="s"> set path in Settings.py accordingly!&quot;</span> <span class="o">%</span> <span class="n">transformixbin</span><span class="p">);</span>
+    
+    <span class="c">#search for elastix libs</span>
+    <span class="n">elastixlib</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s">&#39;lib&#39;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">elastixlib</span><span class="p">):</span>
+        <span class="n">ElastixLib</span> <span class="o">=</span> <span class="n">elastixlib</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Cannot find elastix libs in </span><span class="si">%s</span><span class="s">  set path in Settings.py accordingly!&quot;</span> <span class="o">%</span> <span class="n">elastixlib</span><span class="p">);</span>
+    
+    <span class="c">#set path</span>
+    <span class="n">setElastixLibraryPath</span><span class="p">(</span><span class="n">elastixlib</span><span class="p">);</span>
+        
+    <span class="n">Initialized</span> <span class="o">=</span> <span class="bp">True</span><span class="p">;</span>
+    
+    <span class="k">print</span> <span class="s">&quot;Elastix sucessfully initialized from path: </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">path</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="n">path</span><span class="p">;</span></div>
+
+
+
+<span class="n">initializeElastix</span><span class="p">();</span>
+
+
+<div class="viewcode-block" id="checkElastixInitialized"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.checkElastixInitialized">[docs]</a><span class="k">def</span> <span class="nf">checkElastixInitialized</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Checks if elastix is initialized</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if elastix paths are set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">global</span> <span class="n">Initialized</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">Initialized</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;Elastix not initialized: run initializeElastix(path) with proper path to elastix first&quot;</span><span class="p">);</span>
+    <span class="c">#print ElastixSettings.ElastixBinary;</span>
+
+    <span class="k">return</span> <span class="bp">True</span><span class="p">;</span></div>
+
+
+
+<span class="c">##############################################################################</span>
+<span class="c"># Basic interface routines</span>
+<span class="c">##############################################################################</span>
+
+<div class="viewcode-block" id="getTransformParameterFile"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.getTransformParameterFile">[docs]</a><span class="k">def</span> <span class="nf">getTransformParameterFile</span><span class="p">(</span><span class="n">resultdir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Finds and returns the transformation parameter file generated by elastix</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        In case of multiple transformation parameter files the top level file is returned     </span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        resultdir (str): path to directory of elastix results</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name of the first transformation parameter file </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">resultdir</span><span class="p">);</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;TransformParameters.\d.txt&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)];</span>
+    <span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">();</span>
+    
+    <span class="k">if</span> <span class="n">files</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;Cannot find a valid transformation file in &#39;</span> <span class="o">+</span> <span class="n">resultdir</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultdir</span><span class="p">,</span> <span class="n">files</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="setPathTransformParameterFiles"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.setPathTransformParameterFiles">[docs]</a><span class="k">def</span> <span class="nf">setPathTransformParameterFiles</span><span class="p">(</span><span class="n">resultdir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces relative with abolsute path in the parameter files in the result directory</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        When elastix is not run in the directory of the transformation files</span>
+<span class="sd">        the aboslute path needs to be given in each transformation file </span>
+<span class="sd">        to point to the subsequent transformation files. This is done via this </span>
+<span class="sd">        routine</span>
+<span class="sd">       </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        resultdir (str): path to directory of elastix results</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+
+    <span class="c">#print resultdir </span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">resultdir</span><span class="p">);</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;TransformParameters.\d.txt&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)];</span>
+    <span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">();</span>
+    
+    <span class="k">if</span> <span class="n">files</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;Cannot find a valid transformation file in &#39;</span> <span class="o">+</span> <span class="n">resultdir</span><span class="p">);</span>
+    
+    <span class="n">rec</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;\(InitialTransformParametersFileName </span><span class="se">\&quot;</span><span class="s">(?P&lt;parname&gt;.*)</span><span class="se">\&quot;</span><span class="s">\)&quot;</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">fh</span><span class="p">,</span> <span class="n">tmpfn</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">();</span>
+        <span class="n">ff</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultdir</span><span class="p">,</span> <span class="n">f</span><span class="p">);</span>
+        <span class="c">#print ff        </span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">newfile</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span> <span class="k">as</span> <span class="n">parfile</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">parfile</span><span class="p">:</span>
+                    <span class="c">#print line</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="n">rec</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+                    <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="n">pn</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;parname&#39;</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="n">pn</span> <span class="o">!=</span> <span class="s">&#39;NoInitialTransform&#39;</span><span class="p">:</span>
+                            <span class="n">pathn</span><span class="p">,</span> <span class="n">filen</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pn</span><span class="p">);</span>
+                            <span class="n">filen</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultdir</span><span class="p">,</span> <span class="n">filen</span><span class="p">);</span>
+                            <span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pn</span><span class="p">,</span> <span class="n">filen</span><span class="p">));</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+                            
+        <span class="n">os</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fh</span><span class="p">);</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">ff</span><span class="p">);</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="n">ff</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="parseElastixOutputPoints"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.parseElastixOutputPoints">[docs]</a><span class="k">def</span> <span class="nf">parseElastixOutputPoints</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parses the output points from the output file of transformix</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name of the transformix output file</span>
+<span class="sd">        indices (bool): if True return pixel indices otherwise float coordinates</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        points (array): the transformed coordinates     </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+    
+    <span class="n">np</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">np</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+    
+    <span class="n">points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">np</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">ls</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">();</span>
+        <span class="k">if</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">points</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">22</span><span class="p">]);</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">points</span><span class="p">[</span><span class="n">k</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ls</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">30</span><span class="p">]);</span>
+        
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="n">points</span><span class="p">;</span></div>
+          
+         
+<div class="viewcode-block" id="getTransformFileSizeAndSpacing"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.getTransformFileSizeAndSpacing">[docs]</a><span class="k">def</span> <span class="nf">getTransformFileSizeAndSpacing</span><span class="p">(</span><span class="n">transformfile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parse the image size and spacing from a transformation parameter file</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        transformfile (str): File name of the transformix parameter file.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        (float, float): the image size and spacing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">resi</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;\(Size (?P&lt;size&gt;.*)\)&quot;</span><span class="p">);</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;\(Spacing (?P&lt;spacing&gt;.*)\)&quot;</span><span class="p">);</span>
+    
+    <span class="n">si</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">transformfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">parfile</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">parfile</span><span class="p">:</span>
+            <span class="c">#print line;</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">resi</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">pn</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;size&#39;</span><span class="p">);</span>
+                <span class="n">si</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">split</span><span class="p">();</span>
+                <span class="c">#print si</span>
+                
+            <span class="n">m</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+            <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">pn</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;spacing&#39;</span><span class="p">);</span>
+                <span class="n">sp</span> <span class="o">=</span> <span class="n">pn</span><span class="o">.</span><span class="n">split</span><span class="p">();</span>
+                <span class="c">#print sp </span>
+    
+        <span class="n">parfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+    
+    <span class="n">si</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">si</span><span class="p">];</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sp</span><span class="p">];</span>
+    
+    <span class="k">return</span> <span class="n">si</span><span class="p">,</span> <span class="n">sp</span></div>
+
+
+<div class="viewcode-block" id="getResultDataFile"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.getResultDataFile">[docs]</a><span class="k">def</span> <span class="nf">getResultDataFile</span><span class="p">(</span><span class="n">resultdir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the mhd result file in a result directory</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        resultdir (str): Path to elastix result directory.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The mhd file in the result directory.</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">resultdir</span><span class="p">);</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">files</span> <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="s">&#39;.*.mhd&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)];</span>
+    <span class="n">files</span><span class="o">.</span><span class="n">sort</span><span class="p">();</span>
+    
+    <span class="k">if</span> <span class="n">files</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;Cannot find a valid result data file in &#39;</span> <span class="o">+</span> <span class="n">resultdir</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">resultdir</span><span class="p">,</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+    
+<div class="viewcode-block" id="setTransformFileSizeAndSpacing"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.setTransformFileSizeAndSpacing">[docs]</a><span class="k">def</span> <span class="nf">setTransformFileSizeAndSpacing</span><span class="p">(</span><span class="n">transformfile</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Replaces size and scale in the transformation parameter file</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        transformfile (str): transformation parameter file</span>
+<span class="sd">        size (tuple): the new image size</span>
+<span class="sd">        spacing (tuplr): the new image spacing </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">resi</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;\(Size (?P&lt;size&gt;.*)\)&quot;</span><span class="p">);</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&quot;\(Spacing (?P&lt;spacing&gt;.*)\)&quot;</span><span class="p">);</span>
+    
+    <span class="n">fh</span><span class="p">,</span> <span class="n">tmpfn</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">();</span>
+    
+    <span class="n">si</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">size</span><span class="p">];</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">transformfile</span><span class="p">)</span> <span class="k">as</span> <span class="n">parfile</span><span class="p">:</span>        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">newfile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">parfile</span><span class="p">:</span>
+                <span class="c">#print line</span>
+                
+                <span class="n">m</span> <span class="o">=</span> <span class="n">resi</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                    <span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;(Size </span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">si</span><span class="p">);</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">m</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">m</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+                        <span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;(Spacing </span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="s"> </span><span class="si">%d</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="n">spacing</span><span class="p">);</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">newfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">);</span>
+            
+            <span class="n">newfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>               
+            <span class="n">parfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+            
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">transformfile</span><span class="p">);</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">tmpfn</span><span class="p">,</span> <span class="n">transformfile</span><span class="p">);</span></div>
+        
+
+
+<div class="viewcode-block" id="rescaleSizeAndSpacing"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.rescaleSizeAndSpacing">[docs]</a><span class="k">def</span> <span class="nf">rescaleSizeAndSpacing</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rescales the size and spacing</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        size (tuple): image size</span>
+<span class="sd">        spacing (tuple): image spacing</span>
+<span class="sd">        scale (tuple): the scale factor </span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple, tuple): new size and spacing</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+
+    <span class="n">si</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">size</span><span class="p">];</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">spacing</span> <span class="o">/</span> <span class="n">scale</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="n">si</span><span class="p">,</span> <span class="n">sp</span></div>
+
+
+
+<span class="c">##############################################################################</span>
+<span class="c"># Elastix Runs</span>
+<span class="c">##############################################################################</span>
+
+<div class="viewcode-block" id="alignData"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.alignData">[docs]</a><span class="k">def</span> <span class="nf">alignData</span><span class="p">(</span><span class="n">fixedImage</span><span class="p">,</span> <span class="n">movingImage</span><span class="p">,</span> <span class="n">affineParameterFile</span><span class="p">,</span> <span class="n">bSplineParameterFile</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">resultDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Align images using elastix, estimates a transformation :math:`T:` fixed image :math:`\\rightarrow` moving image.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        fixedImage (str): image source of the fixed image (typically the reference image)</span>
+<span class="sd">        movingImage (str): image source of the moving image (typically the image to be registered)</span>
+<span class="sd">        affineParameterFile (str or None): elastix parameter file for the primary affine transformation</span>
+<span class="sd">        bSplineParameterFile (str or None): elastix parameter file for the secondary non-linear transformation</span>
+<span class="sd">        resultDirectory (str or None): elastic result directory</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: path to elastix result directory</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">checkElastixInitialized</span><span class="p">();</span>
+    <span class="k">global</span> <span class="n">ElastixBinary</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">resultDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">resultDirectory</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">();</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">resultDirectory</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">resultDirectory</span><span class="p">);</span>
+    
+    
+    <span class="k">if</span> <span class="n">bSplineParameterFile</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">ElastixBinary</span> <span class="o">+</span> <span class="s">&#39; -threads 16 -m &#39;</span> <span class="o">+</span> <span class="n">movingImage</span> <span class="o">+</span> <span class="s">&#39; -f &#39;</span> <span class="o">+</span> <span class="n">fixedImage</span> <span class="o">+</span> <span class="s">&#39; -p &#39;</span> <span class="o">+</span> <span class="n">affineParameterFile</span> <span class="o">+</span> <span class="s">&#39; -out &#39;</span> <span class="o">+</span> <span class="n">resultDirectory</span><span class="p">;</span>
+    <span class="k">elif</span> <span class="n">affineParameterFile</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">ElastixBinary</span> <span class="o">+</span> <span class="s">&#39; -threads 16 -m &#39;</span> <span class="o">+</span> <span class="n">movingImage</span> <span class="o">+</span> <span class="s">&#39; -f &#39;</span> <span class="o">+</span> <span class="n">fixedImage</span> <span class="o">+</span> <span class="s">&#39; -p &#39;</span> <span class="o">+</span> <span class="n">bSplineParameterFile</span> <span class="o">+</span> <span class="s">&#39; -out &#39;</span> <span class="o">+</span> <span class="n">resultDirectory</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">ElastixBinary</span> <span class="o">+</span> <span class="s">&#39; -threads 16 -m &#39;</span> <span class="o">+</span> <span class="n">movingImage</span> <span class="o">+</span> <span class="s">&#39; -f &#39;</span> <span class="o">+</span> <span class="n">fixedImage</span> <span class="o">+</span> <span class="s">&#39; -p &#39;</span> <span class="o">+</span> <span class="n">affineParameterFile</span> <span class="o">+</span> <span class="s">&#39; -p &#39;</span> <span class="o">+</span> <span class="n">bSplineParameterFile</span> <span class="o">+</span> <span class="s">&#39; -out &#39;</span> <span class="o">+</span> <span class="n">resultDirectory</span><span class="p">;</span>
+        <span class="c">#$ELASTIX -threads 16 -m $MOVINGIMAGE -f $FIXEDIMAGE -fMask $FIXEDIMAGE_MASK -p  $AFFINEPARFILE -p $BSPLINEPARFILE -out $ELASTIX_OUTPUT_DIR</span>
+    
+    <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;alignData: failed executing: &#39;</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">resultDirectory</span></div>
+
+
+<div class="viewcode-block" id="transformData"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.transformData">[docs]</a><span class="k">def</span> <span class="nf">transformData</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">transformParameterFile</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">transformDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">resultDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform a raw data set to reference using the elastix alignment results</span>
+<span class="sd">    </span>
+<span class="sd">    If the map determined by elastix is </span>
+<span class="sd">    :math:`T \\mathrm{fixed} \\rightarrow \\mathrm{moving}`, </span>
+<span class="sd">    transformix on data works as :math:`T^{-1}(\\mathrm{data})`.</span>
+<span class="sd">        </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str or array): image source to be transformed</span>
+<span class="sd">        sink (str, [] or None): image sink to save transformed image to. if [] return the default name of the data file generated by transformix.</span>
+<span class="sd">        transformParameterFile (str or None): parameter file for the primary transformation, if None, the file is determined from the transformDirectory.</span>
+<span class="sd">        transformDirectory (str or None): result directory of elastix alignment, if None the transformParameterFile has to be given.</span>
+<span class="sd">        resultDirectory (str or None): the directorty for the transformix results</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array or str: array or file name of the transformed data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">global</span> <span class="n">TransformixBinary</span><span class="p">;</span>    
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">imgname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s">&#39;elastix_input.tif&#39;</span><span class="p">);</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">imgname</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">io</span><span class="o">.</span><span class="n">dataFileNameToType</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;TIF&quot;</span><span class="p">:</span>
+            <span class="n">imgname</span> <span class="o">=</span> <span class="n">source</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">imgname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">gettempdir</span><span class="p">(),</span> <span class="s">&#39;elastix_input.tif&#39;</span><span class="p">);</span>
+            <span class="n">io</span><span class="o">.</span><span class="n">transformData</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">imgname</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;transformData: source not a string or array&#39;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="n">resultDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">resultdirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s">&#39;elastix_output&#39;</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">resultdirname</span> <span class="o">=</span> <span class="n">resultDirectory</span><span class="p">;</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        
+    
+    <span class="k">if</span> <span class="n">transformParameterFile</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">transformDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;neither alignment directory and transformation parameter file specified!&#39;</span><span class="p">);</span> 
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">transformDirectory</span>
+        <span class="n">transformParameterFile</span> <span class="o">=</span> <span class="n">getTransformParameterFile</span><span class="p">(</span><span class="n">transformparameterdir</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">transformParameterFile</span><span class="p">);</span>
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">transformparameterdir</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    
+    <span class="c">#transform</span>
+    <span class="c">#make path in parameterfiles absolute</span>
+    <span class="n">setPathTransformParameterFiles</span><span class="p">(</span><span class="n">transformparameterdir</span><span class="p">);</span>
+   
+    <span class="c">#transformix -in inputImage.ext -out outputDirectory -tp TransformParameters.txt</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">TransformixBinary</span> <span class="o">+</span> <span class="s">&#39; -in &#39;</span> <span class="o">+</span> <span class="n">imgname</span> <span class="o">+</span> <span class="s">&#39; -out &#39;</span> <span class="o">+</span> <span class="n">resultdirname</span> <span class="o">+</span> <span class="s">&#39; -tp &#39;</span> <span class="o">+</span> <span class="n">transformParameterFile</span><span class="p">;</span>
+    
+    <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;transformData: failed executing: &#39;</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">);</span>
+    
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">imgname</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="n">sink</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="n">getResultDataFile</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">sink</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">resultfile</span> <span class="o">=</span> <span class="n">getResultDataFile</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">resultfile</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">resultfile</span> <span class="o">=</span> <span class="n">getResultDataFile</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">convertData</span><span class="p">(</span><span class="n">resultfile</span><span class="p">,</span> <span class="n">sink</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;transformData: sink not valid!&#39;</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="deformationField"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.deformationField">[docs]</a><span class="k">def</span> <span class="nf">deformationField</span><span class="p">(</span><span class="n">sink</span> <span class="o">=</span> <span class="p">[],</span> <span class="n">transformParameterFile</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">transformDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">resultDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create the deformation field T(x) - x</span>
+<span class="sd">    </span>
+<span class="sd">    The map determined by elastix is </span>
+<span class="sd">    :math:`T \\mathrm{fixed} \\rightarrow \\mathrm{moving}`</span>
+<span class="sd">        </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        sink (str, [] or None): image sink to save the transformation field; if [] return the default name of the data file generated by transformix.</span>
+<span class="sd">        transformParameterFile (str or None): parameter file for the primary transformation, if None, the file is determined from the transformDirectory.</span>
+<span class="sd">        transformDirectory (str or None): result directory of elastix alignment, if None the transformParameterFile has to be given.</span>
+<span class="sd">        resultDirectory (str or None): the directorty for the transformix results</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array or str: array or file name of the transformed data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">global</span> <span class="n">TransformixBinary</span><span class="p">;</span>    
+    
+    <span class="k">if</span> <span class="n">resultDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">resultdirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s">&#39;elastix_output&#39;</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">resultdirname</span> <span class="o">=</span> <span class="n">resultDirectory</span><span class="p">;</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        
+    <span class="k">if</span> <span class="n">transformParameterFile</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">transformDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;neither alignment directory and transformation parameter file specified!&#39;</span><span class="p">);</span> 
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">transformDirectory</span>
+        <span class="n">transformParameterFile</span> <span class="o">=</span> <span class="n">getTransformParameterFile</span><span class="p">(</span><span class="n">transformparameterdir</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">transformParameterFile</span><span class="p">);</span>
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">transformparameterdir</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    
+    <span class="c">#transform</span>
+    <span class="c">#make path in parameterfiles absolute</span>
+    <span class="n">setPathTransformParameterFiles</span><span class="p">(</span><span class="n">transformparameterdir</span><span class="p">);</span>
+   
+    <span class="c">#transformix -in inputImage.ext -out outputDirectory -tp TransformParameters.txt</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">TransformixBinary</span> <span class="o">+</span> <span class="s">&#39; -def all -out &#39;</span> <span class="o">+</span> <span class="n">resultdirname</span> <span class="o">+</span> <span class="s">&#39; -tp &#39;</span> <span class="o">+</span> <span class="n">transformParameterFile</span><span class="p">;</span>
+    
+    <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;deformationField: failed executing: &#39;</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">);</span>
+    
+    
+    <span class="k">if</span> <span class="n">sink</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="n">getResultDataFile</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">sink</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">resultfile</span> <span class="o">=</span> <span class="n">getResultDataFile</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">resultfile</span><span class="p">);</span>
+        <span class="k">if</span> <span class="n">resultDirectory</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="n">resultfile</span> <span class="o">=</span> <span class="n">getResultDataFile</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">convertData</span><span class="p">(</span><span class="n">resultfile</span><span class="p">,</span> <span class="n">sink</span><span class="p">);</span>
+        <span class="k">if</span> <span class="n">resultDirectory</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">resultdirname</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;deformationField: sink not valid!&#39;</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="deformationDistance"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.deformationDistance">[docs]</a><span class="k">def</span> <span class="nf">deformationDistance</span><span class="p">(</span><span class="n">deformationField</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">scale</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the distance field from a deformation vector field</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        deformationField (str or array): source of the deformation field determined by :func:`deformationField`</span>
+<span class="sd">        sink (str or None): image sink to save the deformation field to</span>
+<span class="sd">        scale (tuple or None): scale factor for each dimension, if None = (1,1,1)</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array or str: array or file name of the transformed data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">deformationField</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">deformationField</span><span class="p">);</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">deformationField</span><span class="p">);</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">scale</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="n">df</span><span class="p">[:,:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,:,:,</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">scale</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+            
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)));</span></div>
+    
+
+<div class="viewcode-block" id="writePoints"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.writePoints">[docs]</a><span class="k">def</span> <span class="nf">writePoints</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write points as elastix/transformix point file</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name of the elastix point file.</span>
+<span class="sd">        points (array or str): source of the points.</span>
+<span class="sd">        indices (bool): write as pixel indices or physical coordiantes</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str : file name of the elastix point file</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readPoints</span><span class="p">(</span><span class="n">points</span><span class="p">);</span>
+    <span class="c">#points = points[:,[1,0,2]]; # points in ClearMap (y,x,z) -&gt; permute to (x,y,z)</span>
+
+  
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pointfile</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">indices</span><span class="p">:</span>
+            <span class="n">pointfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;index</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pointfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;point</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">)</span>
+    
+        <span class="n">pointfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">pointfile</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">delimiter</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="p">,</span> <span class="n">newline</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%.5e</span><span class="s">&#39;</span><span class="p">)</span>
+        <span class="n">pointfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+    
+    <span class="k">return</span> <span class="n">filename</span><span class="p">;</span></div>
+
+
+
+<div class="viewcode-block" id="transformPoints"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.transformPoints">[docs]</a><span class="k">def</span> <span class="nf">transformPoints</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">transformParameterFile</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">transformDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">resultDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">tmpFile</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transform coordinates math:`x` via elastix estimated transformation to :math:`T(x)`</span>
+
+<span class="sd">    Note the transformation is from the fixed image coorindates to the moving image coordiantes.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): source of the points</span>
+<span class="sd">        sink (str or None): sink for transformed points</span>
+<span class="sd">        transformParameterFile (str or None): parameter file for the primary transformation, if None, the file is determined from the transformDirectory.</span>
+<span class="sd">        transformDirectory (str or None): result directory of elastix alignment, if None the transformParameterFile has to be given.</span>
+<span class="sd">        indices (bool): if True use points as pixel coordinates otherwise spatial coordinates.</span>
+<span class="sd">        resultDirectory (str or None): elastic result directory</span>
+<span class="sd">        tmpFile (str or None): file name for the elastix point file.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array or str: array or file name of transformed points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+        
+    <span class="k">global</span> <span class="n">TransformixBinary</span><span class="p">;</span>    
+    
+    <span class="n">checkElastixInitialized</span><span class="p">();</span>    
+    <span class="k">global</span> <span class="n">ElastixSettings</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="n">tmpFile</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">tmpFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s">&#39;elastix_input.txt&#39;</span><span class="p">);</span>
+
+    <span class="c"># write text file</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        
+        <span class="c">#check if we have elastix signature                 </span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">();</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+            
+            <span class="k">if</span> <span class="n">line</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;point&#39;</span> <span class="ow">or</span> <span class="n">line</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&#39;index&#39;</span><span class="p">:</span>
+                <span class="n">txtfile</span> <span class="o">=</span> <span class="n">source</span><span class="p">;</span>
+            <span class="k">else</span><span class="p">:</span>                
+                <span class="n">points</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readPoints</span><span class="p">(</span><span class="n">source</span><span class="p">);</span>
+                <span class="c">#points = points[:,[1,0,2]];</span>
+                <span class="n">txtfile</span> <span class="o">=</span> <span class="n">tmpFile</span><span class="p">;</span>
+                <span class="n">writePoints</span><span class="p">(</span><span class="n">txtfile</span><span class="p">,</span> <span class="n">points</span><span class="p">);</span> 
+    
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">txtfile</span> <span class="o">=</span> <span class="n">tmpFile</span><span class="p">;</span>
+        <span class="c">#points = source[:,[1,0,2]];</span>
+        <span class="n">writePoints</span><span class="p">(</span><span class="n">txtfile</span><span class="p">,</span> <span class="n">source</span><span class="p">);</span>
+        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;transformPoints: source not string or array!&#39;</span><span class="p">);</span>
+    
+    
+    <span class="k">if</span> <span class="n">resultDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">outdirname</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tempfile</span><span class="o">.</span><span class="n">tempdir</span><span class="p">,</span> <span class="s">&#39;elastix_output&#39;</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">outdirname</span> <span class="o">=</span> <span class="n">resultDirectory</span><span class="p">;</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">outdirname</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">outdirname</span><span class="p">);</span>
+        
+    
+    <span class="k">if</span> <span class="n">transformParameterFile</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">transformDirectory</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;neither alignment directory and transformation parameter file specified!&#39;</span><span class="p">);</span> 
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">transformDirectory</span>
+        <span class="n">transformparameterfile</span> <span class="o">=</span> <span class="n">getTransformParameterFile</span><span class="p">(</span><span class="n">transformparameterdir</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">transformparameterdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">transformParameterFile</span><span class="p">);</span>
+        <span class="n">transformparameterdir</span>  <span class="o">=</span> <span class="n">transformparameterdir</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">transformparameterfile</span> <span class="o">=</span> <span class="n">transformParameterFile</span><span class="p">;</span>
+    
+    <span class="c">#transform</span>
+    <span class="c">#make path in parameterfiles absolute</span>
+    <span class="n">setPathTransformParameterFiles</span><span class="p">(</span><span class="n">transformparameterdir</span><span class="p">);</span>
+    
+    <span class="c">#run transformix   </span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="n">TransformixBinary</span> <span class="o">+</span> <span class="s">&#39; -def &#39;</span> <span class="o">+</span> <span class="n">txtfile</span> <span class="o">+</span> <span class="s">&#39; -out &#39;</span> <span class="o">+</span> <span class="n">outdirname</span> <span class="o">+</span> <span class="s">&#39; -tp &#39;</span> <span class="o">+</span> <span class="n">transformparameterfile</span><span class="p">;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="n">cmd</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">res</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;failed executing &#39;</span> <span class="o">+</span> <span class="n">cmd</span><span class="p">);</span>
+    
+    
+    <span class="c">#read data / file </span>
+    <span class="k">if</span> <span class="n">sink</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdirname</span><span class="p">,</span> <span class="s">&#39;outputpoints.txt&#39;</span><span class="p">)</span>
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c">#read coordinates</span>
+        <span class="n">transpoints</span> <span class="o">=</span> <span class="n">parseElastixOutputPoints</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdirname</span><span class="p">,</span> <span class="s">&#39;outputpoints.txt&#39;</span><span class="p">),</span> <span class="n">indices</span> <span class="o">=</span> <span class="n">indices</span><span class="p">);</span>
+
+        <span class="c">#correct x,y,z to y,x,z</span>
+        <span class="c">#transpoints = transpoints[:,[1,0,2]];     </span>
+        
+        <span class="c">#cleanup</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">outdirname</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">outdirname</span><span class="p">,</span> <span class="n">f</span><span class="p">));</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="n">outdirname</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">writePoints</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="n">transpoints</span><span class="p">);</span></div>
+
+        
+        
+ 
+
+<span class="c">##############################################################################</span>
+<span class="c"># Test</span>
+<span class="c">##############################################################################</span>
+
+     
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test Elastix module&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">ClearMap.Alignment.Elastix</span> <span class="kn">as</span> <span class="nn">self</span>
+    <span class="nb">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="kn">from</span> <span class="nn">ClearMap.Settings</span> <span class="kn">import</span> <span class="n">ClearMapPath</span><span class="p">;</span>
+    <span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">numpy</span>
+    
+    <span class="n">p</span> <span class="o">=</span> <span class="n">ClearMapPath</span><span class="p">;</span>
+    
+    <span class="n">resultdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s">&#39;Test/Elastix/Output&#39;</span><span class="p">);</span>
+    
+    <span class="k">print</span> <span class="s">&#39;Searching for transformation parameter file in &#39;</span> <span class="o">+</span> <span class="n">resultdir</span><span class="p">;</span>
+    <span class="n">pf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getTransformParameterFile</span><span class="p">(</span><span class="n">resultdir</span><span class="p">)</span>
+      
+    <span class="k">print</span> <span class="s">&#39;Found: &#39;</span> <span class="o">+</span> <span class="n">pf</span><span class="p">;</span>
+    
+    
+    <span class="c">#replace path in trasform parameter files:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">setPathTransformParameterFiles</span><span class="p">(</span><span class="n">resultdir</span><span class="p">)</span>
+    
+    <span class="c">#initialize</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">initializeElastix</span><span class="p">(</span><span class="s">&#39;/home/ckirst/programs/elastix&#39;</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">printSettings</span><span class="p">()</span>
+
+    <span class="c">#transform points</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>    
+     
+    <span class="k">print</span> <span class="s">&#39;Transforming points: &#39;</span>
+    <span class="n">tpts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transformPoints</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">transformParameterFile</span> <span class="o">=</span> <span class="n">pf</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">False</span><span class="p">);</span>
+    <span class="k">print</span> <span class="n">pts</span>
+    <span class="k">print</span> <span class="s">&#39;Transformed points: &#39;</span>
+    <span class="k">print</span> <span class="n">tpts</span>
+    
+    
+    <span class="c">#deformation and distance fields     </span>
+    <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deformationField</span><span class="p">(</span><span class="n">transformParameterFile</span> <span class="o">=</span> <span class="n">pf</span><span class="p">,</span> <span class="n">resultDirectory</span> <span class="o">=</span> <span class="bp">None</span><span class="p">);</span>
+    <span class="c">#df = &#39;/tmp/elastix_output/deformationField.mhd&#39;;</span>
+
+    <span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="s">&#39;/tmp/elastix_output/deformationField.mhd&#39;</span><span class="p">);</span>
+    
+    <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">deformationDistance</span><span class="p">(</span><span class="n">data</span><span class="p">);</span>
+    
+    <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s">&#39;Test/Elastix/Output/distances.raw&#39;</span><span class="p">),</span> <span class="n">ds</span><span class="p">);</span></div>
+    
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">();</span>
+    
+
+
+
+
+
+  
+
+    
+    
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

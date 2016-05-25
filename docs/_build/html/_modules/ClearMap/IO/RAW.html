@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.IO.RAW &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.IO.RAW</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Simple Interface to read RAW/MHD files e.g. created by elastix</span>
+
+<span class="sd">Todo: read subsets efficiently</span>
+
+
+<span class="sd">Example:</span>
+<span class="sd">    &gt;&gt;&gt; import os, numpy</span>
+<span class="sd">    &gt;&gt;&gt; from ClearMap.Settings import ClearMapPath</span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.IO.RAW as raw</span>
+<span class="sd">    &gt;&gt;&gt; filename = os.path.join(ClearMapPath, &#39;Test/Data/Raw/test.mhd&#39;) </span>
+<span class="sd">    &gt;&gt;&gt; raw.dataSize(filename);</span>
+<span class="sd">    (20, 50, 10)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">vtk</span>
+<span class="kn">from</span> <span class="nn">vtk.util.numpy_support</span> <span class="kn">import</span> <span class="n">vtk_to_numpy</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+
+
+<div class="viewcode-block" id="dataSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.dataSize">[docs]</a><span class="k">def</span> <span class="nf">dataSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read data size from raw/mhd image</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str):  imaris file name</span>
+<span class="sd">        x,y,z (tuple or all): range specifications</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        int: raw image data size</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    
+    <span class="n">imr</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkMetaImageReader</span><span class="p">()</span>
+    <span class="n">imr</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">imr</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+    <span class="n">im</span> <span class="o">=</span> <span class="n">imr</span><span class="o">.</span><span class="n">GetOutput</span><span class="p">()</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">GetDimensions</span><span class="p">();</span>
+    <span class="c">#dims = list(dims);</span>
+    <span class="c">#dims[0:2] = [dims[1], dims[0]];</span>
+    <span class="c">#dims = tuple(dims);</span>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">dataSizeFromDataRange</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span></div>
+
+    
+<div class="viewcode-block" id="dataZSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.dataZSize">[docs]</a><span class="k">def</span> <span class="nf">dataZSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read z data size from raw/mhd image</span>
+<span class="sd">        </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str):  imaris file name</span>
+<span class="sd">        z (tuple or all): range specification</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        int: raw image z data size</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    
+    <span class="n">imr</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkMetaImageReader</span><span class="p">()</span>
+    <span class="n">imr</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">imr</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+
+    <span class="n">im</span> <span class="o">=</span> <span class="n">imr</span><span class="o">.</span><span class="n">GetOutput</span><span class="p">()</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">GetDimensions</span><span class="p">()</span>
+    
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataSize</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">r</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span><span class="p">;</span></div>
+
+    
+
+<div class="viewcode-block" id="readData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.readData">[docs]</a><span class="k">def</span> <span class="nf">readData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read data from raw/mhd image</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        x,y,z (tuple): data range specifications</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: image data</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    
+    <span class="n">imr</span> <span class="o">=</span> <span class="n">vtk</span><span class="o">.</span><span class="n">vtkMetaImageReader</span><span class="p">()</span>
+    <span class="n">imr</span><span class="o">.</span><span class="n">SetFileName</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">imr</span><span class="o">.</span><span class="n">Update</span><span class="p">()</span>
+    
+    <span class="n">im</span> <span class="o">=</span> <span class="n">imr</span><span class="o">.</span><span class="n">GetOutput</span><span class="p">()</span>
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">GetDimensions</span><span class="p">()</span>
+    
+    <span class="k">print</span> <span class="n">dims</span>    
+    
+    <span class="n">sc</span> <span class="o">=</span> <span class="n">im</span><span class="o">.</span><span class="n">GetPointData</span><span class="p">()</span><span class="o">.</span><span class="n">GetScalars</span><span class="p">()</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">vtk_to_numpy</span><span class="p">(</span><span class="n">sc</span><span class="p">)</span>
+    <span class="c">#print img.shape</span>
+    
+    <span class="n">dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">dims</span><span class="p">);</span>
+    <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">dims</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>
+    
+    <span class="n">imgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">);</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">imgs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">imgs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+        <span class="n">dims</span> <span class="o">=</span> <span class="n">dims</span> <span class="o">+</span> <span class="n">imgs</span><span class="p">;</span>
+    
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span>
+    <span class="c">#img = img.transpose([1,2,0]);</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
+    <span class="n">tp</span> <span class="o">=</span> <span class="n">tp</span> <span class="o">+</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">))];</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">tp</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">dataToRange</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="writeHeader"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.writeHeader">[docs]</a><span class="k">def</span> <span class="nf">writeHeader</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">meta_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write raw header mhd file</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name of header</span>
+<span class="sd">        meta_dict (dict): dictionary of meta data</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: header file name</span>
+<span class="sd">    &quot;&quot;&quot;</span>       
+    
+    
+    <span class="n">header</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+    <span class="c"># do not use tags = meta_dict.keys() because the order of tags matters</span>
+    <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;ObjectType&#39;</span><span class="p">,</span><span class="s">&#39;NDims&#39;</span><span class="p">,</span><span class="s">&#39;BinaryData&#39;</span><span class="p">,</span>
+       <span class="s">&#39;BinaryDataByteOrderMSB&#39;</span><span class="p">,</span><span class="s">&#39;CompressedData&#39;</span><span class="p">,</span><span class="s">&#39;CompressedDataSize&#39;</span><span class="p">,</span>
+       <span class="s">&#39;TransformMatrix&#39;</span><span class="p">,</span><span class="s">&#39;Offset&#39;</span><span class="p">,</span><span class="s">&#39;CenterOfRotation&#39;</span><span class="p">,</span>
+       <span class="s">&#39;AnatomicalOrientation&#39;</span><span class="p">,</span>
+       <span class="s">&#39;ElementSpacing&#39;</span><span class="p">,</span>
+       <span class="s">&#39;DimSize&#39;</span><span class="p">,</span>
+       <span class="s">&#39;ElementType&#39;</span><span class="p">,</span>
+       <span class="s">&#39;ElementDataFile&#39;</span><span class="p">,</span>
+       <span class="s">&#39;Comment&#39;</span><span class="p">,</span><span class="s">&#39;SeriesDescription&#39;</span><span class="p">,</span><span class="s">&#39;AcquisitionDate&#39;</span><span class="p">,</span><span class="s">&#39;AcquisitionTime&#39;</span><span class="p">,</span><span class="s">&#39;StudyDate&#39;</span><span class="p">,</span><span class="s">&#39;StudyTime&#39;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">meta_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">header</span> <span class="o">+=</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s"> = </span><span class="si">%s</span><span class="se">\n</span><span class="s">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">tag</span><span class="p">,</span><span class="n">meta_dict</span><span class="p">[</span><span class="n">tag</span><span class="p">])</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    
+    <span class="k">return</span> <span class="n">filename</span><span class="p">;</span></div>
+
+
+
+
+<div class="viewcode-block" id="writeRawData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.writeRawData">[docs]</a><span class="k">def</span> <span class="nf">writeRawData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write the data into a raw format file.</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        data (array): data to write to raw file</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name of raw file</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    
+    <span class="n">rawfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span><span class="s">&#39;wb&#39;</span><span class="p">);</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="c">#data.tofile(rawfile);</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">rawfile</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="c">#data.transpose([2,0,1]).tofile(rawfile);</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">rawfile</span><span class="p">);</span>
+    <span class="k">elif</span> <span class="n">d</span><span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="c">#data.transpose([3,2,0,1]).tofile(rawfile);</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">transpose</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">tofile</span><span class="p">(</span><span class="n">rawfile</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;writeRawData: image dimension </span><span class="si">%d</span><span class="s"> not supported!&#39;</span> <span class="o">%</span> <span class="n">d</span><span class="p">);</span>
+    
+    <span class="n">rawfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+    
+    <span class="k">return</span> <span class="n">filename</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="writeData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.writeData">[docs]</a><span class="k">def</span> <span class="nf">writeData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Write  data into to raw/mhd file pair</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        data (array): data to write to raw file</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name of mhd file</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="n">fext</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">fileExtension</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s">&quot;raw&quot;</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">filename</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;mhd&#39;</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">filename</span><span class="p">;</span>
+    
+    <span class="k">assert</span><span class="p">(</span><span class="n">fname</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:]</span><span class="o">==</span><span class="s">&#39;.mhd&#39;</span><span class="p">)</span>
+    
+    <span class="n">meta_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;ObjectType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;Image&#39;</span>
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;BinaryData&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;True&#39;</span>
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;BinaryDataByteOrderMSB&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;False&#39;</span>
+
+    <span class="n">numpy_to_datatype</span>   <span class="o">=</span> <span class="p">{</span><span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;int8&#39;</span><span class="p">)</span>    <span class="p">:</span> <span class="s">&quot;MET_CHAR&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;uint8&#39;</span><span class="p">)</span>   <span class="p">:</span> <span class="s">&quot;MET_UCHAR&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;int16&#39;</span><span class="p">)</span>   <span class="p">:</span> <span class="s">&quot;MET_SHORT&quot;</span><span class="p">,</span> 
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;uint16&#39;</span><span class="p">)</span>  <span class="p">:</span> <span class="s">&quot;MET_USHORT&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;int32&#39;</span><span class="p">)</span>   <span class="p">:</span> <span class="s">&quot;MET_INT&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;uint32&#39;</span><span class="p">)</span>  <span class="p">:</span> <span class="s">&quot;MET_UINT&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;int64&#39;</span><span class="p">)</span>   <span class="p">:</span> <span class="s">&quot;MET_LONG&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;uint64&#39;</span><span class="p">)</span>  <span class="p">:</span> <span class="s">&quot;MET_ULONG&quot;</span><span class="p">,</span>
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;MET_FLOAT&quot;</span><span class="p">,</span> 
+                           <span class="n">numpy</span><span class="o">.</span><span class="n">dtype</span><span class="p">(</span><span class="s">&#39;float64&#39;</span><span class="p">)</span> <span class="p">:</span> <span class="s">&quot;MET_DOUBLE&quot;</span><span class="p">,</span>
+                           <span class="p">}</span>    
+                           
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">;</span>    
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;ElementType&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy_to_datatype</span><span class="p">[</span><span class="n">dtype</span><span class="p">];</span>
+    
+    <span class="n">dsize</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">);</span>    
+    <span class="c">#dsize[0:2] = [dsize[1],dsize[0]];  #fix arrays represented as (y,x,z)</span>
+    
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;NDims&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dsize</span><span class="p">))</span>
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;DimSize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dsize</span><span class="p">])</span>
+    <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;ElementDataFile&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.mhd&#39;</span><span class="p">,</span><span class="s">&#39;.raw&#39;</span><span class="p">)</span>
+    <span class="n">writeHeader</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">meta_dict</span><span class="p">)</span>
+
+    <span class="n">pwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">fname</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">pwd</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">pwd</span> <span class="o">+</span><span class="s">&#39;/&#39;</span> <span class="o">+</span> <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;ElementDataFile&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">data_file</span> <span class="o">=</span> <span class="n">meta_dict</span><span class="p">[</span><span class="s">&#39;ElementDataFile&#39;</span><span class="p">]</span>
+
+    <span class="n">writeRawData</span><span class="p">(</span><span class="n">data_file</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">fname</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="copyData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.copyData">[docs]</a><span class="k">def</span> <span class="nf">copyData</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copy a raw/mhd file pair from source to sink</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): file name of source</span>
+<span class="sd">        sink (str): file name of sink</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name of the copy</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    
+    <span class="n">sourceExt</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">fileExtension</span><span class="p">(</span><span class="n">source</span><span class="p">);</span>
+    <span class="n">sinkExt</span>   <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">fileExtension</span><span class="p">(</span><span class="n">sink</span><span class="p">);</span>
+    
+    <span class="n">sources</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="p">];</span> 
+    <span class="n">sinks</span> <span class="o">=</span> <span class="p">[];</span>
+    
+    <span class="k">if</span> <span class="n">sourceExt</span> <span class="o">==</span> <span class="s">&#39;raw&#39;</span><span class="p">:</span>
+        <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;mhd&#39;</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="n">sinkExt</span> <span class="o">==</span> <span class="s">&#39;raw&#39;</span><span class="p">:</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">);</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;mhd&#39;</span><span class="p">);</span>
+        <span class="k">elif</span> <span class="n">sinkExt</span> <span class="o">==</span> <span class="s">&#39;mhd&#39;</span><span class="p">:</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;raw&#39;</span><span class="p">);</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">);</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;copyData: sink extension </span><span class="si">%s</span><span class="s"> not raw or mhd&#39;</span> <span class="o">%</span> <span class="n">sinkExt</span><span class="p">);</span>
+    
+    <span class="k">elif</span> <span class="n">sourceExt</span> <span class="o">==</span> <span class="s">&#39;mhd&#39;</span><span class="p">:</span>
+        <span class="n">sources</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">source</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;raw&#39;</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="n">sinkExt</span> <span class="o">==</span> <span class="s">&#39;raw&#39;</span><span class="p">:</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;mhd&#39;</span><span class="p">);</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">);</span>
+        <span class="k">elif</span> <span class="n">sinkExt</span> <span class="o">==</span> <span class="s">&#39;mhd&#39;</span><span class="p">:</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">);</span>
+            <span class="n">sinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sink</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;raw&#39;</span><span class="p">);</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;copyData: sink extension </span><span class="si">%s</span><span class="s"> not raw or mhd&#39;</span> <span class="o">%</span> <span class="n">sinkExt</span><span class="p">);</span>
+        
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">):</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">copyData</span><span class="p">(</span><span class="n">sources</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">sinks</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    
+    <span class="k">return</span> <span class="n">sink</span><span class="p">;</span></div>
+
+
+
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.RAW.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test RAW io module&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">ClearMap.IO.RAW</span> <span class="kn">as</span> <span class="nn">self</span>
+    <span class="nb">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="kn">from</span> <span class="nn">ClearMap.Settings</span> <span class="kn">import</span> <span class="n">ClearMapPath</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">numpy</span>
+    
+    <span class="sd">&quot;&quot;&quot;Test RAW module&quot;&quot;&quot;</span>
+    <span class="n">basedir</span> <span class="o">=</span> <span class="n">ClearMapPath</span><span class="p">;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="s">&#39;Test/Data/Raw/test.mhd&#39;</span><span class="p">)</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="c">#reload(self)</span>
+    <span class="k">print</span> <span class="s">&quot;writing raw image to: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>    
+    <span class="bp">self</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+
+    <span class="k">print</span> <span class="s">&quot;Loading raw image from: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>  
+    <span class="k">print</span> <span class="s">&quot;Image size: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">img</span> <span class="o">-</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">diff</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+
+    <span class="c">#some uint type</span>
+    <span class="k">print</span> <span class="s">&quot;writing raw image to: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>    
+    <span class="n">udata</span> <span class="o">=</span> <span class="n">data</span> <span class="o">*</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">udata</span> <span class="o">=</span> <span class="n">udata</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;uint16&#39;</span><span class="p">);</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">udata</span><span class="p">);</span>
+
+    <span class="k">print</span> <span class="s">&quot;Loading raw image from: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>  
+    <span class="k">print</span> <span class="s">&quot;Image size: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">img</span> <span class="o">-</span> <span class="n">udata</span><span class="p">;</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">diff</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+    
+    
+    <span class="c">#dataSize</span>
+    <span class="k">print</span> <span class="s">&quot;dataSize  is </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+    <span class="k">print</span> <span class="s">&quot;dataZSize is </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataZSize</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span></div>
+    
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">();</span>
+    
+
+
+<span class="c">#VTK / ITK versions:</span>
+
+<span class="c">#def writeData(filename, data, **args):</span>
+<span class="c">#    </span>
+<span class="c">#    vtkarray = numpy_to_vtk(data);</span>
+<span class="c">#    #assert isinstance(v, vtk.vtkImageData)</span>
+<span class="c">#    writer = vtk.vtkMetaImageWriter();</span>
+<span class="c">#    </span>
+<span class="c">#    fext = io.fileExtension(filename);</span>
+<span class="c">#    if fext == &quot;raw&quot;:</span>
+<span class="c">#        fname = filename[:-3] + &#39;mhd&#39;;</span>
+<span class="c">#    else:</span>
+<span class="c">#        fname = filename;</span>
+<span class="c">#        </span>
+<span class="c">#    writer.SetFileName(fname)</span>
+<span class="c">#    writer.SetInput(vtkarray)</span>
+<span class="c">#    writer.Write()</span>
+
+
+<span class="c">#   from medpy.io import save    </span>
+<span class="c">#   save(data, filename);   </span>
+<span class="c">#   return filename;</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

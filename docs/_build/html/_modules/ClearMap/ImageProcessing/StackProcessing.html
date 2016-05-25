@@ -1,0 +1,682 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.StackProcessing &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.ImageProcessing.StackProcessing</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Process a image stack in parallel or sequentially</span>
+
+<span class="sd">In this toolbox image processing is parallized via splitting a volumetric</span>
+<span class="sd">image stack into several sub-stacks, typically in z-direction. As most of </span>
+<span class="sd">the image processig steps are non-local sub-stacks are created with overlaps </span>
+<span class="sd">and the results rejoined accordingly to minimize boundary effects.</span>
+
+<span class="sd">Parallel processing is handled via this module.</span>
+
+<span class="sd">.. _SubStack:</span>
+
+<span class="sd">Sub-Stacks</span>
+<span class="sd">----------</span>
+
+<span class="sd">The parallel processing module creates a dictionary with information on</span>
+<span class="sd">the sub-stack as follows:</span>
+
+<span class="sd">========================== ==================================================</span>
+<span class="sd">Key                        Description</span>
+<span class="sd">========================== ==================================================</span>
+<span class="sd">``stackId``                id of the sub-stack</span>
+<span class="sd">``nStacks``                total number of sub-stacks</span>
+<span class="sd">``source``                 source file/folder/pattern of the stack</span>
+<span class="sd">``x``, ``y``, ``z``        the range of the sub-stack with in the full image</span>
+<span class="sd">``zCenters``               tuple of the centers of the overlaps</span>
+<span class="sd">``zCenterIndices``         tuple of the original indices of the centers of </span>
+<span class="sd">                           the overlaps</span>
+<span class="sd">``zSubStackCenterIndices`` tuple of the indices of the sub-stack that</span>
+<span class="sd">                           correspond to the overlap centers</span>
+<span class="sd">========================== ==================================================</span>
+
+<span class="sd">For exmaple the :func:`writeSubStack` routine makes uses of this information</span>
+<span class="sd">to write out only the sub-parts of the image that is will contribute to the</span>
+<span class="sd">final total image. </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="kn">import</span> <span class="n">Pool</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.ParameterTools</span> <span class="kn">import</span> <span class="n">writeParameter</span>
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.ProcessWriter</span> <span class="kn">import</span> <span class="n">ProcessWriter</span><span class="p">;</span>
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.Timer</span> <span class="kn">import</span> <span class="n">Timer</span><span class="p">;</span>
+
+   
+<div class="viewcode-block" id="printSubStackInfo"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.printSubStackInfo">[docs]</a><span class="k">def</span> <span class="nf">printSubStackInfo</span><span class="p">(</span><span class="n">subStack</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Print information about the sub-stack</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        subStack (dict): the sub-stack info</span>
+<span class="sd">        out (object): the object to write the information to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">writeParameter</span><span class="p">(</span><span class="n">head</span> <span class="o">=</span> <span class="s">&quot;Sub Stack: &quot;</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">subStack</span><span class="p">);</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span></div>
+
+
+<span class="c">#define the subroutine for the processing</span>
+<span class="k">def</span> <span class="nf">_processSubStack</span><span class="p">(</span><span class="n">dsr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helper to process stack in parallel&quot;&quot;&quot;</span>
+
+    <span class="n">sf</span>  <span class="o">=</span> <span class="n">dsr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="n">pp</span>  <span class="o">=</span> <span class="n">dsr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">sub</span> <span class="o">=</span> <span class="n">dsr</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">dsr</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+
+    <span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">();</span>
+    <span class="n">pw</span> <span class="o">=</span> <span class="n">ProcessWriter</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;stackId&quot;</span><span class="p">]);</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">pw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;processing substack &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;stackId&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;nStacks&quot;</span><span class="p">]));</span>
+        <span class="n">pw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;file          = &quot;</span> <span class="o">+</span> <span class="n">sub</span><span class="p">[</span><span class="s">&quot;source&quot;</span><span class="p">]);</span>
+        <span class="n">pw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;segmentation  = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sf</span><span class="p">));</span>
+        <span class="n">pw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;ranges: x,y,z = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">])</span> <span class="o">+</span>  <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">])</span> <span class="o">+</span> <span class="s">&quot;,&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]));</span> 
+    
+    <span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">sub</span><span class="p">[</span><span class="s">&quot;source&quot;</span><span class="p">],</span> <span class="n">x</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[</span><span class="s">&quot;x&quot;</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[</span><span class="s">&quot;y&quot;</span><span class="p">],</span> <span class="n">z</span> <span class="o">=</span> <span class="n">sub</span><span class="p">[</span><span class="s">&quot;z&quot;</span><span class="p">]);</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">pw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">(</span><span class="n">head</span> <span class="o">=</span> <span class="s">&#39;Reading data of size &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)));</span>
+    
+    <span class="n">timer</span><span class="o">.</span><span class="n">reset</span><span class="p">();</span>
+    <span class="n">seg</span> <span class="o">=</span> <span class="n">sf</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">subStack</span> <span class="o">=</span> <span class="n">sub</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">pw</span><span class="p">,</span> <span class="o">**</span><span class="n">pp</span><span class="p">);</span>    
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>    
+        <span class="n">pw</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">(</span><span class="n">head</span> <span class="o">=</span> <span class="s">&#39;Processing substack of size &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)));</span>
+    
+    <span class="k">return</span> <span class="n">seg</span><span class="p">;</span>
+
+
+<div class="viewcode-block" id="writeSubStack"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.writeSubStack">[docs]</a><span class="k">def</span> <span class="nf">writeSubStack</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">subStack</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write the non-redundant part of a sub-stack to disk</span>
+<span class="sd">    </span>
+<span class="sd">    The routine is used to write out images when porcessed in parallel.</span>
+<span class="sd">    It assumes that the filename is a patterned file name.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str or None): file name pattern as described in </span>
+<span class="sd">                        :mod:`~ClearMap.Io.FileList`, if None return as array</span>
+<span class="sd">        img (array): image data of sub-stack</span>
+<span class="sd">        subStack (dict or None): sub-stack information, if None write entire image</span>
+<span class="sd">                                 see :ref:`SubStack`</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">       str or array: the file name pattern or image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">subStack</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="n">subStack</span><span class="p">[</span><span class="s">&quot;zSubStackCenterIndices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">ee</span> <span class="o">=</span> <span class="n">subStack</span><span class="p">[</span><span class="s">&quot;zSubStackCenterIndices&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">si</span> <span class="o">=</span> <span class="n">subStack</span><span class="p">[</span><span class="s">&quot;zCenterIndices&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">si</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">ee</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">img</span><span class="p">[:,:,</span><span class="n">ii</span><span class="p">:</span><span class="n">ee</span><span class="p">],</span> <span class="n">startIndex</span> <span class="o">=</span> <span class="n">si</span> <span class="p">);</span>     </div>
+
+
+
+<div class="viewcode-block" id="joinPoints"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.joinPoints">[docs]</a><span class="k">def</span> <span class="nf">joinPoints</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">subStacks</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">shiftPoints</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Joins a list of points obtained from processing a stack in chunks</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        results (list): list of point results from the individual sub-processes</span>
+<span class="sd">        subStacks (list or None): list of all sub-stack information, see :ref:`SubStack`</span>
+<span class="sd">        shiftPoints (bool): if True shift points to refer to origin of the image stack considered</span>
+<span class="sd">                            when range specification is given. If False, absolute </span>
+<span class="sd">                            position in entire image stack.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">       tuple: joined points, joined intensities</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">nchunks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+    <span class="n">pointlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)];</span>
+    <span class="n">intensities</span> <span class="o">=</span> <span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)];</span> 
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="n">resultsi</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchunks</span><span class="p">):</span>
+        <span class="n">cts</span> <span class="o">=</span> <span class="n">pointlist</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">cti</span> <span class="o">=</span> <span class="n">intensities</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+        <span class="k">if</span> <span class="n">cts</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cts</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="n">subStacks</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;z&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+            <span class="n">iid</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">subStacks</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;zCenters&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cts</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="p">,</span> <span class="n">cts</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">subStacks</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;zCenters&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]);</span>
+            <span class="n">cts</span> <span class="o">=</span> <span class="n">cts</span><span class="p">[</span><span class="n">iid</span><span class="p">,:];</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cts</span><span class="p">);</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">cti</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="n">cti</span> <span class="o">=</span> <span class="n">cti</span><span class="p">[</span><span class="n">iid</span><span class="p">];</span>
+                <span class="n">resultsi</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cti</span><span class="p">);</span>
+            
+    <span class="k">if</span> <span class="n">results</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">intensities</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">)));</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">results</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="n">shiftPoints</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="n">points</span> <span class="o">+</span> <span class="n">io</span><span class="o">.</span><span class="n">pointShiftFromRange</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">subStacks</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&quot;source&quot;</span><span class="p">]),</span> <span class="n">x</span> <span class="o">=</span> <span class="n">subStacks</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&quot;x&quot;</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">subStacks</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&quot;y&quot;</span><span class="p">],</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">);</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="n">points</span> <span class="o">-</span> <span class="n">io</span><span class="o">.</span><span class="n">pointShiftFromRange</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">subStacks</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&quot;source&quot;</span><span class="p">]),</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">subStacks</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s">&quot;z&quot;</span><span class="p">]);</span> <span class="c">#absolute offset is added initially via zranges !</span>
+            
+        <span class="k">if</span> <span class="n">intensities</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">points</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">resultsi</span><span class="p">));</span></div>
+
+
+
+<div class="viewcode-block" id="calculateChunkSize"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.calculateChunkSize">[docs]</a><span class="k">def</span> <span class="nf">calculateChunkSize</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">processes</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">chunkSizeMax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">chunkSizeMin</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">chunkOverlap</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>  <span class="n">chunkOptimization</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">chunkOptimizationSize</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the chunksize and other info for parallel processing</span>
+<span class="sd">    </span>
+<span class="sd">    The sub stack information is described in :ref:`SubStack`  </span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        processes (int): number of parallel processes</span>
+<span class="sd">        chunkSizeMax (int): maximal size of a sub-stack</span>
+<span class="sd">        chunkSizeMin (int): minial size of a sub-stack</span>
+<span class="sd">        chunkOverlap (int): minimal sub-stack overlap</span>
+<span class="sd">        chunkOptimization (bool): optimize chunck sizes to best fit number of processes</span>
+<span class="sd">        chunkOptimizationSize (bool or all): if True only decrease the chunk size when optimizing</span>
+<span class="sd">        verbose (bool): print information on sub-stack generation</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: number of chunks, z-ranges of each chunk, z-centers in overlap regions</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">pre</span> <span class="o">=</span> <span class="s">&quot;ChunkSize: &quot;</span><span class="p">;</span>
+    
+    <span class="c">#calcualte chunk sizes</span>
+    <span class="n">chunksize</span> <span class="o">=</span> <span class="n">chunkSizeMax</span><span class="p">;</span>
+    <span class="n">nchunks</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">((</span><span class="n">size</span> <span class="o">-</span> <span class="n">chunksize</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">*</span> <span class="p">(</span><span class="n">chunksize</span> <span class="o">-</span> <span class="n">chunkOverlap</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">));</span> 
+    <span class="k">if</span> <span class="n">nchunks</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">nchunks</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>   
+    <span class="n">chunksize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="p">(</span><span class="n">nchunks</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">chunkOverlap</span><span class="p">)</span> <span class="o">/</span> <span class="n">nchunks</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Estimated chunk size &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; chunks!&quot;</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">nchunks</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">]</span>
+        
+    <span class="c">#optimize number of chunks wrt to number of processors</span>
+    <span class="k">if</span> <span class="n">chunkOptimization</span><span class="p">:</span>
+        <span class="n">np</span> <span class="o">=</span> <span class="n">nchunks</span> <span class="o">%</span> <span class="n">processes</span><span class="p">;</span>
+        <span class="k">if</span> <span class="n">np</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chunkOptimizationSize</span> <span class="o">==</span> <span class="nb">all</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">np</span> <span class="o">&lt;</span> <span class="n">processes</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">:</span>
+                    <span class="n">chunkOptimizationSize</span> <span class="o">=</span> <span class="bp">True</span><span class="p">;</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">chunkOptimizationSize</span> <span class="o">=</span> <span class="bp">False</span><span class="p">;</span>
+                    
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Optimizing chunk size to fit number of processes!&quot;</span>
+                
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">chunkOptimizationSize</span><span class="p">:</span>
+                <span class="c">#try to deccrease chunksize / increase chunk number to fit distribution on processors</span>
+                <span class="n">nchunks</span> <span class="o">=</span> <span class="n">nchunks</span> <span class="o">-</span> <span class="n">np</span> <span class="o">+</span> <span class="n">processes</span><span class="p">;</span>
+                <span class="n">chunksize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="p">(</span><span class="n">nchunks</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">chunkOverlap</span><span class="p">)</span> <span class="o">/</span> <span class="n">nchunks</span><span class="p">;</span>
+                
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                    <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Optimized chunk size decreased to &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; chunks!&quot;</span><span class="p">;</span>
+                    
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">nchunks</span> <span class="o">!=</span> <span class="n">np</span><span class="p">:</span>
+                    <span class="c">#try to decrease chunk number to fit  processors</span>
+                    <span class="n">nchunks</span> <span class="o">=</span> <span class="n">nchunks</span> <span class="o">-</span> <span class="n">np</span><span class="p">;</span>
+                    <span class="n">chunksize</span> <span class="o">=</span> <span class="p">(</span><span class="n">size</span> <span class="o">+</span> <span class="p">(</span><span class="n">nchunks</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">chunkOverlap</span><span class="p">)</span> <span class="o">/</span> <span class="n">nchunks</span><span class="p">;</span>
+                                  
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Optimized chunk size increased to &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; chunks!&quot;</span><span class="p">;</span>
+                
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                        <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Optimized chunk size unchanged &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; chunks!&quot;</span><span class="p">;</span>
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Optimized chunk size unchanged &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; in &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">nchunks</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; chunks!&quot;</span><span class="p">;</span>
+    
+    
+    <span class="c">#increase overlap if chunks to small</span>
+    <span class="n">chunkSizeMin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">chunkSizeMin</span><span class="p">,</span> <span class="n">chunkOverlap</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">chunksize</span> <span class="o">&lt;</span> <span class="n">chunkSizeMin</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> 
+            <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Warning: optimal chunk size &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunksize</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot; smaller than minimum chunk size &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunkSizeMin</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span><span class="p">;</span> 
+        <span class="n">chunksize</span> <span class="o">=</span> <span class="n">chunkSizeMin</span><span class="p">;</span>
+        <span class="n">chunkOverlap</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">chunksize</span> <span class="o">-</span> <span class="p">(</span><span class="n">size</span> <span class="o">-</span> <span class="n">chunksize</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">nchunks</span> <span class="o">-</span><span class="mi">1</span><span class="p">));</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>        
+            <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;Warning: setting chunk overlap to &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunkOverlap</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;!&quot;</span><span class="p">;</span>
+           
+    <span class="c">#calucalte actual chunk sizes</span>
+    <span class="n">chunksizerest</span> <span class="o">=</span> <span class="n">chunksize</span><span class="p">;</span>
+    <span class="n">chunksize</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">chunksize</span><span class="p">));</span>
+    <span class="n">chunksizerest</span> <span class="o">=</span> <span class="n">chunksizerest</span> <span class="o">-</span> <span class="n">chunksize</span><span class="p">;</span>
+    
+    <span class="n">zranges</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)];</span>
+    <span class="n">zcenters</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">csr</span> <span class="o">=</span> <span class="n">chunksizerest</span><span class="p">;</span>
+    <span class="n">zhi</span> <span class="o">=</span> <span class="n">chunksize</span><span class="p">;</span>
+    
+    <span class="k">while</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="n">nchunks</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        
+        <span class="n">zhiold</span> <span class="o">=</span> <span class="n">zhi</span><span class="p">;</span>
+        <span class="n">zlo</span> <span class="o">=</span> <span class="n">zhi</span> <span class="o">-</span> <span class="n">chunkOverlap</span><span class="p">;</span>
+        <span class="n">zhi</span> <span class="o">=</span> <span class="n">zlo</span> <span class="o">+</span> <span class="n">chunksize</span><span class="p">;</span>
+        
+        <span class="n">csr</span> <span class="o">+=</span> <span class="n">chunksizerest</span><span class="p">;</span>
+        <span class="k">if</span> <span class="n">csr</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">csr</span> <span class="o">=</span> <span class="n">csr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="n">zhi</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+        
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="n">nchunks</span><span class="p">:</span>        
+            <span class="n">zhi</span> <span class="o">=</span> <span class="n">size</span><span class="p">;</span>
+        
+        <span class="n">zranges</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">zlo</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">zhi</span><span class="p">)));</span>
+        <span class="n">zcenters</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">zhiold</span> <span class="o">-</span> <span class="n">zlo</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.</span> <span class="o">+</span> <span class="n">zlo</span><span class="p">);</span> 
+        
+    <span class="n">zcenters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>    
+        <span class="k">print</span> <span class="n">zranges</span>
+        <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;final chunks : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">zranges</span><span class="p">);</span>
+        <span class="k">print</span> <span class="n">pre</span> <span class="o">+</span> <span class="s">&quot;final centers: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">zcenters</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">nchunks</span><span class="p">,</span> <span class="n">zranges</span><span class="p">,</span> <span class="n">zcenters</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="calculateSubStacks"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.calculateSubStacks">[docs]</a><span class="k">def</span> <span class="nf">calculateSubStacks</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the chunksize and other info for parallel processing and returns a list of sub-stack objects</span>
+<span class="sd">    </span>
+<span class="sd">    The sub-stack information is described in :ref:`SubStack`  </span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): image source</span>
+<span class="sd">        x,y,z (tuple or all): range specifications</span>
+<span class="sd">        processes (int): number of parallel processes</span>
+<span class="sd">        chunkSizeMax (int): maximal size of a sub-stack</span>
+<span class="sd">        chunkSizeMin (int): minial size of a sub-stack</span>
+<span class="sd">        chunkOverlap (int): minimal sub-stack overlap</span>
+<span class="sd">        chunkOptimization (bool): optimize chunck sizes to best fit number of processes</span>
+<span class="sd">        chunkOptimizationSize (bool or all): if True only decrease the chunk size when optimizing</span>
+<span class="sd">        verbose (bool): print information on sub-stack generation</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        list: list of sub-stack objects</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    
+    <span class="c">#determine z ranges</span>
+    <span class="n">fs</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">source</span><span class="p">);</span>
+    <span class="n">zs</span> <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+    <span class="n">zr</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataRange</span><span class="p">(</span><span class="n">zs</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span>
+    <span class="n">nz</span> <span class="o">=</span> <span class="n">zr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">zr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    
+    <span class="c">#calculate optimal chunk sizes</span>
+    <span class="n">nchunks</span><span class="p">,</span> <span class="n">zranges</span><span class="p">,</span> <span class="n">zcenters</span> <span class="o">=</span> <span class="n">calculateChunkSize</span><span class="p">(</span><span class="n">nz</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span>
+    
+    <span class="c">#adjust for the zrange</span>
+    <span class="n">zcenters</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="o">+</span> <span class="n">zr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">zcenters</span><span class="p">];</span>
+    <span class="n">zranges</span> <span class="o">=</span> <span class="p">[(</span><span class="n">zc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">zr</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">zc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">zr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">zc</span> <span class="ow">in</span> <span class="n">zranges</span><span class="p">];</span>
+    
+    <span class="c">#create substacks</span>
+    <span class="n">subStacks</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="n">indexlo</span> <span class="o">=</span> <span class="n">zr</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nchunks</span><span class="p">):</span>
+        
+        <span class="n">indexhi</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">zcenters</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]));</span>
+        <span class="k">if</span> <span class="n">indexhi</span> <span class="o">&gt;</span> <span class="n">zr</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="n">i</span> <span class="o">==</span> <span class="n">nchunks</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">indexhi</span> <span class="o">=</span> <span class="n">zr</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+        
+        <span class="n">zs</span> <span class="o">=</span> <span class="n">zranges</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">zranges</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">];</span>
+        
+        <span class="n">subStacks</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s">&quot;stackId&quot;</span> <span class="p">:</span> <span class="n">i</span><span class="p">,</span> <span class="s">&quot;nStacks&quot;</span> <span class="p">:</span> <span class="n">nchunks</span><span class="p">,</span> 
+                          <span class="s">&quot;source&quot;</span> <span class="p">:</span> <span class="n">source</span><span class="p">,</span> <span class="s">&quot;x&quot;</span> <span class="p">:</span> <span class="n">x</span><span class="p">,</span> <span class="s">&quot;y&quot;</span> <span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s">&quot;z&quot;</span> <span class="p">:</span> <span class="n">zranges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                          <span class="s">&quot;zCenters&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="n">zcenters</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">zcenters</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]),</span>
+                          <span class="s">&quot;zCenterIndices&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="n">indexlo</span><span class="p">,</span> <span class="n">indexhi</span><span class="p">),</span>
+                          <span class="s">&quot;zSubStackCenterIndices&quot;</span> <span class="p">:</span> <span class="p">(</span><span class="n">indexlo</span> <span class="o">-</span> <span class="n">zranges</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">zs</span> <span class="o">-</span> <span class="p">(</span><span class="n">zranges</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">indexhi</span><span class="p">))});</span>
+        
+        <span class="n">indexlo</span> <span class="o">=</span> <span class="n">indexhi</span><span class="p">;</span> <span class="c"># + 1;</span>
+    
+    <span class="k">return</span> <span class="n">subStacks</span><span class="p">;</span></div>
+
+
+        
+<div class="viewcode-block" id="noProcessing"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.noProcessing">[docs]</a><span class="k">def</span> <span class="nf">noProcessing</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform no image processing at all and return original image</span>
+<span class="sd">    </span>
+<span class="sd">    Used as the default functon in :func:`parallelProcessStack` and</span>
+<span class="sd">    :func:`sequentiallyProcessStack`.</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        img (array): imag</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        (array): the original image</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="parallelProcessStack"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.parallelProcessStack">[docs]</a><span class="k">def</span> <span class="nf">parallelProcessStack</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                         <span class="n">processes</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">chunkSizeMax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">chunkSizeMin</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">chunkOverlap</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+                         <span class="n">chunkOptimization</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">chunkOptimizationSize</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> 
+                         <span class="n">function</span> <span class="o">=</span> <span class="n">noProcessing</span><span class="p">,</span> <span class="n">join</span> <span class="o">=</span> <span class="n">joinPoints</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Parallel process a image stack</span>
+<span class="sd">    </span>
+<span class="sd">    Main routine that distributes image processing on paralllel processes.</span>
+<span class="sd">       </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): image source</span>
+<span class="sd">        x,y,z (tuple or all): range specifications</span>
+<span class="sd">        sink (str or None): destination for the result</span>
+<span class="sd">        processes (int): number of parallel processes</span>
+<span class="sd">        chunkSizeMax (int): maximal size of a sub-stack</span>
+<span class="sd">        chunkSizeMin (int): minial size of a sub-stack</span>
+<span class="sd">        chunkOverlap (int): minimal sub-stack overlap</span>
+<span class="sd">        chunkOptimization (bool): optimize chunck sizes to best fit number of processes</span>
+<span class="sd">        chunkOptimizationSize (bool or all): if True only decrease the chunk size when optimizing</span>
+<span class="sd">        function (function): the main image processing script</span>
+<span class="sd">        join (function): the fuction to join the results from the image processing script</span>
+<span class="sd">        verbose (bool): print information on sub-stack generation</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str or array: results of the image processing</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    
+    <span class="n">subStacks</span> <span class="o">=</span> <span class="n">calculateSubStacks</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">,</span> 
+                                   <span class="n">processes</span> <span class="o">=</span> <span class="n">processes</span><span class="p">,</span> <span class="n">chunkSizeMax</span> <span class="o">=</span> <span class="n">chunkSizeMax</span><span class="p">,</span> <span class="n">chunkSizeMin</span> <span class="o">=</span> <span class="n">chunkSizeMin</span><span class="p">,</span> <span class="n">chunkOverlap</span> <span class="o">=</span> <span class="n">chunkOverlap</span><span class="p">,</span>
+                                   <span class="n">chunkOptimization</span> <span class="o">=</span> <span class="n">chunkOptimization</span><span class="p">,</span> <span class="n">chunkOptimizationSize</span> <span class="o">=</span> <span class="n">chunkOptimizationSize</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">);</span>
+                                   
+    <span class="n">nSubStacks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subStacks</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;Number of SubStacks: </span><span class="si">%d</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">nSubStacks</span><span class="p">;</span>
+                                       
+    <span class="c">#for i in range(nSubStacks):</span>
+    <span class="c">#    self.printSubStackInfo(subStacks[i]);</span>
+    
+    <span class="n">argdata</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nSubStacks</span><span class="p">):</span>
+        <span class="n">argdata</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">function</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">subStacks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">verbose</span><span class="p">));</span>    
+    <span class="c">#print argdata</span>
+    
+    <span class="c"># process in parallel</span>
+    <span class="n">pool</span> <span class="o">=</span> <span class="n">Pool</span><span class="p">(</span><span class="n">processes</span> <span class="o">=</span> <span class="n">processes</span><span class="p">);</span>    
+    <span class="n">results</span> <span class="o">=</span> <span class="n">pool</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">_processSubStack</span><span class="p">,</span> <span class="n">argdata</span><span class="p">);</span>
+    
+    <span class="c">#print &#39;=========== results&#39;;</span>
+    <span class="c">#print results;</span>
+        
+    <span class="c">#join the results</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">subStacks</span> <span class="o">=</span> <span class="n">subStacks</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+    <span class="c">#write / or return </span>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">writePoints</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="n">results</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="sequentiallyProcessStack"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.sequentiallyProcessStack">[docs]</a><span class="k">def</span> <span class="nf">sequentiallyProcessStack</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                             <span class="n">chunkSizeMax</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">chunkSizeMin</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span> <span class="n">chunkOverlap</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+                             <span class="n">function</span> <span class="o">=</span> <span class="n">noProcessing</span><span class="p">,</span> <span class="n">join</span> <span class="o">=</span> <span class="n">joinPoints</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Sequential image processing on a stack</span>
+<span class="sd">    </span>
+<span class="sd">    Main routine that sequentially processes a large image on sub-stacks.</span>
+<span class="sd">       </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): image source</span>
+<span class="sd">        x,y,z (tuple or all): range specifications</span>
+<span class="sd">        sink (str or None): destination for the result</span>
+<span class="sd">        processes (int): number of parallel processes</span>
+<span class="sd">        chunkSizeMax (int): maximal size of a sub-stack</span>
+<span class="sd">        chunkSizeMin (int): minial size of a sub-stack</span>
+<span class="sd">        chunkOverlap (int): minimal sub-stack overlap</span>
+<span class="sd">        chunkOptimization (bool): optimize chunck sizes to best fit number of processes</span>
+<span class="sd">        chunkOptimizationSize (bool or all): if True only decrease the chunk size when optimizing</span>
+<span class="sd">        function (function): the main image processing script</span>
+<span class="sd">        join (function): the fuction to join the results from the image processing script</span>
+<span class="sd">        verbose (bool): print information on sub-stack generation</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str or array: results of the image processing</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    <span class="c">#determine z ranges  </span>
+    
+    <span class="n">subStacks</span> <span class="o">=</span> <span class="n">calculateSubStacks</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="p">,</span> 
+                                   <span class="n">processes</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">chunkSizeMax</span> <span class="o">=</span> <span class="n">chunkSizeMax</span><span class="p">,</span> <span class="n">chunkSizeMin</span> <span class="o">=</span> <span class="n">chunkSizeMin</span><span class="p">,</span> <span class="n">chunkOverlap</span> <span class="o">=</span> <span class="n">chunkOverlap</span><span class="p">,</span>  
+                                   <span class="n">chunkOptimization</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">);</span>
+    
+    <span class="n">nSubStacks</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">subStacks</span><span class="p">);</span>
+    <span class="c">#print nSubStacks;    </span>
+    
+    <span class="n">argdata</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nSubStacks</span><span class="p">):</span>
+        <span class="n">argdata</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">function</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">subStacks</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">verbose</span><span class="p">));</span>    
+    
+    <span class="c">#run sequentially</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nSubStacks</span><span class="p">):</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_processSubStack</span><span class="p">(</span><span class="n">argdata</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+    
+    <span class="c">#join the results</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">join</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">subStacks</span> <span class="o">=</span> <span class="n">subStacks</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+    <span class="c">#write / or return </span>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">writePoints</span><span class="p">(</span><span class="n">sink</span><span class="p">,</span> <span class="n">results</span><span class="p">);</span></div>
+
+
+
+
+
+
+
+
+
+
+<span class="c">### Pickle does not like classes:</span>
+
+<span class="c">## sub stack information</span>
+<span class="c">#class SubStack(object):</span>
+<span class="c">#    &quot;&quot;&quot;Class containing all info of a sub stack usefull for the image processing and result joining functions&quot;&quot;&quot;</span>
+<span class="c">#    </span>
+<span class="c">#    # sub stack id</span>
+<span class="c">#    stackId = None;</span>
+<span class="c">#    </span>
+<span class="c">#    # number of stacks</span>
+<span class="c">#    nStacks = None;</span>
+<span class="c">#    </span>
+<span class="c">#    # tuple of x,y,z range of this sub stack</span>
+<span class="c">#    z = all; </span>
+<span class="c">#    x = all;</span>
+<span class="c">#    y = all;</span>
+<span class="c">#    </span>
+<span class="c">#    #original source</span>
+<span class="c">#    source = None;    </span>
+<span class="c">#    </span>
+<span class="c">#    # tuple of center point of the overlaping regions</span>
+<span class="c">#    zCenters = None;</span>
+<span class="c">#    </span>
+<span class="c">#    # tuple of z indices that would generate full image without overlaps</span>
+<span class="c">#    zCenterIndices = None;</span>
+<span class="c">#    </span>
+<span class="c">#    # tuple of z indices in the sub image as returned by readData that would generate full image without overlaps</span>
+<span class="c">#    zSubCenterIndices = None;</span>
+<span class="c">#    </span>
+<span class="c">#    </span>
+<span class="c">#    def __init__(slf, stackId = 0, nStacks = 1, source = None, x = all, y = all, z = all, zCenters = all, zCenterIndices = all):</span>
+<span class="c">#        slf.stackId = stackId;</span>
+<span class="c">#        slf.nStacks = nStacks;</span>
+<span class="c">#        slf.source = source; </span>
+<span class="c">#        slf.x = x;</span>
+<span class="c">#        slf.y = y;</span>
+<span class="c">#        slf.z = z;</span>
+<span class="c">#        slf.zCenters = zCenters;</span>
+<span class="c">#        slf.zCenterIndices = zCenterIndices;</span>
+<span class="c">#        if not zCenterIndices is all and not z is all:</span>
+<span class="c">#            slf.zSubCenterIndices = (c - z[0] for c in zCenterIndices);</span>
+<span class="c">#        else:</span>
+<span class="c">#            slf.zSubCenterIndices = all;</span>
+<span class="c">#       </span>
+<span class="c">#    </span>
+<span class="c">#def printSubStackInfo(slf, out = sys.stdout):</span>
+<span class="c">#    out.write(&quot;Sub Stack: %d / %d\n&quot; % (slf.stackId, slf.nStacks));</span>
+<span class="c">#    out.write(&quot;source:         %s\n&quot; %       slf.source);</span>
+<span class="c">#    out.write(&quot;x,y,z:          %s, %s, %s\n&quot; % (str(slf.x), str(slf.y), str(slf.z)));</span>
+<span class="c">#    out.write(&quot;zCenters:       %s\n&quot; %       str(slf.zCenters));   </span>
+<span class="c">#    out.write(&quot;zCenterIndices: %s\n&quot; %       str(slf.zCenterIndices));</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

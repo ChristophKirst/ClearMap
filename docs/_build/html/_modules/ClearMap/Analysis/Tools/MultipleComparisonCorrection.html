@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Analysis.Tools.MultipleComparisonCorrection &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../../index.html"><img src="../../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.Analysis.Tools.MultipleComparisonCorrection</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Correction methods for multiple comparison tests</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">scipy.interpolate</span>
+    
+    
+<div class="viewcode-block" id="correctPValues"><a class="viewcode-back" href="../../../../api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.MultipleComparisonCorrection.correctPValues">[docs]</a><span class="k">def</span> <span class="nf">correctPValues</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span> <span class="s">&#39;BH&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Corrects p-values for multiple testing using various methods </span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        pvalues (array): list of p values to be corrected</span>
+<span class="sd">        method (Optional[str]): method to use: BH = FDR = Benjamini-Hochberg, B = FWER = Bonferoni</span>
+<span class="sd">    </span>
+<span class="sd">    References: </span>
+<span class="sd">        - `Benjamini Hochberg, 1995 &lt;http://www.jstor.org/stable/2346101?seq=1#page_scan_tab_contents&gt;`_</span>
+<span class="sd">        - `Bonferoni correction &lt;http://www.tandfonline.com/doi/abs/10.1080/01621459.1961.10482090#.VmHWUHbH6KE&gt;`_</span>
+<span class="sd">        - `R statistics package &lt;https://www.r-project.org/&gt;`_</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        - modified from http://statsmodels.sourceforge.net/ipdirective/generated/scikits.statsmodels.sandbox.stats.multicomp.multipletests.html</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">pvals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pvalues</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;bh&#39;</span><span class="p">,</span> <span class="s">&#39;fdr&#39;</span><span class="p">]:</span>
+        
+        <span class="n">pvals_sorted_ids</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pvals</span><span class="p">);</span>
+        <span class="n">pvals_sorted</span> <span class="o">=</span> <span class="n">pvals</span><span class="p">[</span><span class="n">pvals_sorted_ids</span><span class="p">]</span>
+        <span class="n">sorted_ids_inv</span> <span class="o">=</span> <span class="n">pvals_sorted_ids</span><span class="o">.</span><span class="n">argsort</span><span class="p">()</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvals</span><span class="p">);</span>
+        <span class="n">bhfactor</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+
+        <span class="n">pvals_corrected_raw</span> <span class="o">=</span> <span class="n">pvals_sorted</span> <span class="o">/</span> <span class="n">bhfactor</span><span class="p">;</span>
+        <span class="n">pvals_corrected</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">minimum</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="n">pvals_corrected_raw</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">pvals_corrected</span><span class="p">[</span><span class="n">pvals_corrected</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    
+        <span class="k">return</span> <span class="n">pvals_corrected</span><span class="p">[</span><span class="n">sorted_ids_inv</span><span class="p">];</span>
+    
+    <span class="k">elif</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&#39;b&#39;</span><span class="p">,</span> <span class="s">&#39;fwer&#39;</span><span class="p">]:</span>
+        
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvals</span><span class="p">);</span>        
+        
+        <span class="n">pvals_corrected</span> <span class="o">=</span> <span class="n">n</span> <span class="o">*</span> <span class="n">pvals</span><span class="p">;</span>
+        <span class="n">pvals_corrected</span><span class="p">[</span><span class="n">pvals_corrected</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>\
+        
+        <span class="k">return</span> <span class="n">pvals_corrected</span><span class="p">;</span></div>
+        
+    <span class="c">#return reject[pvals_sortind.argsort()]</span>
+    
+
+
+<div class="viewcode-block" id="estimateQValues"><a class="viewcode-back" href="../../../../api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.MultipleComparisonCorrection.estimateQValues">[docs]</a><span class="k">def</span> <span class="nf">estimateQValues</span><span class="p">(</span><span class="n">pvalues</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">pi0</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">lowMemory</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Estimates q-values from p-values</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        pvalues (array): list of p-values</span>
+<span class="sd">        m (int or None): number of tests. If None, m = pvalues.size</span>
+<span class="sd">        pi0(float or None): estimate of m_0 / m which is the (true null / total tests) ratio, if None estimation via cubic spline.</span>
+<span class="sd">        verbose (bool): print info during execution</span>
+<span class="sd">        lowMemory (bool): if true use low memory version</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        - The q-value of a particular feature can be described as the expected proportion of</span>
+<span class="sd">          false  positives  among  all  features  as  or  more  extreme  than  the observed one</span>
+<span class="sd">        - The estimated q-values are increasing in the same order as the p-values  </span>
+<span class="sd">        </span>
+<span class="sd">    References:</span>
+<span class="sd">        - `Storey and Tibshirani, 2003 &lt;http://www.pnas.org/content/100/16/9440.full&gt;`_</span>
+<span class="sd">        - modified from https://github.com/nfusi/qvalue</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">pvalues</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">pvalues</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;estimateQValues: p-values should be between 0 and 1&quot;</span><span class="p">);</span>
+
+    <span class="n">original_shape</span> <span class="o">=</span> <span class="n">pvalues</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">pvalues</span> <span class="o">=</span> <span class="n">pvalues</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="c"># flattens the array in place, more efficient than flatten() </span>
+
+    <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pvalues</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># the user has supplied an m</span>
+        <span class="n">m</span> <span class="o">*=</span> <span class="mf">1.0</span>
+
+    <span class="c"># if the number of hypotheses is small, just set pi0 to 1</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="ow">and</span> <span class="n">pi0</span> <span class="o">==</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pi0</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">elif</span> <span class="n">pi0</span> <span class="o">!=</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pi0</span> <span class="o">=</span> <span class="n">pi0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># evaluate pi0 for different lambdas</span>
+        <span class="n">pi0</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">lam</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.90</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+        <span class="n">counts</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="n">pvalues</span> <span class="o">&gt;</span> <span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">lam</span><span class="p">])</span>
+        
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lam</span><span class="p">)):</span>
+            <span class="n">pi0</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">l</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">lam</span><span class="p">[</span><span class="n">l</span><span class="p">])))</span>
+
+        <span class="n">pi0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pi0</span><span class="p">)</span>
+
+        <span class="c"># fit natural cubic scipyline</span>
+        <span class="n">tck</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">splrep</span><span class="p">(</span><span class="n">lam</span><span class="p">,</span> <span class="n">pi0</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="n">pi0</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">interpolate</span><span class="o">.</span><span class="n">splev</span><span class="p">(</span><span class="n">lam</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">tck</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">pi0</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s">&quot;estimateQValues: got pi0 &gt; 1 (</span><span class="si">%.3f</span><span class="s">) while estimating qvalues, setting it to 1&quot;</span> <span class="o">%</span> <span class="n">pi0</span><span class="p">);</span>
+            <span class="n">pi0</span> <span class="o">=</span> <span class="mf">1.0</span>
+        
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">pi0</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">pi0</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;estimateQValues: pi0 is not between 0 and 1: </span><span class="si">%f</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">pi0</span><span class="p">);</span>
+
+
+    <span class="k">if</span> <span class="n">lowMemory</span><span class="p">:</span>
+        <span class="c"># low memory version, only uses 1 pvalues and 1 qv matrices</span>
+        <span class="n">qv</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">pvalues</span><span class="p">),))</span>
+        <span class="n">last_pvalues</span> <span class="o">=</span> <span class="n">pvalues</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+        <span class="n">qv</span><span class="p">[</span><span class="n">last_pvalues</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi0</span><span class="o">*</span><span class="n">pvalues</span><span class="p">[</span><span class="n">last_pvalues</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="n">pvalues</span><span class="p">[</span><span class="n">last_pvalues</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">inf</span>
+        <span class="n">prev_qv</span> <span class="o">=</span> <span class="n">last_pvalues</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pvalues</span><span class="p">))</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">cur_max</span> <span class="o">=</span> <span class="n">pvalues</span><span class="o">.</span><span class="n">argmax</span><span class="p">()</span>
+            <span class="n">qv_i</span> <span class="o">=</span> <span class="p">(</span><span class="n">pi0</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">pvalues</span><span class="p">[</span><span class="n">cur_max</span><span class="p">]</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">pvalues</span><span class="p">[</span><span class="n">cur_max</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">scipy</span><span class="o">.</span><span class="n">inf</span>
+            <span class="n">qv_i1</span> <span class="o">=</span> <span class="n">prev_qv</span>
+            <span class="n">qv</span><span class="p">[</span><span class="n">cur_max</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">qv_i</span><span class="p">,</span> <span class="n">qv_i1</span><span class="p">)</span>
+            <span class="n">prev_qv</span> <span class="o">=</span> <span class="n">qv</span><span class="p">[</span><span class="n">cur_max</span><span class="p">]</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">p_ordered</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span>    
+        <span class="n">pvalues</span> <span class="o">=</span> <span class="n">pvalues</span><span class="p">[</span><span class="n">p_ordered</span><span class="p">]</span>
+        <span class="n">qv</span> <span class="o">=</span> <span class="n">pi0</span> <span class="o">*</span> <span class="n">m</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span> <span class="o">*</span> <span class="n">pvalues</span>
+        <span class="n">qv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">qv</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pvalues</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">qv</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pi0</span><span class="o">*</span><span class="n">m</span><span class="o">*</span><span class="n">pvalues</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">qv</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="c"># reorder qvalues</span>
+        <span class="n">qv_temp</span> <span class="o">=</span> <span class="n">qv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">qv</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">qv</span><span class="p">)</span>
+        <span class="n">qv</span><span class="p">[</span><span class="n">p_ordered</span><span class="p">]</span> <span class="o">=</span> <span class="n">qv_temp</span>
+
+        <span class="c"># reshape qvalues</span>
+        <span class="n">qv</span> <span class="o">=</span> <span class="n">qv</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">original_shape</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">qv</span></div>
+    
+
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

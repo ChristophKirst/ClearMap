@@ -1,0 +1,300 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Parameter module &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap package" href="ClearMap.html" />
+    <link rel="next" title="ClearMap.Settings module" href="ClearMap.Settings.html" />
+    <link rel="prev" title="ClearMap.Visualization package" href="ClearMap.Visualization.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Settings.html" title="ClearMap.Settings module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Visualization.html" title="ClearMap.Visualization package"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" accesskey="U">ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.Visualization.html"
+                        title="previous chapter">ClearMap.Visualization package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.Settings.html"
+                        title="next chapter">ClearMap.Settings module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.Parameter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ClearMap.Parameter">
+<span id="clearmap-parameter-module"></span><h1>ClearMap.Parameter module<a class="headerlink" href="#module-ClearMap.Parameter" title="Permalink to this headline">¶</a></h1>
+<p>ClearMap default parameter module.</p>
+<p>This module defines default parameter used by various sub-packages.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="ClearMap.Settings.html#module-ClearMap.Settings" title="ClearMap.Settings"><code class="xref py py-mod docutils literal"><span class="pre">Settings</span></code></a></p>
+</div>
+<dl class="data">
+<dt id="ClearMap.Parameter.detectCellParameter">
+<code class="descname">detectCellParameter</code><em class="property"> = {'findExtendedMaximaParameter': {'threshold': 0, 'save': None, 'verbose': False, 'hMax': 20, 'size': 5}, 'correctIlluminationParameter': {'scaling': 'Mean', 'flatfield': True, 'save': None, 'verbose': False, 'background': None}, 'removeBackgroundParameter': {'save': None, 'verbose': False, 'size': (15, 15)}, 'filterDoGParameter': {'save': None, 'sigma2': None, 'sigma': None, 'verbose': False, 'size': (7, 7, 11)}, 'detectCellShapeParameter': {'threshold': 700, 'save': None, 'verbose': False}, 'findIntensityParameter': {'method': 'Max', 'size': (3, 3, 3)}}</em><a class="headerlink" href="#ClearMap.Parameter.detectCellParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict: Paramters for cell detection using the spot detection algorithm</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#ClearMap.Parameter.IlastikParameter" title="ClearMap.Parameter.IlastikParameter"><code class="xref py py-const docutils literal"><span class="pre">IlastikParameter</span></code></a>, <code class="xref py py-const docutils literal"><span class="pre">StackProcessingParameter</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Parameter.IlastikParameter">
+<code class="descname">IlastikParameter</code><em class="property"> = {'rescale': None, 'backgroundSize': (15, 15), 'classifier': '/Test/Ilastik/classifier.h5'}</em><a class="headerlink" href="#ClearMap.Parameter.IlastikParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict: Paramters for cell detection using Ilastik classification</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;classifier&#8221;: ilastic classifier to use</li>
+<li>&#8220;rescale&#8221;: rescale images before classification</li>
+<li>&#8220;backgroundSize&#8221;: Background correctoin: None or (y,x) which is size of disk for gray scale opening</li>
+</ul>
+</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-const docutils literal"><span class="pre">SpotDetectionParameter</span></code>, <code class="xref py py-const docutils literal"><span class="pre">StackProcessingParameter</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Parameter.processStackParameter">
+<code class="descname">processStackParameter</code><em class="property"> = {'chunkOptimizationSize': &lt;built-in function all&gt;, 'processes': 2, 'chunkSizeMin': 30, 'chunkOptimization': True, 'cChunkOverlap': 15, 'chunkSizeMax': 100}</em><a class="headerlink" href="#ClearMap.Parameter.processStackParameter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>dict: Parameter for processing an image stack in parallel</dt>
+<dd><ul class="first last simple">
+<li>&#8220;processes&#8221;: max number of parallel processes</li>
+<li>&#8220;chunkSizeMax&#8221; : maximal chunk size in z</li>
+<li>&#8220;chunkSizeMin&#8221; : minimal chunk size in z,</li>
+<li>&#8220;chunkOverlap&#8221; : overlap between two chunks,</li>
+<li>&#8220;chunkOptimization&#8221;: optimize chunk size and number to number of processes</li>
+<li>&#8220;chunkOptimizationSize&#8221;: increase chunk size for optimizaition (True, False or all = automatic)</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-const docutils literal"><span class="pre">SpotDetectionParameter</span></code>, <a class="reference internal" href="#ClearMap.Parameter.IlastikParameter" title="ClearMap.Parameter.IlastikParameter"><code class="xref py py-const docutils literal"><span class="pre">IlastikParameter</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Parameter.AlignmentParameter">
+<code class="descname">AlignmentParameter</code><em class="property"> = {'fixedImageMask': None, 'alignmentDirectory': None, 'movingImage': '/Test/Data/Elastix/150524_0_8X-s3-20HFautofluor_18-51-1-warpable.tif', 'affineParameterFile': '/Test/Elastix/ElastixParameterAffine.txt', 'bSplineParameterFile': '/Test/Elastix/ElastixParameterBSpline.txt', 'fixedImage': '/Test/Data/Elastix/OstenRefARA_v2_lowerHalf.tif'}</em><a class="headerlink" href="#ClearMap.Parameter.AlignmentParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict: Parameter for Elastix alignment</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;alignmentDirectory&#8221; : directory to save the alignment result</li>
+<li>&#8220;movingImage&#8221;: image to be aligned</li>
+<li>&#8220;fixedImage&#8221;:  reference image</li>
+<li>&#8220;affineParameterFile&#8221;: elastix parameter files for affine alignment</li>
+<li>&#8220;bSplineParameterFile&#8221; : elastix parameter files for non-linear alignment</li>
+</ul>
+</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-mod docutils literal"><span class="pre">Elastix</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Parameter.ResamplingParameter">
+<code class="descname">ResamplingParameter</code><em class="property"> = {'orientation': None, 'source': None, 'resolutionSink': (25, 25, 25), 'sink': None, 'resolutionSource': (4.0625, 4.0625, 3)}</em><a class="headerlink" href="#ClearMap.Parameter.ResamplingParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict: Parameter for resampling data</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;source&#8221; : data source file</li>
+<li>&#8220;sink&#8221;   : data output file</li>
+</ul>
+<p>&#8220;resolutionSource&#8221;: resolution of the raw data (in um / pixel) as (x,y,z)</p>
+<p>&#8220;resolutionSink&#8221; : resolution of the reference / atlas image (in um/ pixel) as (x,y,z)</p>
+<dl class="docutils">
+<dt>&#8220;orientation&#8221; <span class="classifier-delimiter">:</span> <span class="classifier">Orientation of the data set wrt reference as (x=1,y=2,z=3)</span></dt>
+<dd>(-axis will invert the orientation, for other hemisphere use (-1, 2, 3), to exchnge x,y use (2,1,3) etc)</dd>
+</dl>
+</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-mod docutils literal"><span class="pre">Resampling</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Parameter.VoxelizationParameter">
+<code class="descname">VoxelizationParameter</code><em class="property"> = {'method': 'Spherical', 'voxelizationSize': (1, 1, 1)}</em><a class="headerlink" href="#ClearMap.Parameter.VoxelizationParameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>dict: Parameter to calculate density voxelization</p>
+<blockquote>
+<div><ul class="simple">
+<li>&#8220;method&#8221;: Method to voxelize: &#8216;Spherical&#8217;,&#8217;Rectangular, &#8216;Gaussian&#8217;</li>
+<li>&#8220;voxelizationSize&#8221;: max size of the volume to be voxelized</li>
+</ul>
+</div></blockquote>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-mod docutils literal"><span class="pre">voxelization</span></code></p>
+</div>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Settings.html" title="ClearMap.Settings module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Visualization.html" title="ClearMap.Visualization package"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

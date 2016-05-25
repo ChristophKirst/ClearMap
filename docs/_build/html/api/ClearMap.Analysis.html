@@ -1,0 +1,690 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Analysis package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap package" href="ClearMap.html" />
+    <link rel="next" title="ClearMap.Analysis.Tools package" href="ClearMap.Analysis.Tools.html" />
+    <link rel="prev" title="ClearMap.ImageProcessing.Filter package" href="ClearMap.ImageProcessing.Filter.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Analysis.Tools.html" title="ClearMap.Analysis.Tools package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.Filter.html" title="ClearMap.ImageProcessing.Filter package"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" accesskey="U">ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.ImageProcessing.Filter.html"
+                        title="previous chapter">ClearMap.ImageProcessing.Filter package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.Analysis.Tools.html"
+                        title="next chapter">ClearMap.Analysis.Tools package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.Analysis.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ClearMap.Analysis">
+<span id="clearmap-analysis-package"></span><h1>ClearMap.Analysis package<a class="headerlink" href="#module-ClearMap.Analysis" title="Permalink to this headline">¶</a></h1>
+<p>ClearMap analysis and statistics toolbox.</p>
+<p>This part of ClearMap provides a toolbox for the statistical analysis and
+visualization of detected cells or structures and region specific analysis
+of annotated data.</p>
+<p>For cleared mouse brains aligned to the Allen brain atlas, a wide range of
+statistical analysis tools with respect to the annotated brain regions in
+the atlas is supported.</p>
+<p>Key modules are:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%" />
+<col width="62%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Module</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.Analysis.Voxelization" title="ClearMap.Analysis.Voxelization"><code class="xref py py-mod docutils literal"><span class="pre">Voxelization</span></code></a></td>
+<td>Voxelization of cells for visualization and analysis</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#module-ClearMap.Analysis.Statistics" title="ClearMap.Analysis.Statistics"><code class="xref py py-mod docutils literal"><span class="pre">Statistics</span></code></a></td>
+<td>Statistical tools for the analysis of detected cells</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#module-ClearMap.Analysis.Label" title="ClearMap.Analysis.Label"><code class="xref py py-mod docutils literal"><span class="pre">Label</span></code></a></td>
+<td>Tools to analyse data with respect to annotated references</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="ClearMap.Analysis.Tools.html">ClearMap.Analysis.Tools package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.Extrapolate">ClearMap.Analysis.Tools.Extrapolate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.MultipleComparisonCorrection">ClearMap.Analysis.Tools.MultipleComparisonCorrection module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.StatisticalTests">ClearMap.Analysis.Tools.StatisticalTests module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-ClearMap.Analysis.Label">
+<span id="clearmap-analysis-label-module"></span><h2>ClearMap.Analysis.Label module<a class="headerlink" href="#module-ClearMap.Analysis.Label" title="Permalink to this headline">¶</a></h2>
+<p>Label and annotation info from Allen Brain Atlas (v2)</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li>The annotation file is assumed to be in &#8216;./Data/Annotation/annotation_25_right.tif&#8217;
+but can be set in the constant <a class="reference internal" href="#ClearMap.Analysis.Label.DefaultLabeledImageFile" title="ClearMap.Analysis.Label.DefaultLabeledImageFile"><code class="xref py py-const docutils literal"><span class="pre">DefaultLabeledImageFile</span></code></a></li>
+<li>The mapping between labels and brain area information is found in the
+&#8216;./Data/ARA2_annotation_info.csv&#8217; file.
+In the &#8216;./Data/ARA2_annotation_info_collapse.csv&#8217; file a cross marks an area
+to which all sub-areas can be collapsed.
+The location of this file is set in <a class="reference internal" href="#ClearMap.Analysis.Label.DefaultAnnotationFile" title="ClearMap.Analysis.Label.DefaultAnnotationFile"><code class="xref py py-const docutils literal"><span class="pre">DefaultAnnotationFile</span></code></a>.</li>
+<li>For consistency certain labels of the Allen brain atlas without
+annotation were assigned to their correct parent regions.</li>
+<li>A collapse column in the mapping file was added to allow for a region
+based collapse of statistics based on the inheritance structure of the
+annotated regions. These might need to be adjusted to the particular
+scientific question.</li>
+</ul>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><a class="reference external" href="http://mouse.brain-map.org/static/atlas">Allen Brain Atlas</a></li>
+</ul>
+<dl class="data">
+<dt id="ClearMap.Analysis.Label.DefaultLabeledImageFile">
+<code class="descname">DefaultLabeledImageFile</code><em class="property"> = '/home/mtllab/Programs/ClearMap/idisco/ClearMap/Test/Data/Annotation/annotation_25_right.tif'</em><a class="headerlink" href="#ClearMap.Analysis.Label.DefaultLabeledImageFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: default volumetric annotated image file</p>
+<p>This file is by default the Allen brain annotated mouse atlas with 25um
+isotropic resolution.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Analysis.Label.DefaultAnnotationFile">
+<code class="descname">DefaultAnnotationFile</code><em class="property"> = '/home/mtllab/Programs/ClearMap/idisco/ClearMap/Data/ARA2_annotation_info_collapse.csv'</em><a class="headerlink" href="#ClearMap.Analysis.Label.DefaultAnnotationFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>str: default list of labels in the annotated image and names of annotated regions</p>
+<p>This file is by default the labels for the Allen brain annotated mouse
+atlas with 25um isotropic resolution.</p>
+<p>An extra column for collapse indicates how to automatically collapse data into
+the different brain regions if the <code class="docutils literal"><span class="pre">collapse</span></code> option is given.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ClearMap.Analysis.Label.LabelRecord">
+<em class="property">class </em><code class="descname">LabelRecord</code><span class="sig-paren">(</span><em>id</em>, <em>name</em>, <em>acronym</em>, <em>color</em>, <em>parent</em>, <em>collapse</em><span class="sig-paren">)</span><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Structure of a label for a annotated region</p>
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelRecord.__getnewargs__">
+<code class="descname">__getnewargs__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.__getnewargs__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self as a plain tuple.  Used by copy and pickle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelRecord.__getstate__">
+<code class="descname">__getstate__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.__getstate__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exclude the OrderedDict from pickling</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelRecord.__repr__">
+<code class="descname">__repr__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.__repr__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a nicely formatted representation string</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelRecord.acronym">
+<code class="descname">acronym</code><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.acronym" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelRecord.collapse">
+<code class="descname">collapse</code><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.collapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 5</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelRecord.color">
+<code class="descname">color</code><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelRecord.id">
+<code class="descname">id</code><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelRecord.name">
+<code class="descname">name</code><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelRecord.parent">
+<code class="descname">parent</code><a class="headerlink" href="#ClearMap.Analysis.Label.LabelRecord.parent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 4</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ClearMap.Analysis.Label.LabelInfo">
+<em class="property">class </em><code class="descname">LabelInfo</code><span class="sig-paren">(</span><em>slf</em>, <em>annotationFile='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Data/ARA2_annotation_info_collapse.csv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Class that holds information of the annotated regions</p>
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.ids">
+<code class="descname">ids</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.ids" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.names">
+<code class="descname">names</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.acronyms">
+<code class="descname">acronyms</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.acronyms" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.colors">
+<code class="descname">colors</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.colors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.parents">
+<code class="descname">parents</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.parents" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.levels">
+<code class="descname">levels</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.levels" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.collapse">
+<code class="descname">collapse</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.collapse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="ClearMap.Analysis.Label.LabelInfo.collapseMap">
+<code class="descname">collapseMap</code><em class="property"> = None</em><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.collapseMap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><em>slf</em>, <em>annotationFile='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Data/ARA2_annotation_info_collapse.csv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.name">
+<code class="descname">name</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.acronym">
+<code class="descname">acronym</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.acronym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.acronym" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.color">
+<code class="descname">color</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.parent">
+<code class="descname">parent</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.level">
+<code class="descname">level</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.level" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.toLabelAtLevel">
+<code class="descname">toLabelAtLevel</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em>, <em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.toLabelAtLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.toLabelAtLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapseMap">
+<code class="descname">toLabelAtCollapseMap</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.toLabelAtCollapseMap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapseMap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapse">
+<code class="descname">toLabelAtCollapse</code><span class="sig-paren">(</span><em>slf</em>, <em>iid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#LabelInfo.toLabelAtCollapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="ClearMap.Analysis.Label.Label">
+<code class="descname">Label</code><em class="property"> = &lt;ClearMap.Analysis.Label.LabelInfo object&gt;</em><a class="headerlink" href="#ClearMap.Analysis.Label.Label" title="Permalink to this definition">¶</a></dt>
+<dd><p>Information on the annotated regions</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><em>annotationFile='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Data/ARA2_annotation_info_collapse.csv'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.initialize" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.labelAtLevel">
+<code class="descname">labelAtLevel</code><span class="sig-paren">(</span><em>label</em>, <em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#labelAtLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.labelAtLevel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.labelAtCollapse">
+<code class="descname">labelAtCollapse</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#labelAtCollapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.labelAtCollapse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.labelPoints">
+<code class="descname">labelPoints</code><span class="sig-paren">(</span><em>points</em>, <em>labeledImage='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Test/Data/Annotation/annotation_25_right.tif'</em>, <em>level=None</em>, <em>collapse=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#labelPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.labelPoints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.countPointsInRegions">
+<code class="descname">countPointsInRegions</code><span class="sig-paren">(</span><em>points</em>, <em>labeledImage='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Test/Data/Annotation/annotation_25_right.tif'</em>, <em>intensities=None</em>, <em>intensityRow=0</em>, <em>level=None</em>, <em>allIds=False</em>, <em>sort=True</em>, <em>returnIds=True</em>, <em>returnCounts=False</em>, <em>collapse=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#countPointsInRegions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.countPointsInRegions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.labelToName">
+<code class="descname">labelToName</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#labelToName"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.labelToName" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.labelToAcronym">
+<code class="descname">labelToAcronym</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#labelToAcronym"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.labelToAcronym" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.labelToColor">
+<code class="descname">labelToColor</code><span class="sig-paren">(</span><em>label</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#labelToColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.labelToColor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.writePAL">
+<code class="descname">writePAL</code><span class="sig-paren">(</span><em>filename</em>, <em>cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#writePAL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.writePAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.writeLUT">
+<code class="descname">writeLUT</code><span class="sig-paren">(</span><em>filename</em>, <em>cols</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#writeLUT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.writeLUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.makeColorPalette">
+<code class="descname">makeColorPalette</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#makeColorPalette"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.makeColorPalette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a pal file for imaris based on label colors</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.makeColorAnnotations">
+<code class="descname">makeColorAnnotations</code><span class="sig-paren">(</span><em>filename</em>, <em>labeledImage=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#makeColorAnnotations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.makeColorAnnotations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Label.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Label.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Label.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test Label module</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.Analysis.Statistics">
+<span id="clearmap-analysis-statistics-module"></span><h2>ClearMap.Analysis.Statistics module<a class="headerlink" href="#module-ClearMap.Analysis.Statistics" title="Permalink to this headline">¶</a></h2>
+<p>Create some statistics to test significant changes
+in voxelized and labeled data</p>
+<p>TODO: cleanup / make generic</p>
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.readDataGroup">
+<code class="descname">readDataGroup</code><span class="sig-paren">(</span><em>filenames</em>, <em>combine=True</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#readDataGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.readDataGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a list of filenames for data into a numpy stack</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.readPointsGroup">
+<code class="descname">readPointsGroup</code><span class="sig-paren">(</span><em>filenames</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#readPointsGroup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.readPointsGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Turn a list of filenames for points into a numpy stack</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.tTestVoxelization">
+<code class="descname">tTestVoxelization</code><span class="sig-paren">(</span><em>group1</em>, <em>group2</em>, <em>signed=False</em>, <em>removeNaN=True</em>, <em>pcutoff=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#tTestVoxelization"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.tTestVoxelization" title="Permalink to this definition">¶</a></dt>
+<dd><p>t-Test on differences between the individual voxels in group1 and group2, group is a array of voxelizations</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.cutoffPValues">
+<code class="descname">cutoffPValues</code><span class="sig-paren">(</span><em>pvals</em>, <em>pcutoff=0.05</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#cutoffPValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.cutoffPValues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.colorPValues">
+<code class="descname">colorPValues</code><span class="sig-paren">(</span><em>pvals, psign, positive=[1, 0], negative=[0, 1], pcutoff=None, positivetrend=[0, 0, 1, 0], negativetrend=[0, 0, 0, 1], pmax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#colorPValues"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.colorPValues" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.mean">
+<code class="descname">mean</code><span class="sig-paren">(</span><em>group</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#mean"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.mean" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.std">
+<code class="descname">std</code><span class="sig-paren">(</span><em>group</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.std" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.var">
+<code class="descname">var</code><span class="sig-paren">(</span><em>group</em>, <em>**args</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#var"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.var" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.thresholdPoints">
+<code class="descname">thresholdPoints</code><span class="sig-paren">(</span><em>points</em>, <em>intensities</em>, <em>threshold=0</em>, <em>row=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#thresholdPoints"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.thresholdPoints" title="Permalink to this definition">¶</a></dt>
+<dd><p>Threshold points by intensities</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.weightsFromPrecentiles">
+<code class="descname">weightsFromPrecentiles</code><span class="sig-paren">(</span><em>intensities, percentiles=[25, 50, 75, 100]</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#weightsFromPrecentiles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.weightsFromPrecentiles" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.countPointsGroupInRegions">
+<code class="descname">countPointsGroupInRegions</code><span class="sig-paren">(</span><em>pointGroup</em>, <em>labeledImage='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Test/Data/Annotation/annotation_25_right.tif'</em>, <em>intensityGroup=None</em>, <em>intensityRow=0</em>, <em>returnIds=True</em>, <em>returnCounts=False</em>, <em>collapse=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#countPointsGroupInRegions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.countPointsGroupInRegions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a table of counts for the various point datasets in pointGroup</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.tTestPointsInRegions">
+<code class="descname">tTestPointsInRegions</code><span class="sig-paren">(</span><em>pointCounts1</em>, <em>pointCounts2</em>, <em>labeledImage='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Test/Data/Annotation/annotation_25_right.tif'</em>, <em>signed=False</em>, <em>removeNaN=True</em>, <em>pcutoff=None</em>, <em>equal_var=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#tTestPointsInRegions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.tTestPointsInRegions" title="Permalink to this definition">¶</a></dt>
+<dd><p>t-Test on differences in counts of points in labeled regions</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.testCompletedCumulatives">
+<code class="descname">testCompletedCumulatives</code><span class="sig-paren">(</span><em>data</em>, <em>method='AndersonDarling'</em>, <em>offset=None</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#testCompletedCumulatives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.testCompletedCumulatives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if data sets have the same number / intensity distribution by adding max intensity counts to the smaller sized data sets and performing a distribution comparison test</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.testCompletedInvertedCumulatives">
+<code class="descname">testCompletedInvertedCumulatives</code><span class="sig-paren">(</span><em>data</em>, <em>method='AndersonDarling'</em>, <em>offset=None</em>, <em>plot=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#testCompletedInvertedCumulatives"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.testCompletedInvertedCumulatives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test if data sets have the same number / intensity distribution by adding zero intensity counts to the smaller sized data sets and performing a distribution comparison test on the reversed cumulative distribution</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.testCompletedCumulativesInSpheres">
+<code class="descname">testCompletedCumulativesInSpheres</code><span class="sig-paren">(</span><em>points1</em>, <em>intensities1</em>, <em>points2</em>, <em>intensities2</em>, <em>dataSize='/home/mtllab/Programs/ClearMap/idisco/ClearMap/Test/Data/Annotation/annotation_25_right.tif'</em>, <em>radius=100</em>, <em>method='AndresonDarling'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#testCompletedCumulativesInSpheres"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.testCompletedCumulativesInSpheres" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs completed cumulative distribution tests for each pixel using points in a ball centered at that cooridnates, returns 4 arrays p value, statistic value, number in each group</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Statistics.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Statistics.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Statistics.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test the statistics array</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.Analysis.Voxelization">
+<span id="clearmap-analysis-voxelization-module"></span><h2>ClearMap.Analysis.Voxelization module<a class="headerlink" href="#module-ClearMap.Analysis.Voxelization" title="Permalink to this headline">¶</a></h2>
+<p>Converts point data into voxel image data for visulaization and analysis</p>
+<dl class="function">
+<dt id="ClearMap.Analysis.Voxelization.voxelize">
+<code class="descname">voxelize</code><span class="sig-paren">(</span><em>points</em>, <em>dataSize=None</em>, <em>sink=None</em>, <em>voxelizeParameter=None</em>, <em>method='Spherical'</em>, <em>size=(5</em>, <em>5</em>, <em>5)</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Voxelization.html#voxelize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Voxelization.voxelize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a list of points into an volumetric image array</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>points</strong> (<em>array</em>) &#8211;
+point data array</p>
+</li>
+<li><p class="first"><strong>dataSize</strong> (<em>tuple</em>) &#8211;
+size of final image</p>
+</li>
+<li><p class="first"><strong>sink</strong> (<em>str, array or None</em>) &#8211;
+the location to write or return the resulting voxelization image, if None return array</p>
+</li>
+<li><p class="first"><strong>voxelizeParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="22%" />
+<col width="67%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>method</em></td>
+<td>(str or None)</td>
+<td>method for voxelization: &#8216;Spherical&#8217;, &#8216;Rectangular&#8217; or &#8216;Pixel&#8217;</td>
+</tr>
+<tr class="row-odd"><td><em>size</em></td>
+<td>(tuple)</td>
+<td>size parameter for the voxelization</td>
+</tr>
+<tr class="row-even"><td><em>weights</em></td>
+<td>(array or None)</td>
+<td>weights for each point, None is uniform weights</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(array)</em> &#8211;
+volumetric data of smeared out points</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Voxelization.voxelizePixel">
+<code class="descname">voxelizePixel</code><span class="sig-paren">(</span><em>points</em>, <em>dataSize=None</em>, <em>weights=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Voxelization.html#voxelizePixel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Voxelization.voxelizePixel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mark pixels/voxels of each point in an image array</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>points</strong> (<em>array</em>) &#8211;
+point data array</li>
+<li><strong>dataSize</strong> (<em>tuple or None</em>) &#8211;
+size of the final output data, if None size is determined by maximal point coordinates</li>
+<li><strong>weights</strong> (<em>array or None</em>) &#8211;
+weights for each points, if None weights are all 1s.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(array)</em> &#8211;
+volumetric data with with points marked in voxels</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.Analysis.Voxelization.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/Analysis/Voxelization.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.Analysis.Voxelization.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test voxelization module</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Analysis.Tools.html" title="ClearMap.Analysis.Tools package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.Filter.html" title="ClearMap.ImageProcessing.Filter package"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

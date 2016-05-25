@@ -1,0 +1,237 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Settings &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../index.html"><img src="../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.Settings</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module to set *ClearMap&#39;s* internal parameter and paths to external programs.</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    Edit the :func:`setup` routine to point to the ilastik and elastix paths </span>
+<span class="sd">    for specific hosts</span>
+
+<span class="sd">See Also:</span>
+<span class="sd">    * :const:`IlastikPath`</span>
+<span class="sd">    * :const:`ElastixPath`</span>
+<span class="sd">    * :mod:`~ClearMap.Parameter`</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+
+<span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/ilastik-1.1.9-Linux&#39;</span><span class="p">;</span>
+<span class="sd">&quot;&quot;&quot;str: Absolute path to the Ilastik 0.5 installation</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">   `Ilastik Webpage &lt;http://ilastik.org/&gt;`_</span>
+<span class="sd">   </span>
+<span class="sd">   `Ilastik 0.5 Download &lt;http://old.ilastik.org/&gt;`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c">#path to eastix installation</span>
+<span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/elastix&#39;</span><span class="p">;</span>
+<span class="sd">&quot;&quot;&quot;str: Absolue path to the elastix installation</span>
+
+<span class="sd">Notes:</span>
+<span class="sd">    `Elastix Webpage &lt;http://elastix.isi.uu.nl/&gt;`_</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="setup"><a class="viewcode-back" href="../../api/ClearMap.Settings.html#ClearMap.Settings.setup">[docs]</a><span class="k">def</span> <span class="nf">setup</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Setup ClearMap for specific hosts</span>
+<span class="sd">    </span>
+<span class="sd">    Notes:</span>
+<span class="sd">        Edit this routine to include special setttings for specific hosts</span>
+<span class="sd">        </span>
+<span class="sd">    See Also:</span>
+<span class="sd">        :const:`IlastikPath`, :const:`ElastixPath`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">IlastikPath</span><span class="p">,</span> <span class="n">ElastixPath</span>
+    
+    <span class="n">hostname</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">();</span>
+    
+    <span class="k">if</span> <span class="n">hostname</span> <span class="o">==</span> <span class="s">&#39;kagalaska.nld&#39;</span><span class="p">:</span>  <span class="c">#Christophs Laptop </span>
+        <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/ilastik-1.1.9-Linux&#39;</span><span class="p">;</span>
+        <span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/elastix/&#39;</span><span class="p">;</span>
+    
+    <span class="k">elif</span> <span class="n">hostname</span> <span class="o">==</span> <span class="s">&#39;mtllab-Ubuntu&#39;</span><span class="p">:</span> <span class="c">#MTL workstation</span>
+        <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/ilastik-1.1.9-Linux&#39;</span><span class="p">;</span>
+        <span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/elastix&#39;</span><span class="p">;</span>       
+    
+    <span class="c">## insert your hostname specific settings here ##</span>
+    <span class="c">#elif hostname == &#39;your-host-name&#39;:</span>
+    <span class="c">#    IlastikPath = &#39;path-to-ilastik&#39;;</span>
+    <span class="c">#    ElastixPath = &#39;path-to-elastix&#39;;   </span>
+    <span class="c">##</span>
+
+    <span class="c"># check existence:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ElastixPath</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">ElastixPath</span><span class="p">):</span>
+            <span class="c">#raise RuntimeWarning(&#39;Settings: elastix path %s does not exists, cf. Settings.py or type help(Settings) for details.&#39; % ElastixPath);</span>
+            <span class="k">print</span> <span class="s">&#39;Settings: elastix path </span><span class="si">%s</span><span class="s"> does not exists, cf. Settings.py or type help(Settings) for details.&#39;</span> <span class="o">%</span> <span class="n">ElastixPath</span><span class="p">;</span>
+            <span class="n">ElastixPath</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">IlastikPath</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">IlastikPath</span><span class="p">):</span>
+            <span class="c">#raise RuntimeWarning(&#39;Settings: ilastik path %s does not exists, cf. Settings.py or type help(Settings) for details.&#39; % IlastikPath);</span>
+            <span class="k">print</span> <span class="s">&#39;Settings: ilastik path </span><span class="si">%s</span><span class="s"> does not exists, cf. Settings.py or type help(Settings) for details.&#39;</span> <span class="o">%</span> <span class="n">IlastikPath</span><span class="p">;</span>
+            <span class="n">IlastikPath</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span></div>
+
+<span class="n">setup</span><span class="p">();</span>
+
+
+<div class="viewcode-block" id="clearMapPath"><a class="viewcode-back" href="../../api/ClearMap.Settings.html#ClearMap.Settings.clearMapPath">[docs]</a><span class="k">def</span> <span class="nf">clearMapPath</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Returns root path to the ClearMap software</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: root path to ClearMap</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">fn</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="n">fn</span><span class="p">;</span></div>
+
+<span class="n">ClearMapPath</span> <span class="o">=</span> <span class="n">clearMapPath</span><span class="p">();</span>
+<span class="sd">&quot;&quot;&quot;str: Absolute path to the ClearMap root folder&quot;&quot;&quot;</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

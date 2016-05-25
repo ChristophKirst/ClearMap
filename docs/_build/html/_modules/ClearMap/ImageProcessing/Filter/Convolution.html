@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.Filter.Convolution &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../../index.html"><img src="../../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.ImageProcessing.Filter.Convolution</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Convolve volumetric data with a 3d kernel, optimized for memory / float32 use</span>
+
+<span class="sd">Based on `scipy.signal &lt;http://docs.scipy.org/doc/scipy/reference/signal.html&gt;`_</span>
+<span class="sd">routines.</span>
+
+<span class="sd">Author</span>
+<span class="sd">&quot;&quot;&quot;</span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">    Original code from `scipy.signal &lt;http://docs.scipy.org/doc/scipy/reference/signal.html&gt;`_.</span>
+
+<span class="s">    Modified by Chirstoph Kirst to optimize memory and sped and integration into ClearMap.</span>
+<span class="s">    The Rockefeller University, New York City, 2015</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">scipy.fftpack</span> <span class="kn">as</span> <span class="nn">fft</span>
+
+
+<span class="k">def</span> <span class="nf">_next_regular</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find the next regular number greater than or equal to target.</span>
+<span class="sd">    Regular numbers are composites of the prime factors 2, 3, and 5.</span>
+<span class="sd">    Also known as 5-smooth numbers or Hamming numbers, these are the optimal</span>
+<span class="sd">    size for inputs to FFTPACK.</span>
+<span class="sd">    Target must be a positive integer.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">target</span> <span class="o">&lt;=</span> <span class="mi">6</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">target</span>
+
+    <span class="c"># Quickly check if it&#39;s already a power of 2</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">target</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">target</span><span class="o">-</span><span class="mi">1</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">target</span>
+
+    <span class="n">match</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s">&#39;inf&#39;</span><span class="p">)</span>  <span class="c"># Anything found will be smaller</span>
+    <span class="n">p5</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">p5</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+        <span class="n">p35</span> <span class="o">=</span> <span class="n">p5</span>
+        <span class="k">while</span> <span class="n">p35</span> <span class="o">&lt;</span> <span class="n">target</span><span class="p">:</span>
+            <span class="c"># Ceiling integer division, avoiding conversion to float</span>
+            <span class="c"># (quotient = ceil(target / p35))</span>
+            <span class="n">quotient</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="o">-</span><span class="n">target</span> <span class="o">//</span> <span class="n">p35</span><span class="p">)</span>
+
+            <span class="c"># Quickly find next power of 2 &gt;= quotient</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">p2</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">((</span><span class="n">quotient</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">bit_length</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="c"># Fallback for Python &lt;2.7</span>
+                <span class="n">p2</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">bin</span><span class="p">(</span><span class="n">quotient</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+            <span class="n">N</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">p35</span>
+            <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">N</span>
+            <span class="k">elif</span> <span class="n">N</span> <span class="o">&lt;</span> <span class="n">match</span><span class="p">:</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">N</span>
+            <span class="n">p35</span> <span class="o">*=</span> <span class="mi">3</span>
+            <span class="k">if</span> <span class="n">p35</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">p35</span>
+        <span class="k">if</span> <span class="n">p35</span> <span class="o">&lt;</span> <span class="n">match</span><span class="p">:</span>
+            <span class="n">match</span> <span class="o">=</span> <span class="n">p35</span>
+        <span class="n">p5</span> <span class="o">*=</span> <span class="mi">5</span>
+        <span class="k">if</span> <span class="n">p5</span> <span class="o">==</span> <span class="n">target</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p5</span>
+    <span class="k">if</span> <span class="n">p5</span> <span class="o">&lt;</span> <span class="n">match</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">p5</span>
+    <span class="k">return</span> <span class="n">match</span>
+
+
+
+<span class="k">def</span> <span class="nf">_cook_nd_args</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">invreal</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">s</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">shapeless</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">shapeless</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">axes</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Shape and axes have different lengths.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">invreal</span> <span class="ow">and</span> <span class="n">shapeless</span><span class="p">:</span>
+        <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">s</span><span class="p">,</span> <span class="n">axes</span>    
+    
+
+<span class="k">def</span> <span class="nf">_centered</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">newsize</span><span class="p">):</span>
+    <span class="c"># Return the center newsize portion of the array.</span>
+    <span class="n">newsize</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">newsize</span><span class="p">)</span>
+    <span class="n">currsize</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">startind</span> <span class="o">=</span> <span class="p">(</span><span class="n">currsize</span> <span class="o">-</span> <span class="n">newsize</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">endind</span> <span class="o">=</span> <span class="n">startind</span> <span class="o">+</span> <span class="n">newsize</span>
+    <span class="n">myslice</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="n">startind</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">endind</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">endind</span><span class="p">))]</span>
+    <span class="k">return</span> <span class="n">arr</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">myslice</span><span class="p">)]</span>
+
+
+<span class="c">#def _rfftn(a, s=None, axes=None):</span>
+<span class="c">#    s, axes = _cook_nd_args(a, s, axes);</span>
+<span class="c">#    a = fft.rfft(a, s[-1], axes[-1], overwrite_x = True)</span>
+<span class="c">#    for ii in range(len(axes)-1):</span>
+<span class="c">#        a = fft.fft(a, s[ii], axes[ii], overwrite_x = True)</span>
+<span class="c">#    return a</span>
+
+<span class="c">#def _irfftn(a, s=None, axes=None):   </span>
+<span class="c">#    #a = asarray(a).astype(&#39;complex64&#39;)</span>
+<span class="c">#    s, axes = _cook_nd_args(a, s, axes, invreal=1)</span>
+<span class="c">#    for ii in range(len(axes)-1):</span>
+<span class="c">#        a = fft.ifft(a, s[ii], axes[ii], overwrite_x = True);</span>
+<span class="c">#    a = fft.ifft(a, s[-1], axes[-1], overwrite_x = True);</span>
+<span class="c">#    a = a.real;</span>
+<span class="c">#    return a</span>
+
+<span class="k">def</span> <span class="nf">_rfftn</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">fftn</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="p">);</span>
+
+<span class="k">def</span> <span class="nf">_irfftn</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">fft</span><span class="o">.</span><span class="n">ifftn</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">shape</span> <span class="o">=</span> <span class="n">s</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">;</span>
+
+
+
+<div class="viewcode-block" id="convolve"><a class="viewcode-back" href="../../../../api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.Convolution.convolve">[docs]</a><span class="k">def</span> <span class="nf">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="s">&#39;same&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convolve array with kernel using float32 / complex64, optimized for memory consumption and speed</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        x (array): data to be convolved</span>
+<span class="sd">        k (array): filter kernel</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: convolution</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">s1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">s2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>      
+    <span class="n">shape</span> <span class="o">=</span>  <span class="n">s1</span> <span class="o">+</span> <span class="n">s2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+    
+    <span class="n">fshape</span> <span class="o">=</span> <span class="p">[</span><span class="n">_next_regular</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">d</span><span class="p">))</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">];</span>
+    <span class="n">fslice</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">sz</span><span class="p">))</span> <span class="k">for</span> <span class="n">sz</span> <span class="ow">in</span> <span class="n">shape</span><span class="p">]);</span>
+    
+    <span class="c">#scipys fftpack keeps float32    </span>
+    <span class="c">#ret = irfftn(rfftn(in1, fshape) * rfftn(in2, fshape), fshape)[fslice].copy()</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">_irfftn</span><span class="p">(</span><span class="n">_rfftn</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">fshape</span><span class="p">)</span> <span class="o">*</span> <span class="n">_rfftn</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">fshape</span><span class="p">),</span> <span class="n">fshape</span><span class="p">)[</span><span class="n">fslice</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;full&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s">&quot;same&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_centered</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">s1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&quot;Acceptable mode flags are &#39;same&#39; or &#39;full&#39;.&quot;</span><span class="p">)</span></div>
+   
+        
+<span class="k">def</span> <span class="nf">_test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test for Convolution module&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">50</span><span class="p">);</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">);</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;float32&#39;</span><span class="p">);</span>
+    
+    <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">fftconvolve</span><span class="p">;</span>
+    
+    <span class="n">cs</span> <span class="o">=</span> <span class="n">fftconvolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">k</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;same&#39;</span><span class="p">);</span>
+    <span class="n">co</span> <span class="o">=</span> <span class="n">convolve</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">k</span><span class="p">);</span>
+    
+    <span class="k">print</span> <span class="s">&#39;shapes:&#39;</span>
+    <span class="k">print</span> <span class="n">cs</span><span class="o">.</span><span class="n">shape</span>
+    <span class="k">print</span> <span class="n">co</span><span class="o">.</span><span class="n">shape</span>
+    
+    <span class="k">print</span> <span class="s">&#39;dtypes:&#39;</span>
+    <span class="k">print</span> <span class="n">cs</span><span class="o">.</span><span class="n">dtype</span><span class="p">;</span>
+    <span class="k">print</span> <span class="n">co</span><span class="o">.</span><span class="n">dtype</span><span class="p">;</span>
+    
+    <span class="k">print</span> <span class="s">&#39;difference:&#39;</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cs</span><span class="o">-</span><span class="n">co</span><span class="p">);</span>
+    <span class="k">print</span> <span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+    
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">_test</span><span class="p">()</span>
+    
+    
+    
+    
+    
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.IO.FileList &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.IO.FileList</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Interface to read/write image stacks saved as a list of files</span>
+
+<span class="sd">The filename is given as regular expression as described </span>
+<span class="sd">`here &lt;https://docs.python.org/2/library/re.html&gt;`_.</span>
+
+<span class="sd">It is assumd that there is a single digit like regular expression in the file</span>
+<span class="sd">name, i.e. ``\\d{4}`` indicates a placeholder for an integer with four digits using traling 0s</span>
+<span class="sd">and ``\\d{}`` would jus asume an integer with variable size.</span>
+
+<span class="sd">For example: ``/test\d{4}.tif`` or  ``/test\d{}.tif``</span>
+<span class="sd">    </span>
+<span class="sd">Examples:</span>
+<span class="sd">    &gt;&gt;&gt; import os, numpy</span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.Settings as settings</span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.IO.FileList as fl</span>
+<span class="sd">    &gt;&gt;&gt; filename = os.path.join(settings.ClearMapPath, &#39;Test/Data/FileList/test\d{4}.tif&#39;)  </span>
+<span class="sd">    &gt;&gt;&gt; data = numpy.random.rand(20,50,10);</span>
+<span class="sd">    &gt;&gt;&gt; data = data.astype(&#39;int32&#39;);</span>
+<span class="sd">    &gt;&gt;&gt; fl.writeData(filename, data);</span>
+<span class="sd">    &gt;&gt;&gt; img = fl.readData(filename);  </span>
+<span class="sd">    &gt;&gt;&gt; print img.shape</span>
+<span class="sd">    (20, 50, 10)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">natsort</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+
+
+<div class="viewcode-block" id="readFileList"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.readFileList">[docs]</a><span class="k">def</span> <span class="nf">readFileList</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns list of files that match the regular expression</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str, list: path of files, file names that match the regular expression</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c">#get path        </span>
+    <span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">fname</span><span class="p">)</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">fnames</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">fpath</span><span class="p">);</span>
+    <span class="c">#fnames = [os.path.join(fpath, x) for x in fnames];</span>
+    
+    <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>    
+    <span class="n">fl</span> <span class="o">=</span> <span class="p">[</span> <span class="n">l</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">fnames</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="p">(</span><span class="n">searchRegex</span><span class="p">(</span><span class="n">l</span><span class="p">),)</span> <span class="k">if</span> <span class="n">m</span><span class="p">]</span>  
+    
+    <span class="k">if</span> <span class="n">fl</span> <span class="o">==</span> <span class="p">[]:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;no files found in &#39;</span> <span class="o">+</span> <span class="n">fpath</span> <span class="o">+</span> <span class="s">&#39; match &#39;</span> <span class="o">+</span> <span class="n">fname</span> <span class="o">+</span> <span class="s">&#39; !&#39;</span><span class="p">);</span>
+    
+    <span class="n">fl</span><span class="o">.</span><span class="n">sort</span><span class="p">();</span>
+        
+    <span class="k">return</span> <span class="n">fpath</span><span class="p">,</span> <span class="n">natsort</span><span class="o">.</span><span class="n">natsorted</span><span class="p">(</span><span class="n">fl</span><span class="p">);</span></div>
+    
+
+<div class="viewcode-block" id="splitFileExpression"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.splitFileExpression">[docs]</a><span class="k">def</span> <span class="nf">splitFileExpression</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">fileext</span> <span class="o">=</span> <span class="s">&#39;.tif&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Split the regular expression at the digit place holder</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        fileext (str or None): file extension tu use if filename is a fileheader only</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: file header, file extension, digit format</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c">#digits with fixed width trailing zeros</span>
+    <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;.*</span><span class="se">\\\\</span><span class="s">d\{(?P&lt;digit&gt;\d)\}.*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">searchRegex</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">digits</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;digit&#39;</span><span class="p">));</span>
+        <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;.*(?P&lt;replace&gt;</span><span class="se">\\\\</span><span class="s">d\{\d\}).*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">searchRegex</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;replace&#39;</span><span class="p">));</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;FileList: no file extension or more than a single placeholder for z indexing found!&#39;</span><span class="p">);</span>
+        <span class="n">fileheader</span> <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">fileext</span>    <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="n">digitfrmt</span> <span class="o">=</span> <span class="s">&quot;%.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">digits</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;d&quot;</span><span class="p">;</span>
+
+    <span class="k">else</span><span class="p">:</span>
+      <span class="c">#digits without trailing zeros \d* or</span>
+      <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;.*</span><span class="se">\\\\</span><span class="s">d\*.*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+      <span class="n">m</span> <span class="o">=</span> <span class="n">searchRegex</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;.*(?P&lt;replace&gt;</span><span class="se">\\\\</span><span class="s">d\*).*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">searchRegex</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+        <span class="n">fs</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;replace&#39;</span><span class="p">));</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;FileList: no file extension or more than a single placeholder for z indexing found!&#39;</span><span class="p">);</span>
+        <span class="n">fileheader</span> <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">fileext</span>    <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+        <span class="n">digitfrmt</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">;</span>
+
+      <span class="k">else</span><span class="p">:</span>
+        <span class="c">#digits without trailing zeros \d{} or</span>
+        <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;.*</span><span class="se">\\\\</span><span class="s">d\{\}.*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">searchRegex</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+          <span class="n">searchRegex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;.*(?P&lt;replace&gt;</span><span class="se">\\\\</span><span class="s">d\{\}).*&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span>
+          <span class="n">m</span> <span class="o">=</span> <span class="n">searchRegex</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+          <span class="n">fs</span> <span class="o">=</span> <span class="n">filename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s">&#39;replace&#39;</span><span class="p">));</span>
+          <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">fs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+              <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;FileList: no file extension or more than a single placeholder for z indexing found!&#39;</span><span class="p">);</span>
+          <span class="n">fileheader</span> <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+          <span class="n">fileext</span>    <span class="o">=</span> <span class="n">fs</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+
+          <span class="n">digitfrmt</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">%d</span><span class="s">&quot;</span><span class="p">;</span>
+
+        <span class="k">else</span><span class="p">:</span> <span class="c">#fileheader is given</span>
+          <span class="n">digits</span> <span class="o">=</span> <span class="mi">4</span><span class="p">;</span>
+          <span class="n">fileheader</span> <span class="o">=</span> <span class="n">filename</span><span class="p">;</span>
+          <span class="c">#fileext    = &#39;.tif&#39;;</span>
+
+          <span class="n">digitfrmt</span> <span class="o">=</span> <span class="s">&quot;%.&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">digits</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;d&quot;</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">fileheader</span><span class="p">,</span> <span class="n">fileext</span><span class="p">,</span> <span class="n">digitfrmt</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="fileExpressionToFileName"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.fileExpressionToFileName">[docs]</a><span class="k">def</span> <span class="nf">fileExpressionToFileName</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Insert a number into the regular expression</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        z (int or str): z slice index or string to insert</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="p">(</span><span class="n">fileheader</span><span class="p">,</span> <span class="n">fileext</span><span class="p">,</span> <span class="n">digitfrmt</span><span class="p">)</span> <span class="o">=</span> <span class="n">splitFileExpression</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+       <span class="k">return</span> <span class="n">fileheader</span> <span class="o">+</span> <span class="n">z</span> <span class="o">+</span> <span class="n">fileext</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">fileheader</span> <span class="o">+</span> <span class="p">(</span><span class="n">digitfrmt</span> <span class="o">%</span> <span class="n">z</span><span class="p">)</span> <span class="o">+</span> <span class="n">fileext</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="dataSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.dataSize">[docs]</a><span class="k">def</span> <span class="nf">dataSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns size of data stored as a file list</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        x,y,z (tuple): data range specifications</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: data size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">fp</span><span class="p">,</span> <span class="n">fl</span> <span class="o">=</span> <span class="n">readFileList</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="p">);</span>
+    
+    <span class="n">d2</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">fl</span><span class="p">[</span><span class="mi">0</span><span class="p">]));</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">d2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;FileList: importing multiple files of dim </span><span class="si">%d</span><span class="s"> not supported!&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">d2</span><span class="p">));</span>
+    
+    <span class="n">dims</span> <span class="o">=</span> <span class="n">d2</span> <span class="o">+</span> <span class="p">(</span><span class="n">nz</span><span class="p">,);</span>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">dataSizeFromDataRange</span><span class="p">(</span><span class="n">dims</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span></div>
+   
+   
+<div class="viewcode-block" id="dataZSize"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.dataZSize">[docs]</a><span class="k">def</span> <span class="nf">dataZSize</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns size of data stored as a file list</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        z (tuple): z data range specification</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        int: z data size</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">fp</span><span class="p">,</span> <span class="n">fl</span> <span class="o">=</span> <span class="n">readFileList</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataSize</span><span class="p">(</span><span class="n">nz</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span></div>
+
+
+
+<div class="viewcode-block" id="readDataFiles"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.readDataFiles">[docs]</a><span class="k">def</span> <span class="nf">readDataFiles</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read data from individual images assuming they are the z slices</span>
+
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        x,y,z (tuple): data range specifications</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: image data</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+    
+    <span class="n">fpath</span><span class="p">,</span> <span class="n">fl</span> <span class="o">=</span> <span class="n">readFileList</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+    <span class="n">nz</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="p">);</span>
+    
+    <span class="c">#read first image to get data size and type</span>
+    <span class="n">rz</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataRange</span><span class="p">(</span><span class="n">nz</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span>
+    <span class="n">sz</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">toDataSize</span><span class="p">(</span><span class="n">nz</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">z</span><span class="p">);</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">fl</span><span class="p">[</span><span class="n">rz</span><span class="p">[</span><span class="mi">0</span><span class="p">]]);</span> 
+    <span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">);</span>
+    <span class="n">nxy</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nxy</span> <span class="o">+</span> <span class="p">(</span><span class="n">sz</span><span class="p">,),</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">dtype</span><span class="p">);</span>
+    <span class="n">data</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">;</span>
+
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rz</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">rz</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fpath</span><span class="p">,</span> <span class="n">fl</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>    
+        <span class="n">data</span><span class="p">[:,:,</span><span class="n">i</span><span class="o">-</span><span class="n">rz</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">data</span><span class="p">;</span></div>
+
+
+
+
+
+     
+<div class="viewcode-block" id="readData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.readData">[docs]</a><span class="k">def</span> <span class="nf">readData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read image stack from single or multiple images</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        x,y,z (tuple): data range specifications</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        array: image data</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+         <span class="k">return</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+         <span class="k">return</span> <span class="n">readDataFiles</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">);</span></div>
+
+
+
+<div class="viewcode-block" id="writeData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.writeData">[docs]</a><span class="k">def</span> <span class="nf">writeData</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">startIndex</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write image stack to single or multiple image files</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        filename (str): file name as regular expression</span>
+<span class="sd">        data (array): image data</span>
+<span class="sd">        startIndex (int): index of first z-slice</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name as regular expression</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c">#create directory if not exsits</span>
+    <span class="n">io</span><span class="o">.</span><span class="n">createDirectory</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span> 
+
+    <span class="c">#check for the \d{xx} part of the regular expression -&gt; if not assume file header    </span>
+    <span class="p">(</span><span class="n">fileheader</span><span class="p">,</span> <span class="n">fileext</span><span class="p">,</span> <span class="n">digitfrmt</span><span class="p">)</span> <span class="o">=</span> <span class="n">splitFileExpression</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+
+    <span class="n">d</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">);</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">fname</span> <span class="o">=</span> <span class="n">fileheader</span> <span class="o">+</span> <span class="p">(</span><span class="n">digitfrmt</span> <span class="o">%</span> <span class="n">startIndex</span><span class="p">)</span> <span class="o">+</span> <span class="n">fileext</span><span class="p">;</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">fname</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">nz</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nz</span><span class="p">):</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">fileheader</span> <span class="o">+</span> <span class="p">(</span><span class="n">digitfrmt</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">startIndex</span><span class="p">))</span> <span class="o">+</span> <span class="n">fileext</span><span class="p">;</span>
+            <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">data</span><span class="p">[:,:,</span><span class="n">i</span><span class="p">]);</span>
+        <span class="k">return</span> <span class="n">filename</span><span class="p">;</span></div>
+
+
+<div class="viewcode-block" id="copyData"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.copyData">[docs]</a><span class="k">def</span> <span class="nf">copyData</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copy a data file from source to sink when for entire list of files</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str): file name pattern of source</span>
+<span class="sd">        sink (str): file name pattern of sink</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        str: file name patttern of the copy</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    
+    <span class="p">(</span><span class="n">fileheader</span><span class="p">,</span> <span class="n">fileext</span><span class="p">,</span> <span class="n">digitfrmt</span><span class="p">)</span> <span class="o">=</span> <span class="n">splitFileExpression</span><span class="p">(</span><span class="n">sink</span><span class="p">);</span>
+    
+    <span class="n">fp</span><span class="p">,</span> <span class="n">fl</span> <span class="o">=</span> <span class="n">readFileList</span><span class="p">(</span><span class="n">source</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="p">)):</span>
+        <span class="n">io</span><span class="o">.</span><span class="n">copyFile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">fl</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="n">fileheader</span> <span class="o">+</span> <span class="p">(</span><span class="n">digitfrmt</span> <span class="o">%</span> <span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">fileext</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">sink</span></div>
+
+
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../api/ClearMap.IO.html#ClearMap.IO.FileList.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>    
+    <span class="sd">&quot;&quot;&quot;Test FileList module&quot;&quot;&quot;</span>  
+    <span class="kn">import</span> <span class="nn">ClearMap.IO.FileList</span> <span class="kn">as</span> <span class="nn">self</span>
+    <span class="nb">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+    <span class="kn">from</span> <span class="nn">iDISCO.Parameter</span> <span class="kn">import</span> <span class="n">iDISCOPath</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">numpy</span>
+
+    <span class="n">basedir</span> <span class="o">=</span> <span class="n">iDISCOPath</span><span class="p">();</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span><span class="s">&#39;Test/Data/FileList/test\d{4}.tif&#39;</span><span class="p">)</span>  
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">:</span><span class="mi">45</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">data</span><span class="p">;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int32&#39;</span><span class="p">);</span>
+    
+    <span class="k">print</span> <span class="s">&quot;writing raw image to: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>    
+    <span class="bp">self</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+
+    <span class="k">print</span> <span class="s">&quot;Loading raw image from: &quot;</span> <span class="o">+</span> <span class="n">fn</span><span class="p">;</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>  
+    <span class="k">print</span> <span class="s">&quot;Image size: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">img</span> <span class="o">-</span> <span class="n">data</span><span class="p">;</span>
+    <span class="k">print</span> <span class="p">(</span><span class="n">diff</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">diff</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+
+    
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span><span class="s">&#39;Test/Data/OME/16-17-27_0_8X-s3-20HF_UltraII_C00_xyz-Table Z\d{4}.ome.tif&#39;</span><span class="p">)</span>        
+    
+    <span class="n">fp</span><span class="p">,</span> <span class="n">fl</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readFileList</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>
+    <span class="k">print</span> <span class="s">&quot;Found &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fl</span><span class="p">))</span> <span class="o">+</span> <span class="s">&quot; images!&quot;</span>    
+    
+    <span class="c">#dataSize</span>
+    <span class="k">print</span> <span class="s">&quot;dataSize  is </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+    <span class="k">print</span> <span class="s">&quot;dataZSize is </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataZSize</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+    
+    <span class="k">print</span> <span class="s">&quot;dataSize  is </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataSize</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">)))</span>
+    <span class="k">print</span> <span class="s">&quot;dataZSize is </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataZSize</span><span class="p">(</span><span class="n">fn</span><span class="p">))</span>
+    
+    
+    <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="mi">17</span><span class="p">,</span><span class="nb">all</span><span class="p">));</span>  
+    <span class="k">print</span> <span class="s">&quot;Image size: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>    
+    
+    <span class="kn">import</span> <span class="nn">iDISCO.Visualization.Plot</span> <span class="kn">as</span> <span class="nn">plt</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plotTiling</span><span class="p">(</span><span class="n">img</span><span class="p">)</span></div>
+        
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+    
+    <span class="n">test</span><span class="p">();</span>
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

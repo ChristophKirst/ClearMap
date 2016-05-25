@@ -1,0 +1,255 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Installation &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="index.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Overview of ClearMap" href="introduction.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="index.html"><img src="_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorial"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Overview of ClearMap"
+             accesskey="P">previous</a> |</li>
+       <li><a href="index.html">home</a>|&nbsp;</li>
+       <li><a href="search.html">search</a>|&nbsp;</li>
+       <li><a href="api/ClearMap.html">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additionnal-informations">Additionnal Informations:</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="introduction.html"
+                        title="previous chapter">Overview of ClearMap</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="tutorial.html"
+                        title="next chapter">Tutorial</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/installation.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>ClearMap is written in Python 2.7. It should run on any Python environment, but it also relies on external softwares such as <a class="reference external" href="http://elastix.isi.uu.nl">Elastix</a> which may not run optimally on Windows or Apple systems.
+For typical use, we recommend a workstation running Ubuntu 14 or later with at least 4 CPU cores, 64Gb of RAM and SSD disks. 128Gb of RAM and 6 cores or above will have much increased performances. The processing time however will depend greatly on the parameters set, so your experience may be different. Also, large hard drives may be needed to host the raw data, although 1 to 4Tb of storage space should be enough for most users.</p>
+</div>
+<div class="section" id="id1">
+<h2>Installation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>To install ClearMap, first create a folder to contain all the files for the program. Download the scripts from the latest version of ClearMap from <a class="reference external" href="https://www.idisco.info">The iDISCO website</a> and extract them in the ClearMap folder. You also need to download individually the following softwares:</p>
+<blockquote>
+<div><ul class="simple">
+<li>To do the alignement, you should download <a class="reference external" href="http://elastix.isi.uu.nl">Elastix</a> (<a class="reference external" href="http://elastix.isi.uu.nl">http://elastix.isi.uu.nl</a>)</li>
+<li>If you wish to use the machine learning filters, download <a class="reference external" href="http://ilastik.org">Ilastik</a> (<a class="reference external" href="http://ilastik.org">http://ilastik.org</a>). This is an optional download, only if you wish to use this more complete object detection framework for complex objects.</li>
+</ul>
+</div></blockquote>
+<p>If you’re starting from a fresh Ubuntu 16.04LTS install, for instance, here are the steps to complete the installation. Open a terminal window and type the following instructions:</p>
+<ul class="simple">
+<li>Install pip:</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get update
+<span class="nv">$ </span>sudo apt-get install python-pip
+</pre></div>
+</div>
+<ul class="simple">
+<li>Install Spyder:</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install spyder
+</pre></div>
+</div>
+<ul class="simple">
+<li>Install the necessary libraries:</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install python-opencv
+<span class="nv">$ </span>sudo apt-get install cython
+<span class="nv">$ </span>sudo -H pip install --upgrade pip
+<span class="nv">$ </span>sudo -H pip install scikit-image
+<span class="nv">$ </span>sudo -H pip install h5py
+<span class="nv">$ </span>sudo apt-get install python-vigra
+</pre></div>
+</div>
+<p>We use <a class="reference external" href="https://pythonhosted.org/spyder/">Spyder</a> to run the code. Set the project explorer and working environment in the ClearMap folder.</p>
+</div>
+<div class="section" id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>Open the file <code class="docutils literal"><span class="pre">ClearMap/Settings.py</span></code> to set the paths of installations for Ilastik and Elastix:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/yourpath/ilastik-05-rc-final&#39;</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/yourpath/elastix&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Note that Ilastik is optional. If you haven’t installed it, you can set the path to <code class="docutils literal"><span class="pre">None</span></code>. You can also set the installation to run on multiple machines by setting a host specific path:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">hostname</span> <span class="o">==</span> <span class="s">&#39;kagalaska.nld&#39;</span><span class="p">:</span>  <span class="c">#Christoph’s Laptop</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/ilastik-05/&#39;</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/elastix/&#39;</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">elif</span> <span class="n">hostname</span> <span class="o">==</span> <span class="s">&#39;mtllab-Ubuntu&#39;</span><span class="p">:</span> <span class="c">#Nico’s Workstation</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/ilastik-05-rc-final&#39;</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/elastix&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="additionnal-informations">
+<h2>Additionnal Informations:<a class="headerlink" href="#additionnal-informations" title="Permalink to this headline">¶</a></h2>
+<p>The following libraries are used by ClearMap:</p>
+<ul class="simple">
+<li>Matplotlib 1.5.1</li>
+<li>Numpy 1.11.0</li>
+<li>Scipy 0.16.0</li>
+<li>Skimage 0.12.3</li>
+<li>Mahotas 1.3.0 (<a class="reference external" href="http://luispedro.org/software/mahotas/">website</a>)</li>
+<li>h5py 2.6.0 (for Imaris files input/output only)</li>
+<li>openCV 2.4.9.1</li>
+<li>PyQt4</li>
+<li>tifffile 0.6.2</li>
+<li>EVTK (<a class="reference external" href="https://bitbucket.org/pauloh/pyevtk/overview">website</a>) (only necessary, for output to vtk files)</li>
+<li>Cython 0.23.1</li>
+<li><a class="reference external" href="http://ukoethe.github.io/vigra/">Vigra</a> (used for the original Ilastik integration).</li>
+</ul>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="tutorial.html" title="Tutorial"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="introduction.html" title="Overview of ClearMap"
+             >previous</a> |</li>
+       <li><a href="index.html">home</a>|&nbsp;</li>
+       <li><a href="search.html">search</a>|&nbsp;</li>
+       <li><a href="api/ClearMap.html">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

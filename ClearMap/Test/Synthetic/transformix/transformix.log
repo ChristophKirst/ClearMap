@@ -1,0 +1,80 @@
+
+transformix is started at Fri Aug 21 16:20:56 2015.
+
+which transformix:   /usr/local/elastix/bin/transformix
+transformix runs at: mtllab-Ubuntu
+  Linux 3.16.0-41-generic (x64), #57-Ubuntu SMP Thu Jun 18 08:44:16 UTC 2015
+  with 128845 MB memory, and 6 cores @ 1396 MHz.
+Running transformix with parameter file "/home/mtllab/Programs/idisco/iDISCO/Test/Synthetic/elastix/TransformParameters.0.txt".
+
+Reading the elastix parameters from file ...
+
+Installing all components.
+InstallingComponents was successful.
+
+ELASTIX version: 4.700
+Command line options from ElastixBase:
+-in       /home/mtllab/Programs/idisco/iDISCO/Test/Synthetic/test_iDISCO_reference.tif
+-out      /home/mtllab/Programs/idisco/iDISCO/Test/Synthetic/transformix/
+-threads  unspecified, so all available threads are used
+-tp       /home/mtllab/Programs/idisco/iDISCO/Test/Synthetic/elastix/TransformParameters.0.txt
+-def      unspecified, so no input points transformed
+-jac      unspecified, so no det(dT/dx) computed
+-jacmat   unspecified, so no dT/dx computed
+
+=============== start of ParameterFile: /home/mtllab/Programs/idisco/iDISCO/Test/Synthetic/elastix/TransformParameters.0.txt ===============
+(Transform "AffineTransform")
+(NumberOfParameters 12)
+(TransformParameters 1.007783 0.010005 0.015378 0.009466 1.271155 -0.000596 0.004662 0.029978 1.028931 -0.107967 6.520899 -0.032744)
+(InitialTransformParametersFileName "NoInitialTransform")
+(HowToCombineTransforms "Compose")
+
+// Image specific
+(FixedImageDimension 3)
+(MovingImageDimension 3)
+(FixedInternalImagePixelType "float")
+(MovingInternalImagePixelType "float")
+(Size 75 53 24)
+(Index 0 0 0)
+(Spacing 1.0000000000 1.0000000000 1.0000000000)
+(Origin 0.0000000000 0.0000000000 0.0000000000)
+(Direction 1.0000000000 0.0000000000 0.0000000000 0.0000000000 1.0000000000 0.0000000000 0.0000000000 0.0000000000 1.0000000000)
+(UseDirectionCosines "false")
+
+// AdvancedAffineTransform specific
+(CenterOfRotationPoint 37.0000000000 26.0000000000 11.5000000000)
+
+// ResampleInterpolator specific
+(ResampleInterpolator "FinalBSplineInterpolator")
+(FinalBSplineInterpolationOrder 3)
+
+// Resampler specific
+(Resampler "DefaultResampler")
+(DefaultPixelValue 0.000000)
+(ResultImageFormat "mhd")
+(ResultImagePixelType "short")
+(CompressResultImage "true")
+
+
+=============== end of ParameterFile: /home/mtllab/Programs/idisco/iDISCO/Test/Synthetic/elastix/TransformParameters.0.txt ===============
+
+
+Reading input image ...
+  Reading input image took 0 s
+Calling all ReadFromFile()'s ...
+  Calling all ReadFromFile()'s took 0 s
+Transforming points ...
+  The command-line option "-def" is not used, so no points are transformed
+  Transforming points done, it took 0 s
+Compute determinant of spatial Jacobian ...
+  The command-line option "-jac" is not used, so no det(dT/dx) computed.
+  Computing determinant of spatial Jacobian done, it took 0 s
+Compute spatial Jacobian (full matrix) ...
+  The command-line option "-jacmat" is not used, so no dT/dx computed.
+  Computing spatial Jacobian done, it took 0 s
+Resampling image and writing to disk ...
+  Resampling took 0.05 s
+
+Transformix has finished at Fri Aug 21 16:20:56 2015.
+Elapsed time: 0 Seconds.
+

@@ -1,0 +1,394 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Python Module Index &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="index.html" />
+
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="index.html"><img src="_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="#" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="index.html">home</a>|&nbsp;</li>
+       <li><a href="search.html">search</a>|&nbsp;</li>
+       <li><a href="api/ClearMap.html">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+
+   <h1>Python Module Index</h1>
+
+   <div class="modindex-jumpbox">
+   <a href="#cap-c"><strong>c</strong></a>
+   </div>
+
+   <table class="indextable modindextable" cellspacing="0" cellpadding="2">
+     <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
+     <tr class="cap" id="cap-c"><td></td><td>
+       <strong>c</strong></td><td></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-1" style="display: none" alt="-" /></td>
+       <td>
+       <a href="api/ClearMap.html#module-ClearMap"><code class="xref">ClearMap</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Alignment.html#module-ClearMap.Alignment"><code class="xref">ClearMap.Alignment</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Alignment.html#module-ClearMap.Alignment.Elastix"><code class="xref">ClearMap.Alignment.Elastix</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Alignment.html#module-ClearMap.Alignment.Resampling"><code class="xref">ClearMap.Alignment.Resampling</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis"><code class="xref">ClearMap.Analysis</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis.Label"><code class="xref">ClearMap.Analysis.Label</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis.Statistics"><code class="xref">ClearMap.Analysis.Statistics</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools"><code class="xref">ClearMap.Analysis.Tools</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.Extrapolate"><code class="xref">ClearMap.Analysis.Tools.Extrapolate</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.MultipleComparisonCorrection"><code class="xref">ClearMap.Analysis.Tools.MultipleComparisonCorrection</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.StatisticalTests"><code class="xref">ClearMap.Analysis.Tools.StatisticalTests</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis.Voxelization"><code class="xref">ClearMap.Analysis.Voxelization</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing"><code class="xref">ClearMap.ImageProcessing</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.BackgroundRemoval"><code class="xref">ClearMap.ImageProcessing.BackgroundRemoval</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.CellDetection"><code class="xref">ClearMap.ImageProcessing.CellDetection</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.CellSizeDetection"><code class="xref">ClearMap.ImageProcessing.CellSizeDetection</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter"><code class="xref">ClearMap.ImageProcessing.Filter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.Convolution"><code class="xref">ClearMap.ImageProcessing.Filter.Convolution</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.DoGFilter"><code class="xref">ClearMap.ImageProcessing.Filter.DoGFilter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.FilterKernel"><code class="xref">ClearMap.ImageProcessing.Filter.FilterKernel</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.LinearFilter"><code class="xref">ClearMap.ImageProcessing.Filter.LinearFilter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.StructureElement"><code class="xref">ClearMap.ImageProcessing.Filter.StructureElement</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.GreyReconstruction"><code class="xref">ClearMap.ImageProcessing.GreyReconstruction</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.IlastikClassification"><code class="xref">ClearMap.ImageProcessing.IlastikClassification</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.IlluminationCorrection"><code class="xref">ClearMap.ImageProcessing.IlluminationCorrection</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.ImageStatistics"><code class="xref">ClearMap.ImageProcessing.ImageStatistics</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.MaximaDetection"><code class="xref">ClearMap.ImageProcessing.MaximaDetection</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.SpotDetection"><code class="xref">ClearMap.ImageProcessing.SpotDetection</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.StackProcessing"><code class="xref">ClearMap.ImageProcessing.StackProcessing</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO"><code class="xref">ClearMap.IO</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.CSV"><code class="xref">ClearMap.IO.CSV</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.FileList"><code class="xref">ClearMap.IO.FileList</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.Imaris"><code class="xref">ClearMap.IO.Imaris</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.IO"><code class="xref">ClearMap.IO.IO</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.NPY"><code class="xref">ClearMap.IO.NPY</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.NRRD"><code class="xref">ClearMap.IO.NRRD</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.RAW"><code class="xref">ClearMap.IO.RAW</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.TIF"><code class="xref">ClearMap.IO.TIF</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.IO.html#module-ClearMap.IO.VTK"><code class="xref">ClearMap.IO.VTK</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Parameter.html#module-ClearMap.Parameter"><code class="xref">ClearMap.Parameter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Settings.html#module-ClearMap.Settings"><code class="xref">ClearMap.Settings</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Utils.html#module-ClearMap.Utils"><code class="xref">ClearMap.Utils</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Utils.html#module-ClearMap.Utils.ParameterTools"><code class="xref">ClearMap.Utils.ParameterTools</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Utils.html#module-ClearMap.Utils.ProcessWriter"><code class="xref">ClearMap.Utils.ProcessWriter</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Utils.html#module-ClearMap.Utils.Timer"><code class="xref">ClearMap.Utils.Timer</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Visualization.html#module-ClearMap.Visualization"><code class="xref">ClearMap.Visualization</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-1">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="api/ClearMap.Visualization.html#module-ClearMap.Visualization.Plot"><code class="xref">ClearMap.Visualization.Plot</code></a></td><td>
+       <em></em></td></tr>
+   </table>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="#" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="index.html">home</a>|&nbsp;</li>
+       <li><a href="search.html">search</a>|&nbsp;</li>
+       <li><a href="api/ClearMap.html">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

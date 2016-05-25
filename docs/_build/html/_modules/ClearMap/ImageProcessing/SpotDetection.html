@@ -1,0 +1,389 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.SpotDetection &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.ImageProcessing.SpotDetection</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Functions to detect spots in images</span>
+
+<span class="sd">The main routine :func:`detectCells` uses a difference of gaussian filter (see </span>
+<span class="sd">:mod:`~ClearMap.ImageProcessing.Filter`) followed by a peak detection step.</span>
+
+<span class="sd">Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; import os</span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.IO as io  </span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.Settings as settings</span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.ImageProcessing.SpotDetection as sd</span>
+<span class="sd">    &gt;&gt;&gt; fn = os.path.join(settings.ClearMapPath, &#39;Test/Data/Synthetic/test_iDISCO_\d{3}.tif&#39;);</span>
+<span class="sd">    &gt;&gt;&gt; img = io.readData(fn);</span>
+<span class="sd">    &gt;&gt;&gt; img = img.astype(&#39;int16&#39;); # converting data to smaller integer types can be more memory efficient!</span>
+<span class="sd">    &gt;&gt;&gt; res = sd.detectSpots(img, dogSize = (5,5,5), flatfield = None, threshold = 5, cellShapeThreshold = 1);</span>
+<span class="sd">    &gt;&gt;&gt; print &#39;Found %d cells !&#39; % res[0].shape[0]</span>
+<span class="sd">    Illumination: flatfield          : None</span>
+<span class="sd">    Illumination: illuminationScaling: True</span>
+<span class="sd">    Illumination: background         : None</span>
+<span class="sd">    Background: backgroundSize: (15, 15)</span>
+<span class="sd">    Background: elapsed time: 0:00:00</span>
+<span class="sd">    DoG: dogSize: (5, 5, 5)</span>
+<span class="sd">    DoG: elapsed time: 0:00:00</span>
+<span class="sd">    Extended Max: threshold   : 5</span>
+<span class="sd">    Extended Max: localMaxSize: 5</span>
+<span class="sd">    Extended Max: hMax        : None</span>
+<span class="sd">    Extended Max: elapsed time: 0:00:00</span>
+<span class="sd">    Cell Centers: elapsed time: 0:00:00</span>
+<span class="sd">    Cell Shape: cellShapeThreshold: 1</span>
+<span class="sd">    Cell Shape:: elapsed time: 0:00:00</span>
+<span class="sd">    Cell Size:: elapsed time: 0:00:00</span>
+<span class="sd">    Cell Intensity: cellIntensityMethod: Max</span>
+<span class="sd">    Cell Intensity:: elapsed time: 0:00:00</span>
+<span class="sd">    Cell Intensity: cellIntensityMethod: Max</span>
+<span class="sd">    Cell Intensity:: elapsed time: 0:00:00</span>
+<span class="sd">    Cell Intensity: cellIntensityMethod: Max</span>
+<span class="sd">    Cell Intensity:: elapsed time: 0:00:00</span>
+<span class="sd">    Found 38 cells !</span>
+<span class="sd">    </span>
+<span class="sd">After execution this example inspect the result of the cell detection in </span>
+<span class="sd">the folder &#39;Test/Data/CellShape/cellshape\_\\d{3}.tif&#39;.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.IlluminationCorrection</span> <span class="kn">import</span> <span class="n">correctIllumination</span>
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.BackgroundRemoval</span> <span class="kn">import</span> <span class="n">removeBackground</span>
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.Filter.DoGFilter</span> <span class="kn">import</span> <span class="n">filterDoG</span>
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.MaximaDetection</span> <span class="kn">import</span> <span class="n">findExtendedMaxima</span><span class="p">,</span> <span class="n">findPixelCoordinates</span><span class="p">,</span> <span class="n">findIntensity</span><span class="p">,</span> <span class="n">findCenterOfMaxima</span>
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.CellSizeDetection</span> <span class="kn">import</span> <span class="n">detectCellShape</span><span class="p">,</span> <span class="n">findCellSize</span><span class="p">,</span> <span class="n">findCellIntensity</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.Timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.ParameterTools</span> <span class="kn">import</span> <span class="n">getParameter</span>
+
+
+<span class="c">##############################################################################</span>
+<span class="c"># Spot detection</span>
+<span class="c">##############################################################################</span>
+
+<div class="viewcode-block" id="detectSpots"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.SpotDetection.detectSpots">[docs]</a><span class="k">def</span> <span class="nf">detectSpots</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">detectSpotsParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">correctIlluminationParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">removeBackgroundParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="n">filterDoGParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">findExtendedMaximaParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">detectCellShapeParameter</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span>
+                <span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Detect Cells in 3d grayscale image using DoG filtering and maxima detection</span>
+<span class="sd">    </span>
+<span class="sd">    Effectively this function performs the following steps:</span>
+<span class="sd">        * illumination correction via :func:`~ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination`</span>
+<span class="sd">        * background removal via :func:`~ClearMap.ImageProcessing.BackgroundRemoval.removeBackground`</span>
+<span class="sd">        * difference of Gaussians (DoG) filter via :func:`~ClearMap.ImageProcessing.Filter.filterDoG`</span>
+<span class="sd">        * maxima detection via :func:`~ClearMap.ImageProcessing.MaximaDetection.findExtendedMaxima`</span>
+<span class="sd">        * cell shape detection via :func:`~ClearMap.ImageProcessing.CellSizeDetection.detectCellShape`</span>
+<span class="sd">        * cell intensity and size measurements via: :func:`~ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity`,</span>
+<span class="sd">          :func:`~ClearMap.ImageProcessing.CellSizeDetection.findCellSize`. </span>
+<span class="sd">    detectCells</span>
+<span class="sd">    Note: </span>
+<span class="sd">        Processing steps are done in place to save memory.</span>
+<span class="sd">        </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        img (array): image data</span>
+<span class="sd">        detectSpotParameter: image processing parameter as described in the individual sub-routines</span>
+<span class="sd">        verbose (bool): print progress information</span>
+<span class="sd">        out (object): object to print progress information to</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: tuple of arrays (cell coordinates, raw intensity, fully filtered intensty, illumination and background corrected intensity [, cell size])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">();</span>
+    
+    <span class="c"># normalize data -&gt; to check</span>
+    <span class="c">#img = img.astype(&#39;float&#39;);</span>
+    <span class="c">#dmax = 0.075 * 65535;</span>
+    <span class="c">#ids = img &gt; dmax;</span>
+    <span class="c">#img[ids] = dmax;</span>
+    <span class="c">#img /= dmax; </span>
+    <span class="c">#out.write(timer.elapsedTime(head = &#39;Normalization&#39;));</span>
+    <span class="c">#img = dataset[600:1000,1600:1800,800:830];</span>
+    <span class="c">#img = dataset[600:1000,:,800:830];</span>
+    
+    <span class="c"># correct illumination</span>
+    <span class="n">correctIlluminationParameter</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">detectSpotsParameter</span><span class="p">,</span> <span class="s">&quot;correctIlluminationParameter&quot;</span><span class="p">,</span> <span class="n">correctIlluminationParameter</span><span class="p">);</span>
+    <span class="n">img1</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span>
+    <span class="n">img1</span> <span class="o">=</span> <span class="n">correctIllumination</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">correctIlluminationParameter</span> <span class="o">=</span> <span class="n">correctIlluminationParameter</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">)</span>   
+
+    <span class="c"># background subtraction in each slice</span>
+    <span class="c">#img2 = img.copy();</span>
+    <span class="n">removeBackgroundParameter</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">detectSpotsParameter</span><span class="p">,</span> <span class="s">&quot;removeBackgroundParameter&quot;</span><span class="p">,</span> <span class="n">removeBackgroundParameter</span><span class="p">);</span>
+    <span class="n">img2</span> <span class="o">=</span> <span class="n">removeBackground</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">removeBackgroundParameter</span> <span class="o">=</span> <span class="n">removeBackgroundParameter</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">)</span>   
+    
+    <span class="c"># mask</span>
+    <span class="c">#timer.reset();</span>
+    <span class="c">#if mask == None: #explicit mask</span>
+    <span class="c">#    mask = img &gt; 0.01;</span>
+    <span class="c">#    mask = binary_opening(mask, self.structureELement(&#39;Disk&#39;, (3,3,3)));</span>
+    <span class="c">#img[img &lt; 0.01] = 0; # masking in place  # extended maxima</span>
+    <span class="c">#out.write(timer.elapsedTime(head = &#39;Mask&#39;));    </span>
+    
+    <span class="c">#DoG filter</span>
+    <span class="n">filterDoGParameter</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">detectSpotsParameter</span><span class="p">,</span> <span class="s">&quot;filterDoGParameter&quot;</span><span class="p">,</span> <span class="n">filterDoGParameter</span><span class="p">);</span>
+    <span class="n">dogSize</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">filterDoGParameter</span><span class="p">,</span> <span class="s">&quot;size&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">);</span>
+    <span class="c">#img3 = img2.copy();    </span>
+    <span class="n">img3</span> <span class="o">=</span> <span class="n">filterDoG</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">filterDoGParameter</span> <span class="o">=</span> <span class="n">filterDoGParameter</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+    <span class="c"># normalize    </span>
+    <span class="c">#    imax = img.max();</span>
+    <span class="c">#    if imax == 0:</span>
+    <span class="c">#        imax = 1;</span>
+    <span class="c">#    img /= imax;</span>
+    
+    <span class="c"># extended maxima</span>
+    <span class="n">findExtendedMaximaParameter</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">detectSpotsParameter</span><span class="p">,</span> <span class="s">&quot;findExtendedMaximaParameter&quot;</span><span class="p">,</span> <span class="n">findExtendedMaximaParameter</span><span class="p">);</span>
+    <span class="n">hMax</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">findExtendedMaximaParameter</span><span class="p">,</span> <span class="s">&quot;hMax&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">);</span>
+    <span class="n">imgmax</span> <span class="o">=</span> <span class="n">findExtendedMaxima</span><span class="p">(</span><span class="n">img3</span><span class="p">,</span> <span class="n">findExtendedMaximaParameter</span> <span class="o">=</span> <span class="n">findExtendedMaximaParameter</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+    <span class="c">#center of maxima</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">hMax</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">centers</span> <span class="o">=</span> <span class="n">findCenterOfMaxima</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">imgmax</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">centers</span> <span class="o">=</span> <span class="n">findPixelCoordinates</span><span class="p">(</span><span class="n">imgmax</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+    <span class="c">#cell size detection</span>
+    <span class="n">detectCellShapeParameter</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">detectSpotsParameter</span><span class="p">,</span> <span class="s">&quot;detectCellShapeParameter&quot;</span><span class="p">,</span> <span class="n">detectCellShapeParameter</span><span class="p">);</span>
+    <span class="n">cellShapeThreshold</span> <span class="o">=</span> <span class="n">getParameter</span><span class="p">(</span><span class="n">detectCellShapeParameter</span><span class="p">,</span> <span class="s">&quot;threshold&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">);</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cellShapeThreshold</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        
+        <span class="c"># cell shape via watershed</span>
+        <span class="n">imgshape</span> <span class="o">=</span> <span class="n">detectCellShape</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">detectCellShapeParameter</span> <span class="o">=</span> <span class="n">detectCellShapeParameter</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+        
+        <span class="c">#size of cells        </span>
+        <span class="n">csize</span> <span class="o">=</span> <span class="n">findCellSize</span><span class="p">(</span><span class="n">imgshape</span><span class="p">,</span> <span class="n">maxLabel</span> <span class="o">=</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+        
+        <span class="c">#intensity of cells</span>
+        <span class="n">cintensity</span> <span class="o">=</span> <span class="n">findCellIntensity</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">imgshape</span><span class="p">,</span>  <span class="n">maxLabel</span> <span class="o">=</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+
+        <span class="c">#intensity of cells in background image</span>
+        <span class="n">cintensity2</span> <span class="o">=</span> <span class="n">findCellIntensity</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">imgshape</span><span class="p">,</span>  <span class="n">maxLabel</span> <span class="o">=</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+        <span class="c">#intensity of cells in dog filtered image</span>
+        <span class="k">if</span> <span class="n">dogSize</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cintensity3</span> <span class="o">=</span> <span class="n">cintensity2</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cintensity3</span> <span class="o">=</span> <span class="n">findCellIntensity</span><span class="p">(</span><span class="n">img3</span><span class="p">,</span> <span class="n">imgshape</span><span class="p">,</span>  <span class="n">maxLabel</span> <span class="o">=</span> <span class="n">centers</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+        
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">(</span><span class="n">head</span> <span class="o">=</span> <span class="s">&#39;Spot Detection&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span>
+        
+        <span class="c">#remove cell;s of size 0</span>
+        <span class="n">idz</span> <span class="o">=</span> <span class="n">csize</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">;</span>
+                       
+        <span class="k">return</span> <span class="p">(</span> <span class="n">centers</span><span class="p">[</span><span class="n">idz</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">cintensity</span><span class="p">[</span><span class="n">idz</span><span class="p">],</span> <span class="n">cintensity3</span><span class="p">[</span><span class="n">idz</span><span class="p">],</span> <span class="n">cintensity2</span><span class="p">[</span><span class="n">idz</span><span class="p">],</span> <span class="n">csize</span><span class="p">[</span><span class="n">idz</span><span class="p">]))</span><span class="o">.</span><span class="n">transpose</span><span class="p">());</span>        
+        
+    
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c">#intensity of cells</span>
+        <span class="n">cintensity</span> <span class="o">=</span> <span class="n">findIntensity</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+
+        <span class="c">#intensity of cells in background image</span>
+        <span class="n">cintensity2</span> <span class="o">=</span> <span class="n">findIntensity</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+    
+        <span class="c">#intensity of cells in dog filtered image</span>
+        <span class="k">if</span> <span class="n">dogSize</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cintensity3</span> <span class="o">=</span> <span class="n">cintensity2</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cintensity3</span> <span class="o">=</span> <span class="n">findIntensity</span><span class="p">(</span><span class="n">img3</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">timer</span><span class="o">.</span><span class="n">elapsedTime</span><span class="p">(</span><span class="n">head</span> <span class="o">=</span> <span class="s">&#39;Spot Detection&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span>
+    
+        <span class="k">return</span> <span class="p">(</span> <span class="n">centers</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">cintensity</span><span class="p">,</span> <span class="n">cintensity3</span><span class="p">,</span> <span class="n">cintensity2</span><span class="p">))</span><span class="o">.</span><span class="n">transpose</span><span class="p">());</span></div>
+        
+
+
+
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.SpotDetection.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test Spot Detection Module&quot;&quot;&quot;</span>
+    <span class="kn">import</span> <span class="nn">os</span>
+    <span class="kn">import</span> <span class="nn">ClearMap.ImageProcessing.SpotDetection</span> <span class="kn">as</span> <span class="nn">self</span>
+    <span class="nb">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>  
+    <span class="kn">import</span> <span class="nn">ClearMap.Settings</span> <span class="kn">as</span> <span class="nn">settings</span>
+    
+    <span class="n">basedir</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">ClearMapPath</span><span class="p">;</span>
+    <span class="c">#fn = &#39;/home/ckirst/Science/Projects/BrainActivityMap/Data/iDISCO_2015_06/Adult cfos C row 20HF 150524.ims&#39;;</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="s">&#39;Test/Data/Synthetic/label_iDISCO_\d{3}.tif&#39;</span><span class="p">);</span>
+    <span class="n">fn</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">basedir</span><span class="p">,</span> <span class="s">&#39;Test/Data/OME/16-17-27_0_8X-s3-20HF_UltraII_C00_xyz-Table Z\d{4}.ome.tif&#39;</span><span class="p">);</span>
+    <span class="c">#fn = &#39;/run/media/ckirst/ChristophsBackuk4TB/iDISCO_2015_06/Adult cfos C row 20HF 150524.ims&#39;;</span>
+    <span class="c">#fn = &#39;/home/nicolas/Windows/Nico/cfosRegistrations/Adult cfos C row 20HF 150524 - Copy.ims&#39;;</span>
+    <span class="c">#fn = &#39;/home/ckirst/Science/Projects/BrainActivityMap/iDISCO_2015_04/test for spots added spot.ims&#39;</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span>
+    <span class="c">#img = dataset[0:500,0:500,1000:1008];</span>
+    <span class="c">#img = dataset[600:1000,1600:1800,800:830];</span>
+    <span class="c">#img = dataset[500:1500,500:1500,800:809]; </span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s">&#39;int16&#39;</span><span class="p">);</span>
+    
+    <span class="c">#m = sys.modules[&#39;iDISCO.ImageProcessing.SpotDetection&#39;]</span>
+    <span class="c">#c = self.detectCells(img);</span>
+    
+    <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectCells</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">dogSize</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">cellShapeThreshold</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cellShapeFile</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/Science/Projects/BrainActivityMap/Analysis/iDISCO/Test/Data/CellShape/cellshape_\d{3}.tif&#39;</span><span class="p">);</span>
+    
+    <span class="k">print</span> <span class="s">&#39;done, found </span><span class="si">%d</span><span class="s"> cells !&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+    <span class="c">#test intensities:</span>
+    <span class="kn">import</span> <span class="nn">numpy</span><span class="p">;</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">centers</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">29</span><span class="p">,</span><span class="mi">29</span><span class="p">,</span><span class="mi">9</span><span class="p">]]);</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">findIntensity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">centers</span><span class="p">,</span> <span class="n">boxSize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">));</span>
+    <span class="k">print</span> <span class="n">i</span></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">();</span>
+    
+    
+    
+    
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

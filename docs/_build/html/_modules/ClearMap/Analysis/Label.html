@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.Analysis.Label &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.Analysis.Label</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Label and annotation info from Allen Brain Atlas (v2)</span>
+
+<span class="sd">Notes:      </span>
+<span class="sd">    - The annotation file is assumed to be in &#39;./Data/Annotation/annotation_25_right.tif&#39;</span>
+<span class="sd">      but can be set in the constant :const:`DefaultLabeledImageFile`</span>
+
+<span class="sd">    - The mapping between labels and brain area information is found in the</span>
+<span class="sd">      &#39;./Data/ARA2_annotation_info.csv&#39; file. </span>
+<span class="sd">      In the &#39;./Data/ARA2_annotation_info_collapse.csv&#39; file a cross marks an area</span>
+<span class="sd">      to which all sub-areas can be collapsed.</span>
+<span class="sd">      The location of this file is set in :const:`DefaultAnnotationFile`.  </span>
+<span class="sd">      </span>
+<span class="sd">    - For consistency certain labels of the Allen brain atlas without </span>
+<span class="sd">      annotation were assigned to their correct parent regions.</span>
+<span class="sd">      </span>
+<span class="sd">    - A collapse column in the mapping file was added to allow for a region </span>
+<span class="sd">      based collapse of statistics based on the inheritance structure of the </span>
+<span class="sd">      annotated regions. These might need to be adjusted to the particular</span>
+<span class="sd">      scientific question.</span>
+<span class="sd">      </span>
+<span class="sd">References:</span>
+<span class="sd">    - `Allen Brain Atlas &lt;http://mouse.brain-map.org/static/atlas&gt;`_</span>
+<span class="sd">    </span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">collections</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.IO</span> <span class="kn">as</span> <span class="nn">io</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.Settings</span> <span class="kn">import</span> <span class="n">ClearMapPath</span>
+
+<span class="n">DefaultLabeledImageFile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ClearMapPath</span><span class="p">,</span> <span class="s">&#39;Test/Data/Annotation/annotation_25_right.tif&#39;</span><span class="p">);</span>
+<span class="sd">&quot;&quot;&quot;str: default volumetric annotated image file</span>
+
+<span class="sd">This file is by default the Allen brain annotated mouse atlas with 25um </span>
+<span class="sd">isotropic resolution.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">DefaultAnnotationFile</span>   <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ClearMapPath</span><span class="p">,</span> <span class="s">&#39;Data/ARA2_annotation_info_collapse.csv&#39;</span><span class="p">);</span>
+<span class="sd">&quot;&quot;&quot;str: default list of labels in the annotated image and names of annotated regions</span>
+
+<span class="sd">This file is by default the labels for the Allen brain annotated mouse </span>
+<span class="sd">atlas with 25um isotropic resolution.</span>
+
+<span class="sd">An extra column for collapse indicates how to automatically collapse data into </span>
+<span class="sd">the different brain regions if the ``collapse`` option is given.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="n">LabelRecord</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;LabelRecord&#39;</span><span class="p">,</span> <span class="s">&#39;id, name, acronym, color, parent, collapse&#39;</span><span class="p">);</span>
+<span class="sd">&quot;&quot;&quot;Structure of a label for a annotated region&quot;&quot;&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">_labelToInt</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">txt</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">txt</span><span class="p">);</span>    
+    
+<span class="k">def</span> <span class="nf">_collapseToBool</span><span class="p">(</span><span class="n">txt</span><span class="p">):</span>
+    <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="n">txt</span> <span class="o">==</span> <span class="s">&#39;&#39;</span><span class="p">);</span>
+
+
+<div class="viewcode-block" id="LabelInfo"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo">[docs]</a><span class="k">class</span> <span class="nc">LabelInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class that holds information of the annotated regions&quot;&quot;&quot;</span>    
+    
+    
+    <span class="n">ids</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">acronyms</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">colors</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">parents</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">levels</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">collapse</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="n">collapseMap</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">annotationFile</span> <span class="o">=</span> <span class="n">DefaultAnnotationFile</span><span class="p">):</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">annotationFile</span> <span class="o">=</span> <span class="n">annotationFile</span><span class="p">);</span>
+    
+    
+<div class="viewcode-block" id="LabelInfo.initialize"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.initialize">[docs]</a>    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">annotationFile</span> <span class="o">=</span> <span class="n">DefaultAnnotationFile</span><span class="p">):</span></div>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">annotationFile</span><span class="p">)</span> <span class="k">as</span> <span class="n">dfile</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">dfile</span><span class="p">);</span>
+            <span class="c">#skip header</span>
+            <span class="n">reader</span><span class="o">.</span><span class="n">next</span><span class="p">();</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">LabelRecord</span><span class="o">.</span><span class="n">_make</span><span class="p">((</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">row</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">3</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">4</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">5</span><span class="p">])],</span> <span class="n">_labelToInt</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">7</span><span class="p">]),</span> <span class="n">_collapseToBool</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="mi">9</span><span class="p">])))</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">];</span>
+            
+            <span class="n">dfile</span><span class="o">.</span><span class="n">close</span><span class="p">();</span>
+        
+        <span class="n">slf</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">];</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">names</span> <span class="o">=</span> <span class="p">{</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">};</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">acronyms</span> <span class="o">=</span> <span class="p">{</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">acronym</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">};</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="p">{</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">color</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">};</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">parents</span> <span class="o">=</span> <span class="p">{</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">parent</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">};</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">collapse</span> <span class="o">=</span> <span class="p">{</span> <span class="n">x</span><span class="o">.</span><span class="n">id</span> <span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">collapse</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">};</span>
+                
+        <span class="c">#calculate level:</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">];</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slf</span><span class="o">.</span><span class="n">ids</span><span class="p">)):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">slf</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">slf</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+            <span class="k">while</span> <span class="n">p</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">;</span>
+                <span class="n">p</span> <span class="o">=</span> <span class="n">slf</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="n">p</span><span class="p">];</span>
+        <span class="n">slf</span><span class="o">.</span><span class="n">levels</span> <span class="o">=</span> <span class="p">{</span><span class="n">slf</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">:</span> <span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">))};</span>
+                    
+        <span class="n">slf</span><span class="o">.</span><span class="n">collapseMap</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span> <span class="p">:</span> <span class="n">slf</span><span class="o">.</span><span class="n">toLabelAtCollapseMap</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">slf</span><span class="o">.</span><span class="n">ids</span><span class="p">};</span>    
+    
+<div class="viewcode-block" id="LabelInfo.name"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.name">[docs]</a>    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">slf</span><span class="o">.</span><span class="n">names</span><span class="p">[</span><span class="n">iid</span><span class="p">];</span></div>
+        
+<div class="viewcode-block" id="LabelInfo.acronym"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.acronym">[docs]</a>    <span class="k">def</span> <span class="nf">acronym</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">slf</span><span class="o">.</span><span class="n">acronyms</span><span class="p">[</span><span class="n">iid</span><span class="p">];</span></div>
+        
+<div class="viewcode-block" id="LabelInfo.color"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.color">[docs]</a>    <span class="k">def</span> <span class="nf">color</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">slf</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">iid</span><span class="p">];</span></div>
+        
+<div class="viewcode-block" id="LabelInfo.parent"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.parent">[docs]</a>    <span class="k">def</span> <span class="nf">parent</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">slf</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="n">iid</span><span class="p">];</span></div>
+        
+<div class="viewcode-block" id="LabelInfo.level"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.level">[docs]</a>    <span class="k">def</span> <span class="nf">level</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">iid</span><span class="p">];</span></div>
+    
+<div class="viewcode-block" id="LabelInfo.toLabelAtLevel"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.toLabelAtLevel">[docs]</a>    <span class="k">def</span> <span class="nf">toLabelAtLevel</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">iid</span><span class="p">;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">slf</span><span class="o">.</span><span class="n">ids</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+        
+        <span class="c">#print i, levels[i]</span>
+        <span class="k">while</span> <span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">level</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">slf</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="c">#print i, levels[i]</span>
+        <span class="k">return</span> <span class="n">i</span><span class="p">;</span></div>
+        
+<div class="viewcode-block" id="LabelInfo.toLabelAtCollapseMap"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapseMap">[docs]</a>    <span class="k">def</span> <span class="nf">toLabelAtCollapseMap</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">iid</span><span class="p">;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">slf</span><span class="o">.</span><span class="n">ids</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">i</span><span class="p">;</span>
+        
+        <span class="c">#print i, levels[i]</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">slf</span><span class="o">.</span><span class="n">collapse</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">and</span> <span class="n">slf</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">slf</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="c">#print i, levels[i]</span>
+        <span class="k">return</span> <span class="n">i</span><span class="p">;</span></div>
+
+<div class="viewcode-block" id="LabelInfo.toLabelAtCollapse"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapse">[docs]</a>    <span class="k">def</span> <span class="nf">toLabelAtCollapse</span><span class="p">(</span><span class="n">slf</span><span class="p">,</span> <span class="n">iid</span><span class="p">):</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">iid</span><span class="p">;</span>
+        <span class="c">#if not i in slf.ids:</span>
+        <span class="c">#    return i;</span>
+        <span class="c">#else:</span>
+        <span class="k">return</span> <span class="n">slf</span><span class="o">.</span><span class="n">collapseMap</span><span class="p">[</span><span class="n">i</span><span class="p">];</span></div></div>
+
+
+<span class="n">Label</span> <span class="o">=</span> <span class="n">LabelInfo</span><span class="p">();</span>
+<span class="sd">&quot;&quot;&quot;Information on the annotated regions&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="initialize"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.initialize">[docs]</a><span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">annotationFile</span> <span class="o">=</span> <span class="n">DefaultAnnotationFile</span><span class="p">):</span>
+    <span class="n">Label</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="n">annotationFile</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="labelAtLevel"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelAtLevel">[docs]</a><span class="k">def</span> <span class="nf">labelAtLevel</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">level</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">label</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">Label</span><span class="o">.</span><span class="n">toLabelAtLevel</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">label</span><span class="p">];</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Label</span><span class="o">.</span><span class="n">toLabelAtLevel</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">level</span><span class="p">);</span></div>
+
+
+<div class="viewcode-block" id="labelAtCollapse"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelAtCollapse">[docs]</a><span class="k">def</span> <span class="nf">labelAtCollapse</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span>
+    
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">label</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">Label</span><span class="o">.</span><span class="n">toLabelAtCollapse</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">label</span><span class="p">];</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Label</span><span class="o">.</span><span class="n">toLabelAtCollapse</span><span class="p">(</span><span class="n">label</span><span class="p">);</span></div>
+
+
+
+<div class="viewcode-block" id="labelPoints"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelPoints">[docs]</a><span class="k">def</span> <span class="nf">labelPoints</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">labeledImage</span> <span class="o">=</span> <span class="n">DefaultLabeledImageFile</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span></div>
+    
+    <span class="c">#points are (y,x,z) -&gt; which is also the way the labeled image is read in</span>
+    <span class="c">#x = points[:,1];</span>
+    <span class="c">#y = points[:,0];</span>
+    <span class="c">#z = points[:,2];</span>
+
+    <span class="n">x</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">0</span><span class="p">];</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">1</span><span class="p">];</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">points</span><span class="p">[:,</span><span class="mi">2</span><span class="p">];</span> 
+    
+    <span class="n">nPoint</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">;</span>    
+    
+    <span class="n">pointLabels</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">nPoint</span><span class="p">,</span> <span class="s">&#39;int32&#39;</span><span class="p">);</span>
+
+    <span class="n">labelImage</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">labeledImage</span><span class="p">);</span>    
+    <span class="n">dsize</span> <span class="o">=</span> <span class="n">labelImage</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nPoint</span><span class="p">):</span>
+        <span class="c">#if y[i] &gt;= 0 and y[i] &lt; dsize[0] and x[i] &gt;= 0 and x[i] &lt; dsize[1] and z[i] &gt;= 0 and z[i] &lt; dsize[2]:</span>
+        <span class="c">#     pointLabels[i] = labelImage[y[i], x[i], z[i]];</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dsize</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">and</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dsize</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">dsize</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+            <span class="n">pointLabels</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">labelImage</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">int</span><span class="p">(</span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">])];</span>
+    
+    <span class="k">if</span> <span class="n">collapse</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">pointLabels</span> <span class="o">=</span> <span class="n">labelAtLevel</span><span class="p">(</span><span class="n">pointLabels</span><span class="p">,</span> <span class="n">level</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pointLabels</span> <span class="o">=</span> <span class="n">labelAtCollapse</span><span class="p">(</span><span class="n">pointLabels</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">pointLabels</span><span class="p">;</span>
+
+
+ 
+<div class="viewcode-block" id="countPointsInRegions"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.countPointsInRegions">[docs]</a><span class="k">def</span> <span class="nf">countPointsInRegions</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">labeledImage</span> <span class="o">=</span> <span class="n">DefaultLabeledImageFile</span><span class="p">,</span> <span class="n">intensities</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">intensityRow</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">allIds</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">sort</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">returnIds</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">returnCounts</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span>
+    
+    <span class="n">points</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readPoints</span><span class="p">(</span><span class="n">points</span><span class="p">);</span>
+    <span class="n">intensities</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readPoints</span><span class="p">(</span><span class="n">intensities</span><span class="p">);</span>
+    <span class="n">pointLabels</span> <span class="o">=</span> <span class="n">labelPoints</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">labeledImage</span><span class="p">,</span> <span class="n">level</span> <span class="o">=</span> <span class="n">level</span><span class="p">,</span> <span class="n">collapse</span> <span class="o">=</span> <span class="n">collapse</span><span class="p">);</span> 
+    
+    <span class="k">if</span> <span class="n">intensities</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">ll</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pointLabels</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="bp">True</span><span class="p">);</span>
+        <span class="n">cci</span> <span class="o">=</span> <span class="bp">None</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">intensities</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">intensities</span> <span class="o">=</span> <span class="n">intensities</span><span class="p">[:,</span><span class="n">intensityRow</span><span class="p">];</span>
+   
+        <span class="n">ll</span><span class="p">,</span> <span class="n">ii</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">pointLabels</span><span class="p">,</span> <span class="n">return_counts</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span> <span class="n">return_inverse</span> <span class="o">=</span> <span class="bp">True</span><span class="p">);</span>
+        <span class="n">cci</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">ll</span><span class="o">.</span><span class="n">shape</span><span class="p">);</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ii</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+             <span class="n">cci</span><span class="p">[</span><span class="n">ii</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+=</span> <span class="n">intensities</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    
+    <span class="k">if</span> <span class="n">allIds</span><span class="p">:</span>
+        <span class="n">lla</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">setdiff1d</span><span class="p">(</span><span class="n">Label</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="n">ll</span><span class="p">);</span>
+        <span class="n">ll</span>  <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">ll</span><span class="p">,</span> <span class="n">lla</span><span class="p">));</span>
+        <span class="n">cc</span>  <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">cc</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">lla</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">dtype</span><span class="p">)));</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cci</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cci</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">cci</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">lla</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">cc</span><span class="o">.</span><span class="n">dtype</span><span class="p">)));</span>
+        
+    
+    <span class="c">#cc = numpy.vstack((ll,cc)).T;</span>
+    <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+        <span class="n">ii</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">ll</span><span class="p">);</span>
+        <span class="n">cc</span> <span class="o">=</span> <span class="n">cc</span><span class="p">[</span><span class="n">ii</span><span class="p">];</span>
+        <span class="n">ll</span> <span class="o">=</span> <span class="n">ll</span><span class="p">[</span><span class="n">ii</span><span class="p">];</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">cci</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">cci</span> <span class="o">=</span> <span class="n">cci</span><span class="p">[</span><span class="n">ii</span><span class="p">];</span>
+
+    <span class="k">if</span> <span class="n">returnIds</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cci</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ll</span><span class="p">,</span> <span class="n">cc</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">returnCounts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ll</span><span class="p">,</span> <span class="n">cc</span><span class="p">,</span> <span class="n">cci</span><span class="p">;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">ll</span><span class="p">,</span> <span class="n">cci</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">cci</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cc</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">returnCounts</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">cc</span><span class="p">,</span> <span class="n">cci</span><span class="p">;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">cci</span><span class="p">;</span></div>
+
+    
+<div class="viewcode-block" id="labelToName"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelToName">[docs]</a><span class="k">def</span> <span class="nf">labelToName</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Label</span><span class="o">.</span><span class="n">name</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">label</span><span class="p">];</span></div>
+    
+<div class="viewcode-block" id="labelToAcronym"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelToAcronym">[docs]</a><span class="k">def</span> <span class="nf">labelToAcronym</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Label</span><span class="o">.</span><span class="n">acronym</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">label</span><span class="p">];</span></div>
+
+<div class="viewcode-block" id="labelToColor"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelToColor">[docs]</a><span class="k">def</span> <span class="nf">labelToColor</span><span class="p">(</span><span class="n">label</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">Label</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">label</span><span class="p">];</span></div>
+
+
+
+<span class="c">#def writeCountsToLabeledImage(counts, labelimage = defaultLabeledImage(), level = None):</span>
+<span class="c">#    #read the labeled image</span>
+<span class="c">#    labelimage = io.readData(labelimage);</span>
+ 
+
+   
+
+<div class="viewcode-block" id="writePAL"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.writePAL">[docs]</a><span class="k">def</span> <span class="nf">writePAL</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="s">&#39;</span><span class="si">%3.3f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span> <span class="o">+</span>  <span class="p">(</span><span class="s">&#39;</span><span class="si">%3.3f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s">&#39;</span><span class="si">%3.3f</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">11</span><span class="p">));</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">();</span></div>
+
+<div class="viewcode-block" id="writeLUT"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.writeLUT">[docs]</a><span class="k">def</span> <span class="nf">writeLUT</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">cols</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">+</span>  <span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">rjust</span><span class="p">(</span><span class="mi">5</span><span class="p">));</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\n</span><span class="s">&#39;</span><span class="p">);</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">();</span></div>
+
+      
+<div class="viewcode-block" id="makeColorPalette"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.makeColorPalette">[docs]</a><span class="k">def</span> <span class="nf">makeColorPalette</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a pal file for imaris based on label colors&quot;&quot;&quot;</span>
+    
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span> 
+    <span class="n">maxlabel</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Label</span><span class="o">.</span><span class="n">ids</span><span class="p">);</span>
+    <span class="n">colarray</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">maxlabel</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Label</span><span class="o">.</span><span class="n">ids</span><span class="p">:</span>
+        <span class="n">colarray</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">Label</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    
+    <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">colarray</span><span class="p">;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fext</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">fileExtension</span><span class="p">(</span><span class="n">filename</span><span class="p">);</span>
+        <span class="k">if</span> <span class="n">fext</span> <span class="o">==</span> <span class="s">&#39;pal&#39;</span><span class="p">:</span>
+            <span class="n">writePAL</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">colarray</span><span class="p">);</span>
+        <span class="k">elif</span> <span class="n">fext</span> <span class="o">==</span> <span class="s">&#39;lut&#39;</span><span class="p">:</span>
+            <span class="n">writeLUT</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">colarray</span><span class="p">);</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;color pallete format: </span><span class="si">%s</span><span class="s"> not supported&#39;</span> <span class="o">%</span> <span class="n">fext</span><span class="p">);</span>
+        
+        <span class="k">return</span> <span class="n">colarray</span><span class="p">;</span></div>
+            
+
+<div class="viewcode-block" id="makeColorAnnotations"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.makeColorAnnotations">[docs]</a><span class="k">def</span> <span class="nf">makeColorAnnotations</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">labeledImage</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">labeledImage</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">labeledImage</span> <span class="o">=</span> <span class="n">DefaultLabeledImageFile</span><span class="p">;</span>
+    
+    <span class="n">li</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">readData</span><span class="p">(</span><span class="n">labeledImage</span><span class="p">);</span>
+    <span class="n">dsize</span> <span class="o">=</span> <span class="n">li</span><span class="o">.</span><span class="n">shape</span><span class="p">;</span>
+    
+    <span class="n">lr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">dsize</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">);</span>
+    <span class="n">lg</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span>
+    <span class="n">lb</span> <span class="o">=</span> <span class="n">lr</span><span class="o">.</span><span class="n">copy</span><span class="p">();</span>
+    
+    <span class="k">global</span> <span class="n">Label</span><span class="p">;</span> 
+    <span class="n">maxlabel</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">Label</span><span class="o">.</span><span class="n">ids</span><span class="p">);</span>
+    <span class="n">colarray</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">maxlabel</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Label</span><span class="o">.</span><span class="n">ids</span><span class="p">:</span>
+        <span class="n">colarray</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">Label</span><span class="o">.</span><span class="n">color</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Label</span><span class="o">.</span><span class="n">ids</span><span class="p">:</span>
+        <span class="n">ll</span> <span class="o">=</span> <span class="n">li</span> <span class="o">==</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">lr</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">=</span> <span class="n">colarray</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">];</span>
+        <span class="n">lg</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">=</span> <span class="n">colarray</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">];</span>
+        <span class="n">lb</span><span class="p">[</span><span class="n">ll</span><span class="p">]</span> <span class="o">=</span> <span class="n">colarray</span><span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">];</span>
+    
+    <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;_r.tif&quot;</span><span class="p">,</span> <span class="n">lr</span><span class="p">);</span>
+    <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;_g.tif&quot;</span><span class="p">,</span> <span class="n">lg</span><span class="p">);</span>  
+    <span class="n">io</span><span class="o">.</span><span class="n">writeData</span><span class="p">(</span><span class="n">filename</span> <span class="o">+</span> <span class="s">&quot;_b.tif&quot;</span><span class="p">,</span> <span class="n">lb</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="p">(</span><span class="n">lr</span><span class="p">,</span><span class="n">lg</span><span class="p">,</span><span class="n">lb</span><span class="p">);</span></div>
+
+
+
+<div class="viewcode-block" id="test"><a class="viewcode-back" href="../../../api/ClearMap.Analysis.html#ClearMap.Analysis.Label.test">[docs]</a><span class="k">def</span> <span class="nf">test</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Test Label module&quot;&quot;&quot;</span>
+
+    <span class="kn">import</span> <span class="nn">ClearMap.Analysis.Label</span> <span class="kn">as</span> <span class="nn">self</span>
+    <span class="nb">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="kn">import</span> <span class="nn">numpy</span>
+    <span class="n">points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">162</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">138</span><span class="p">],</span> <span class="p">[</span><span class="mi">246</span><span class="p">,</span> <span class="mi">486</span><span class="p">,</span> <span class="mi">138</span><span class="p">],</span> <span class="p">[</span><span class="mi">246</span><span class="p">,</span> <span class="mi">486</span><span class="p">,</span> <span class="mi">138</span><span class="p">]]);</span>
+    <span class="n">intensities</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]);</span>
+    
+    <span class="n">ll</span><span class="p">,</span> <span class="n">cc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">countPointsInRegions</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">intensities</span><span class="p">,</span> <span class="n">withIds</span> <span class="o">=</span> <span class="bp">True</span><span class="p">);</span></div>
+    
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">test</span><span class="p">();</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

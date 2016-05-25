@@ -1,0 +1,651 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.Filter package &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../index.html" />
+    <link rel="up" title="ClearMap.ImageProcessing package" href="ClearMap.ImageProcessing.html" />
+    <link rel="next" title="ClearMap.Analysis package" href="ClearMap.Analysis.html" />
+    <link rel="prev" title="ClearMap.ImageProcessing package" href="ClearMap.ImageProcessing.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../index.html"><img src="../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Analysis.html" title="ClearMap.Analysis package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.html" title="ClearMap.ImageProcessing package"
+             accesskey="P">previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="ClearMap.ImageProcessing.html" accesskey="U">ClearMap.ImageProcessing package</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="ClearMap.html">ClearMap package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ClearMap.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.IO.html">ClearMap.IO package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Alignment.html">ClearMap.Alignment package</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="ClearMap.ImageProcessing.html">ClearMap.ImageProcessing package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Analysis.html">ClearMap.Analysis package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Visualization.html">ClearMap.Visualization package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Parameter.html">ClearMap.Parameter module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Settings.html">ClearMap.Settings module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ClearMap.Utils.html">ClearMap.Utils package</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+ 
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ClearMap.ImageProcessing.html"
+                        title="previous chapter">ClearMap.ImageProcessing package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="ClearMap.Analysis.html"
+                        title="next chapter">ClearMap.Analysis package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/ClearMap.ImageProcessing.Filter.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ClearMap.ImageProcessing.Filter">
+<span id="clearmap-imageprocessing-filter-package"></span><h1>ClearMap.ImageProcessing.Filter package<a class="headerlink" href="#module-ClearMap.ImageProcessing.Filter" title="Permalink to this headline">¶</a></h1>
+<p>This sub-package provides various volumetric filter kernels and structure elments</p>
+<p>A set of linear filters can be applied to the data using
+<a class="reference internal" href="#module-ClearMap.ImageProcessing.Filter.LinearFilter" title="ClearMap.ImageProcessing.Filter.LinearFilter"><code class="xref py py-mod docutils literal"><span class="pre">LinearFilter</span></code></a>.</p>
+<p>Because its utility for cell detection the difference of Gaussians filter
+is implemented directly in <a class="reference internal" href="#module-ClearMap.ImageProcessing.Filter.DoGFilter" title="ClearMap.ImageProcessing.Filter.DoGFilter"><code class="xref py py-mod docutils literal"><span class="pre">DoGFilter</span></code></a>.</p>
+<p>The fitler kernels defined in <a class="reference internal" href="#module-ClearMap.ImageProcessing.Filter.FilterKernel" title="ClearMap.ImageProcessing.Filter.FilterKernel"><code class="xref py py-mod docutils literal"><span class="pre">FilterKernel</span></code></a>
+can be used in combination with the <code class="xref py py-mod docutils literal"><span class="pre">Convolution</span></code>
+module.</p>
+<p>Structured elements defined in
+<code class="xref py py-mod docutils literal"><span class="pre">StructureElements</span></code> can be used in
+combination with various morphological operations, e.g. used in the
+:mod:~ClearMap.ImageProcessing.BackgroundRemoval` module.</p>
+<div class="section" id="module-ClearMap.ImageProcessing.Filter.LinearFilter">
+<span id="clearmap-imageprocessing-filter-linearfilter-module"></span><h2>ClearMap.ImageProcessing.Filter.LinearFilter module<a class="headerlink" href="#module-ClearMap.ImageProcessing.Filter.LinearFilter" title="Permalink to this headline">¶</a></h2>
+<p>Linear filter module</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.LinearFilter.filterLinear">
+<code class="descname">filterLinear</code><span class="sig-paren">(</span><em>img</em>, <em>filterLinearParameter=None</em>, <em>ftype=None</em>, <em>size=None</em>, <em>sigma=None</em>, <em>sigma2=None</em>, <em>save=None</em>, <em>subStack=None</em>, <em>verbose=False</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/LinearFilter.html#filterLinear"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.LinearFilter.filterLinear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Applies a linear filter to the image</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>filterLinearParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="22%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>ftype</em></td>
+<td>(str or None)</td>
+<td>the type of the filter, see <a class="reference internal" href="#filtertypes"><span>Filter Type</span></a>
+if None do ot perform any fitlering</td>
+</tr>
+<tr class="row-odd"><td><em>size</em></td>
+<td>(tuple or None)</td>
+<td>size for the filter
+if None, do not perform filtering</td>
+</tr>
+<tr class="row-even"><td><em>sigma</em></td>
+<td>(tuple or None)</td>
+<td>std of outer Guassian, if None autmatically determined from size</td>
+</tr>
+<tr class="row-odd"><td><em>sigma2</em></td>
+<td>(tuple or None)</td>
+<td>std of inner Guassian, if None autmatically determined from size</td>
+</tr>
+<tr class="row-even"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>file name to save result of this operation
+if None dont save to file</td>
+</tr>
+<tr class="row-odd"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print progress information</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>verbose</strong> (<em>bool</em>) &#8211;
+print progress info</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+filtered image</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Converts image to float32 type if filter is active!</p>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.Filter.DoGFilter">
+<span id="clearmap-imageprocessing-filter-dogfilter-module"></span><h2>ClearMap.ImageProcessing.Filter.DoGFilter module<a class="headerlink" href="#module-ClearMap.ImageProcessing.Filter.DoGFilter" title="Permalink to this headline">¶</a></h2>
+<p>DoG filter module</p>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.DoGFilter.filterDoG">
+<code class="descname">filterDoG</code><span class="sig-paren">(</span><em>img</em>, <em>filterDoGParameter=None</em>, <em>size=None</em>, <em>sigma=None</em>, <em>sigma2=None</em>, <em>save=None</em>, <em>verbose=None</em>, <em>subStack=None</em>, <em>out=&lt;open file '&lt;stdout&gt;'</em>, <em>mode 'w'&gt;</em>, <em>**parameter</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/DoGFilter.html#filterDoG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.DoGFilter.filterDoG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Difference of Gaussians (DoG) filter step</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first">
+<li><p class="first"><strong>img</strong> (<em>array</em>) &#8211;
+image data</p>
+</li>
+<li><p class="first"><strong>filterDoGParameter</strong> (<em>dict</em>) &#8211;</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="10%" />
+<col width="22%" />
+<col width="69%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Type</th>
+<th class="head">Descritption</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><em>size</em></td>
+<td>(tuple or None)</td>
+<td>size for the DoG filter
+if None, do not correct for any background</td>
+</tr>
+<tr class="row-odd"><td><em>sigma</em></td>
+<td>(tuple or None)</td>
+<td>std of outer Guassian, if None autmatically determined from size</td>
+</tr>
+<tr class="row-even"><td><em>sigma2</em></td>
+<td>(tuple or None)</td>
+<td>std of inner Guassian, if None autmatically determined from size</td>
+</tr>
+<tr class="row-odd"><td><em>save</em></td>
+<td>(str or None)</td>
+<td>file name to save result of this operation
+if None dont save to file</td>
+</tr>
+<tr class="row-even"><td><em>verbose</em></td>
+<td>(bool or int)</td>
+<td>print progress information</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li><p class="first"><strong>subStack</strong> (<em>dict or None</em>) &#8211;
+sub-stack information</p>
+</li>
+<li><p class="first"><strong>out</strong> (<em>object</em>) &#8211;
+object to write progress info to</p>
+</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+DoG filtered image</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.Filter.Convolution">
+<span id="clearmap-imageprocessing-filter-convolution-module"></span><h2>ClearMap.ImageProcessing.Filter.Convolution module<a class="headerlink" href="#module-ClearMap.ImageProcessing.Filter.Convolution" title="Permalink to this headline">¶</a></h2>
+<p>Convolve volumetric data with a 3d kernel, optimized for memory / float32 use</p>
+<p>Based on <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/signal.html">scipy.signal</a>
+routines.</p>
+<p>Author</p>
+<blockquote>
+<div><p>Original code from <a class="reference external" href="http://docs.scipy.org/doc/scipy/reference/signal.html">scipy.signal</a>.</p>
+<p>Modified by Chirstoph Kirst to optimize memory and sped and integration into ClearMap.
+The Rockefeller University, New York City, 2015</p>
+</div></blockquote>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.Convolution.convolve">
+<code class="descname">convolve</code><span class="sig-paren">(</span><em>x</em>, <em>k</em>, <em>mode='same'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/Convolution.html#convolve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.Convolution.convolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convolve array with kernel using float32 / complex64, optimized for memory consumption and speed</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>x</strong> (<em>array</em>) &#8211;
+data to be convolved</li>
+<li><strong>k</strong> (<em>array</em>) &#8211;
+filter kernel</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+convolution</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.Filter.FilterKernel">
+<span id="clearmap-imageprocessing-filter-filterkernel-module"></span><h2>ClearMap.ImageProcessing.Filter.FilterKernel module<a class="headerlink" href="#module-ClearMap.ImageProcessing.Filter.FilterKernel" title="Permalink to this headline">¶</a></h2>
+<p>Implementation of various volumetric filter kernels</p>
+<div class="section" id="filter-type">
+<span id="filtertypes"></span><h3>Filter Type<a class="headerlink" href="#filter-type" title="Permalink to this headline">¶</a></h3>
+<p>Filter types defined by the <code class="docutils literal"><span class="pre">ftype</span></code> key include:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Descrition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">mean</span></code></td>
+<td>uniform averaging filter</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">gaussian</span></code></td>
+<td>Gaussian filter</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">log</span></code></td>
+<td>Laplacian of Gaussian filter (LoG)</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">dog</span></code></td>
+<td>Difference of Gaussians filter (DoG)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sphere</span></code></td>
+<td>Sphere filter</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">disk</span></code></td>
+<td>Disk filter</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel">
+<code class="descname">filterKernel</code><span class="sig-paren">(</span><em>ftype='Gaussian'</em>, <em>size=(5</em>, <em>5)</em>, <em>sigma=None</em>, <em>radius=None</em>, <em>sigma2=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/FilterKernel.html#filterKernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a filter kernel of a special type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ftype</strong> (<em>str</em>) &#8211;
+filter type, see <a class="reference internal" href="#filtertypes"><span>Filter Type</span></a></li>
+<li><strong>size</strong> (<em>array or tuple</em>) &#8211;
+size of the filter kernel</li>
+<li><strong>sigma</strong> (<em>tuple or float</em>) &#8211;
+std for the first gaussian (if present)</li>
+<li><strong>radius</strong> (<em>tuple or float</em>) &#8211;
+radius of the kernel (if applicable)</li>
+<li><strong>sigma2</strong> (<em>tuple or float</em>) &#8211;
+std of a second gaussian (if present)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+structure element</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel2D">
+<code class="descname">filterKernel2D</code><span class="sig-paren">(</span><em>ftype='Gaussian'</em>, <em>size=(5</em>, <em>5)</em>, <em>sigma=None</em>, <em>sigma2=None</em>, <em>radius=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/FilterKernel.html#filterKernel2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a 2d filter kernel of a special type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ftype</strong> (<em>str</em>) &#8211;
+filter type, see <a class="reference internal" href="#filtertypes"><span>Filter Type</span></a></li>
+<li><strong>size</strong> (<em>array or tuple</em>) &#8211;
+size of the filter kernel</li>
+<li><strong>sigma</strong> (<em>tuple or float</em>) &#8211;
+std for the first gaussian (if present)</li>
+<li><strong>radius</strong> (<em>tuple or float</em>) &#8211;
+radius of the kernel (if applicable)</li>
+<li><strong>sigma2</strong> (<em>tuple or float</em>) &#8211;
+std of a second gaussian (if present)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+structure element</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel3D">
+<code class="descname">filterKernel3D</code><span class="sig-paren">(</span><em>ftype='Gaussian'</em>, <em>size=(5</em>, <em>5</em>, <em>5)</em>, <em>sigma=None</em>, <em>sigma2=None</em>, <em>radius=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/FilterKernel.html#filterKernel3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a 3d filter kernel of a special type</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>ftype</strong> (<em>str</em>) &#8211;
+filter type, see <a class="reference internal" href="#filtertypes"><span>Filter Type</span></a></li>
+<li><strong>size</strong> (<em>array or tuple</em>) &#8211;
+size of the filter kernel</li>
+<li><strong>sigma</strong> (<em>tuple or float</em>) &#8211;
+std for the first gaussian (if present)</li>
+<li><strong>radius</strong> (<em>tuple or float</em>) &#8211;
+radius of the kernel (if applicable)</li>
+<li><strong>sigma2</strong> (<em>tuple or float</em>) &#8211;
+std of a second gaussian (if present)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+structure element</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.FilterKernel.test">
+<code class="descname">test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/FilterKernel.html#test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.FilterKernel.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Test FilterKernel module</p>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-ClearMap.ImageProcessing.Filter.StructureElement">
+<span id="clearmap-imageprocessing-filter-structureelement-module"></span><h2>ClearMap.ImageProcessing.Filter.StructureElement module<a class="headerlink" href="#module-ClearMap.ImageProcessing.Filter.StructureElement" title="Permalink to this headline">¶</a></h2>
+<p>Routines to generate various structure elements</p>
+<p>Structured elements defined by the <code class="docutils literal"><span class="pre">setype</span></code> key include:</p>
+<div class="section" id="structure-element-types">
+<span id="structureelementtypes"></span><h3>Structure Element Types<a class="headerlink" href="#structure-element-types" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type</th>
+<th class="head">Descrition</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">sphere</span></code></td>
+<td>Sphere structure</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">disk</span></code></td>
+<td>Disk structure</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To be extended!</p>
+</div>
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.StructureElement.structureElement">
+<code class="descname">structureElement</code><span class="sig-paren">(</span><em>setype='Disk'</em>, <em>sesize=(3</em>, <em>3)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/StructureElement.html#structureElement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.StructureElement.structureElement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates specific 2d and 3d structuring elements</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>setype</strong> (<em>str</em>) &#8211;
+structure element type, see <a class="reference internal" href="#structureelementtypes"><span>Structure Element Types</span></a></li>
+<li><strong>sesize</strong> (<em>array or tuple</em>) &#8211;
+size of the structure element</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+structure element</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.StructureElement.structureElementOffsets">
+<code class="descname">structureElementOffsets</code><span class="sig-paren">(</span><em>sesize</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/StructureElement.html#structureElementOffsets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.StructureElement.structureElementOffsets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates offsets for a structural element given its size</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sesize</strong> (<em>array or tuple</em>) &#8211;
+size of the structure element</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>array</em> &#8211;
+offsets to center taking care of even/odd ummber of elements</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.StructureElement.structureElement2D">
+<code class="descname">structureElement2D</code><span class="sig-paren">(</span><em>setype='Disk'</em>, <em>sesize=(3</em>, <em>3)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/StructureElement.html#structureElement2D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.StructureElement.structureElement2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates specific 2d structuring elements</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>setype</strong> (<em>str</em>) &#8211;
+structure element type, see <a class="reference internal" href="#structureelementtypes"><span>Structure Element Types</span></a></li>
+<li><strong>sesize</strong> (<em>array or tuple</em>) &#8211;
+size of the structure element</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+structure element</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ClearMap.ImageProcessing.Filter.StructureElement.structureElement3D">
+<code class="descname">structureElement3D</code><span class="sig-paren">(</span><em>setype='Disk'</em>, <em>sesize=(3</em>, <em>3</em>, <em>3)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ClearMap/ImageProcessing/Filter/StructureElement.html#structureElement3D"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ClearMap.ImageProcessing.Filter.StructureElement.structureElement3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates specific 3d structuring elements</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>setype</strong> (<em>str</em>) &#8211;
+structure element type, see <a class="reference internal" href="#structureelementtypes"><span>Structure Element Types</span></a></li>
+<li><strong>sesize</strong> (<em>array or tuple</em>) &#8211;
+size of the structure element</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array</em> &#8211;
+structure element</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.Analysis.html" title="ClearMap.Analysis package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ClearMap.ImageProcessing.html" title="ClearMap.ImageProcessing package"
+             >previous</a> |</li>
+       <li><a href="../index.html">home</a>|&nbsp;</li>
+       <li><a href="../search.html">search</a>|&nbsp;</li>
+       <li><a href="ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="ClearMap.html" >ClearMap package</a> &raquo;</li>
+          <li class="nav-item nav-item-2"><a href="ClearMap.ImageProcessing.html" >ClearMap.ImageProcessing package</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

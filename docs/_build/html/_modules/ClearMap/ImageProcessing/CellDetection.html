@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ClearMap.ImageProcessing.CellDetection &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="../../../index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="../../../index.html"><img src="../../../_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for ClearMap.ImageProcessing.CellDetection</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Cell Detection Module</span>
+
+<span class="sd">This is the main routine to run the individual routines to detect cells om</span>
+<span class="sd">volumetric image data.</span>
+
+<span class="sd">ClearMap supports two predefined image processing pipelines which will extend</span>
+<span class="sd">in the future:</span>
+
+<span class="sd">================ ============================================================ ========================</span>
+<span class="sd">Method           Description                                                  Reference</span>
+<span class="sd">================ ============================================================ ========================</span>
+<span class="sd">&quot;SpotDetection&quot;  uses predefined spot detection pipline                       :func:`~ClearMap.ImageProcessing.CellDetection.detectCells`</span>
+<span class="sd">&quot;Ilastik&quot;        uses predefined pipline with cell classification via Ilastik :func:`~ClearMap.ImageProcessing.CellDetection.classifyCells`</span>
+<span class="sd">function         a user defined function                                      NA</span>
+<span class="sd">================ ============================================================ ========================</span>
+
+<span class="sd">Example:</span>
+
+<span class="sd">    &gt;&gt;&gt; import ClearMap.IO as io  </span>
+<span class="sd">    &gt;&gt;&gt; import ClearMap.Settings as settings</span>
+<span class="sd">    &gt;&gt;&gt; from ClearMap.ImageProcessing.CellDetection import detectCells;</span>
+<span class="sd">    &gt;&gt;&gt; fn = os.path.join(settings.ClearMapPath, &#39;Test/Data/Synthetic/test_iDISCO_\d{3}.tif&#39;);</span>
+<span class="sd">    &gt;&gt;&gt; parameter = {&quot;filterDoGParameter&quot; : {&quot;size&quot;: (5,5,5)}, &quot;findExtendedMaximaParameter&quot; : {&quot;threshold&quot; : 5}};</span>
+<span class="sd">    &gt;&gt;&gt; img = io.readData(fn);</span>
+<span class="sd">    &gt;&gt;&gt; img = img.astype(&#39;int16&#39;); # converting data to smaller integer types can be more memory efficient!</span>
+<span class="sd">    &gt;&gt;&gt; res = detectCells(img, parameter);</span>
+<span class="sd">    &gt;&gt;&gt; print res[0].shape</span>
+
+<span class="sd">See Also:</span>
+<span class="sd">    :mod:`~ClearMap.ImageProcessing`</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c">#:copyright: Copyright 2015 by Christoph Kirst, The Rockefeller University, New York City</span>
+<span class="c">#:license: GNU, see LICENSE.txt for details.</span>
+
+<span class="kn">import</span> <span class="nn">ClearMap.ImageProcessing.SpotDetection</span>
+<span class="kn">import</span> <span class="nn">ClearMap.ImageProcessing.IlastikClassification</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.ImageProcessing.StackProcessing</span> <span class="kn">import</span> <span class="n">parallelProcessStack</span><span class="p">,</span> <span class="n">sequentiallyProcessStack</span>
+
+<span class="kn">from</span> <span class="nn">ClearMap.Utils.Timer</span> <span class="kn">import</span> <span class="n">Timer</span>
+    
+
+<div class="viewcode-block" id="detectCells"><a class="viewcode-back" href="../../../api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.CellDetection.detectCells">[docs]</a><span class="k">def</span> <span class="nf">detectCells</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">method</span> <span class="o">=</span><span class="s">&quot;SpotDetection&quot;</span><span class="p">,</span> <span class="n">processMethod</span> <span class="o">=</span> <span class="nb">all</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Detect cells in data</span>
+<span class="sd">    </span>
+<span class="sd">    This is a main script to start running the cell detection.    </span>
+<span class="sd">    </span>
+<span class="sd">    Arguments:</span>
+<span class="sd">        source (str or array): Image source</span>
+<span class="sd">        sink (str or None): destination for the results</span>
+<span class="sd">        method (str or function): </span>
+<span class="sd">            ================ ============================================================</span>
+<span class="sd">            Method           Description</span>
+<span class="sd">            ================ ============================================================</span>
+<span class="sd">            &quot;SpotDetection&quot;  uses predefined spot detection pipline</span>
+<span class="sd">            &quot;Ilastik&quot;        uses predefined pipline with cell classification via Ilastik</span>
+<span class="sd">            function         a user defined function</span>
+<span class="sd">            ================ ============================================================</span>
+<span class="sd">        processMethod (str or all): &#39;sequential&#39; or &#39;parallel&#39;. if all its choosen </span>
+<span class="sd">                                     automatically</span>
+<span class="sd">        verbose (bool): print info</span>
+<span class="sd">        **parameter (dict): parameter for the image procesing sub-routines</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">();</span>
+        
+    <span class="c"># run segmentation</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&quot;SpotDetection&quot;</span><span class="p">:</span>
+        <span class="n">detectCells</span> <span class="o">=</span> <span class="n">ClearMap</span><span class="o">.</span><span class="n">ImageProcessing</span><span class="o">.</span><span class="n">SpotDetection</span><span class="o">.</span><span class="n">detectSpots</span><span class="p">;</span>
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s">&#39;Ilastik&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ClearMap</span><span class="o">.</span><span class="n">ImageProcessing</span><span class="o">.</span><span class="n">Ilastik</span><span class="o">.</span><span class="n">Initialized</span><span class="p">:</span>
+            <span class="n">detectCells</span> <span class="o">=</span> <span class="n">ClearMap</span><span class="o">.</span><span class="n">ImageProcessing</span><span class="o">.</span><span class="n">IlastikClassification</span><span class="o">.</span><span class="n">classifyCells</span><span class="p">;</span>
+            <span class="n">processMethod</span> <span class="o">=</span> <span class="s">&#39;sequential&#39;</span><span class="p">;</span>  <span class="c">#ilastik does parallel processing so force sequential processing here</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;detectCells: Ilastik not initialized, fix in Settings.py or use SpotDectection method instead!&quot;</span><span class="p">);</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;detectCells: invalid method </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">method</span><span class="p">));</span>
+    
+    <span class="k">if</span> <span class="n">processMethod</span> <span class="o">==</span> <span class="s">&#39;sequential&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">sequentiallyProcessStack</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="n">sink</span><span class="p">,</span> <span class="n">function</span> <span class="o">=</span> <span class="n">detectCells</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>  
+    <span class="k">elif</span> <span class="n">processMethod</span> <span class="ow">is</span> <span class="nb">all</span> <span class="ow">or</span> <span class="n">processMethod</span> <span class="o">==</span> <span class="s">&#39;parallel&#39;</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">parallelProcessStack</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span> <span class="o">=</span> <span class="n">sink</span><span class="p">,</span> <span class="n">function</span> <span class="o">=</span> <span class="n">detectCells</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span><span class="p">,</span> <span class="o">**</span><span class="n">parameter</span><span class="p">);</span>  
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&quot;detectCells: invalid processMethod </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">processMethod</span><span class="p">));</span>
+    
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="n">timer</span><span class="o">.</span><span class="n">printElapsedTime</span><span class="p">(</span><span class="s">&quot;Total Cell Detection&quot;</span><span class="p">);</span>
+    
+    <span class="k">return</span> <span class="n">result</span><span class="p">;</span></div>
+
+
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="../../../index.html">home</a>|&nbsp;</li>
+       <li><a href="../../../search.html">search</a>|&nbsp;</li>
+       <li><a href="../../../api/ClearMap.html">documentation </a> &raquo;</li>
+
+          <li class="nav-item nav-item-1"><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>

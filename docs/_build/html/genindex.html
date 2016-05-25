@@ -1,0 +1,1640 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Index &mdash; ClearMap 0.9.2 documentation</title>
+    
+    <link rel="stylesheet" href="_static/clearmap.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.9.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/copybutton.js"></script>
+    <link rel="top" title="ClearMap 0.9.2 documentation" href="index.html" />
+ 
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+
+  </head>
+  <body role="document">
+<div style="background-color: #e2e8e9; text-align: left; padding: 10px 10px 15px 15px">
+<p style="font-size: 30px; color: color: #11557C"> <a href="index.html" style="color: #11557C; font-weight: bold">ClearMap iDISCO+ Toolbox Documentation</a></p>
+<a href="index.html"><img src="_static/brain_bw_small.jpg" height=50px width=150% border="0" alt="ClearMap"/></a>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="#" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="index.html">home</a>|&nbsp;</li>
+       <li><a href="search.html">search</a>|&nbsp;</li>
+       <li><a href="api/ClearMap.html">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Overview of ClearMap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="imageanalysis.html">ClearMap Image Analysis Tools</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api/ClearMap.html">ClearMap package</a></li>
+</ul>
+ 
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#_"><strong>_</strong></a>
+ | <a href="#A"><strong>A</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="_">_</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.__getnewargs__">__getnewargs__() (LabelRecord method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.__getstate__">__getstate__() (LabelRecord method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.__repr__">__repr__() (LabelRecord method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.acronym">acronym (LabelRecord attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.acronym">acronym() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.acronyms">acronyms (LabelInfo attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.alignData">alignData() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#ClearMap.Parameter.AlignmentParameter">AlignmentParameter (in module ClearMap.Parameter)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.calculateChunkSize">calculateChunkSize() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.ImageStatistics.calculateStatistics">calculateStatistics() (in module ClearMap.ImageProcessing.ImageStatistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.ImageStatistics.calculateStatisticsOnStack">calculateStatisticsOnStack() (in module ClearMap.ImageProcessing.ImageStatistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.calculateSubStacks">calculateSubStacks() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.checkElastixInitialized">checkElastixInitialized() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlastikClassification.checkInitialized">checkInitialized() (in module ClearMap.ImageProcessing.IlastikClassification)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlastikClassification.classifyCells">classifyCells() (in module ClearMap.ImageProcessing.IlastikClassification)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlastikClassification.classifyPixel">classifyPixel() (in module ClearMap.ImageProcessing.IlastikClassification)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.html#module-ClearMap">ClearMap (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#module-ClearMap.Alignment">ClearMap.Alignment (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#module-ClearMap.Alignment.Elastix">ClearMap.Alignment.Elastix (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#module-ClearMap.Alignment.Resampling">ClearMap.Alignment.Resampling (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis">ClearMap.Analysis (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis.Label">ClearMap.Analysis.Label (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis.Statistics">ClearMap.Analysis.Statistics (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools">ClearMap.Analysis.Tools (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.Extrapolate">ClearMap.Analysis.Tools.Extrapolate (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.MultipleComparisonCorrection">ClearMap.Analysis.Tools.MultipleComparisonCorrection (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#module-ClearMap.Analysis.Tools.StatisticalTests">ClearMap.Analysis.Tools.StatisticalTests (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#module-ClearMap.Analysis.Voxelization">ClearMap.Analysis.Voxelization (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing">ClearMap.ImageProcessing (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.BackgroundRemoval">ClearMap.ImageProcessing.BackgroundRemoval (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.CellDetection">ClearMap.ImageProcessing.CellDetection (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.CellSizeDetection">ClearMap.ImageProcessing.CellSizeDetection (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter">ClearMap.ImageProcessing.Filter (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.Convolution">ClearMap.ImageProcessing.Filter.Convolution (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.DoGFilter">ClearMap.ImageProcessing.Filter.DoGFilter (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.FilterKernel">ClearMap.ImageProcessing.Filter.FilterKernel (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.LinearFilter">ClearMap.ImageProcessing.Filter.LinearFilter (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#module-ClearMap.ImageProcessing.Filter.StructureElement">ClearMap.ImageProcessing.Filter.StructureElement (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.GreyReconstruction">ClearMap.ImageProcessing.GreyReconstruction (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.IlastikClassification">ClearMap.ImageProcessing.IlastikClassification (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.IlluminationCorrection">ClearMap.ImageProcessing.IlluminationCorrection (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.ImageStatistics">ClearMap.ImageProcessing.ImageStatistics (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.MaximaDetection">ClearMap.ImageProcessing.MaximaDetection (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.SpotDetection">ClearMap.ImageProcessing.SpotDetection (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#module-ClearMap.ImageProcessing.StackProcessing">ClearMap.ImageProcessing.StackProcessing (module)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO">ClearMap.IO (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.CSV">ClearMap.IO.CSV (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.FileList">ClearMap.IO.FileList (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.Imaris">ClearMap.IO.Imaris (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.IO">ClearMap.IO.IO (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.NPY">ClearMap.IO.NPY (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.NRRD">ClearMap.IO.NRRD (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.RAW">ClearMap.IO.RAW (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.TIF">ClearMap.IO.TIF (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#module-ClearMap.IO.VTK">ClearMap.IO.VTK (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#module-ClearMap.Parameter">ClearMap.Parameter (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Settings.html#module-ClearMap.Settings">ClearMap.Settings (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#module-ClearMap.Utils">ClearMap.Utils (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#module-ClearMap.Utils.ParameterTools">ClearMap.Utils.ParameterTools (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#module-ClearMap.Utils.ProcessWriter">ClearMap.Utils.ProcessWriter (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#module-ClearMap.Utils.Timer">ClearMap.Utils.Timer (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#module-ClearMap.Visualization">ClearMap.Visualization (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#module-ClearMap.Visualization.Plot">ClearMap.Visualization.Plot (module)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Settings.html#ClearMap.Settings.ClearMapPath">ClearMapPath (in module ClearMap.Settings)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Settings.html#ClearMap.Settings.clearMapPath">clearMapPath() (in module ClearMap.Settings)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.closeFile">closeFile() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.collapse">collapse (LabelInfo attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.collapse">(LabelRecord attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.collapseMap">collapseMap (LabelInfo attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.color">color (LabelRecord attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.color">color() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.colorPValues">colorPValues() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.colors">colors (LabelInfo attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.convertData">convertData() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.Convolution.convolve">convolve() (in module ClearMap.ImageProcessing.Filter.Convolution)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.copyData">copyData() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.copyData">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.copyData">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.copyData">(in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.copyData">(in module ClearMap.IO.RAW)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.TIF.copyData">(in module ClearMap.IO.TIF)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.copyFile">copyFile() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlluminationCorrection.correctIllumination">correctIllumination() (in module ClearMap.ImageProcessing.IlluminationCorrection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.MultipleComparisonCorrection.correctPValues">correctPValues() (in module ClearMap.Analysis.Tools.MultipleComparisonCorrection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.countPointsGroupInRegions">countPointsGroupInRegions() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.countPointsInRegions">countPointsInRegions() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.createDirectory">createDirectory() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.cutoffPValues">cutoffPValues() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataFileExtensions">dataFileExtensions (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataFileExtensionToType">dataFileExtensionToType (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataFileNameToModule">dataFileNameToModule() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataFileNameToType">dataFileNameToType() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataFileTypes">dataFileTypes (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.dataSize">dataSize() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataSize">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.dataSize">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.dataSize">(in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.dataSize">(in module ClearMap.IO.RAW)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.TIF.dataSize">(in module ClearMap.IO.TIF)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataSizeFromDataRange">dataSizeFromDataRange() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataToRange">dataToRange() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.dataZSize">dataZSize() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.dataZSize">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.dataZSize">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.dataZSize">(in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.dataZSize">(in module ClearMap.IO.RAW)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.TIF.dataZSize">(in module ClearMap.IO.TIF)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.DefaultAnnotationFile">DefaultAnnotationFile (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlluminationCorrection.DefaultFlatFieldLineFile">DefaultFlatFieldLineFile (in module ClearMap.ImageProcessing.IlluminationCorrection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.DefaultLabeledImageFile">DefaultLabeledImageFile (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.deformationDistance">deformationDistance() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.deformationField">deformationField() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#ClearMap.Parameter.detectCellParameter">detectCellParameter (in module ClearMap.Parameter)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.CellDetection.detectCells">detectCells() (in module ClearMap.ImageProcessing.CellDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.CellSizeDetection.detectCellShape">detectCellShape() (in module ClearMap.ImageProcessing.CellSizeDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.SpotDetection.detectSpots">detectSpots() (in module ClearMap.ImageProcessing.SpotDetection)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer.elapsedTime">elapsedTime() (Timer method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.ElastixBinary">ElastixBinary (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.ElastixLib">ElastixLib (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Settings.html#ClearMap.Settings.ElastixPath">ElastixPath (in module ClearMap.Settings)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.MultipleComparisonCorrection.estimateQValues">estimateQValues() (in module ClearMap.Analysis.Tools.MultipleComparisonCorrection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.extendedMax">extendedMax() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.Extrapolate.extrap1d">extrap1d() (in module ClearMap.Analysis.Tools.Extrapolate)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.Extrapolate.extrap1dFromInterp1d">extrap1dFromInterp1d() (in module ClearMap.Analysis.Tools.Extrapolate)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.fileExpressionToFileName">fileExpressionToFileName() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.fileExtension">fileExtension() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.DoGFilter.filterDoG">filterDoG() (in module ClearMap.ImageProcessing.Filter.DoGFilter)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel">filterKernel() (in module ClearMap.ImageProcessing.Filter.FilterKernel)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel2D">filterKernel2D() (in module ClearMap.ImageProcessing.Filter.FilterKernel)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.FilterKernel.filterKernel3D">filterKernel3D() (in module ClearMap.ImageProcessing.Filter.FilterKernel)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.LinearFilter.filterLinear">filterLinear() (in module ClearMap.ImageProcessing.Filter.LinearFilter)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity">findCellIntensity() (in module ClearMap.ImageProcessing.CellSizeDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.CellSizeDetection.findCellSize">findCellSize() (in module ClearMap.ImageProcessing.CellSizeDetection)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.findCenterOfMaxima">findCenterOfMaxima() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.findExtendedMaxima">findExtendedMaxima() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.findIntensity">findIntensity() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.findPixelCoordinates">findPixelCoordinates() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.fixInterpolation">fixInterpolation() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.fixOrientation">fixOrientation() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlluminationCorrection.flatfieldFromLine">flatfieldFromLine() (in module ClearMap.ImageProcessing.IlluminationCorrection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlluminationCorrection.flatfieldLineFromRegression">flatfieldLineFromRegression() (in module ClearMap.ImageProcessing.IlluminationCorrection)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer.formatElapsedTime">formatElapsedTime() (Timer method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.getDataExtent">getDataExtent() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.getDataSize">getDataSize() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ParameterTools.getParameter">getParameter() (in module ClearMap.Utils.ParameterTools)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.getResultDataFile">getResultDataFile() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.getScaleAndOffset">getScaleAndOffset() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.getTransformFileSizeAndSpacing">getTransformFileSizeAndSpacing() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.getTransformParameterFile">getTransformParameterFile() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.GreyReconstruction.greyReconstruction">greyReconstruction() (in module ClearMap.ImageProcessing.GreyReconstruction)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.hMaxTransform">hMaxTransform() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.id">id (LabelRecord attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.ids">ids (LabelInfo attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#ClearMap.Parameter.IlastikParameter">IlastikParameter (in module ClearMap.Parameter)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Settings.html#ClearMap.Settings.IlastikPath">IlastikPath (in module ClearMap.Settings)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.initialize">initialize() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.initialize">(LabelInfo method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.Initialized">Initialized (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.initializeElastix">initializeElastix() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.inverseOrientation">inverseOrientation() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.isDataFile">isDataFile() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.isFile">isFile() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.isFileExpression">isFileExpression() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.IlastikClassification.isInitialized">isInitialized() (in module ClearMap.ImageProcessing.IlastikClassification)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.isPointFile">isPointFile() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ParameterTools.joinParameter">joinParameter() (in module ClearMap.Utils.ParameterTools)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.joinPoints">joinPoints() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.ImageStatistics.joinStatistics">joinStatistics() (in module ClearMap.ImageProcessing.ImageStatistics)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.Label">Label (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelAtCollapse">labelAtCollapse() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelAtLevel">labelAtLevel() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo">LabelInfo (class in ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelPoints">labelPoints() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord">LabelRecord (class in ClearMap.Analysis.Label)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelToAcronym">labelToAcronym() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelToColor">labelToColor() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.labelToName">labelToName() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.level">level() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.levels">levels (LabelInfo attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.MaximaDetection.localMax">localMax() (in module ClearMap.ImageProcessing.MaximaDetection)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.makeColorAnnotations">makeColorAnnotations() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.makeColorPalette">makeColorPalette() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.mean">mean() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.name">name (LabelRecord attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.name">name() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.names">names (LabelInfo attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.noProcessing">noProcessing() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.NrrdError">NrrdError</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.openFile">openFile() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.orientationToPermuation">orientationToPermuation() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.orientDataSize">orientDataSize() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.orientDataSizeInverse">orientDataSizeInverse() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.orientResolution">orientResolution() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.orientResolutionInverse">orientResolutionInverse() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#ClearMap.Visualization.Plot.overlayLabel">overlayLabel() (in module ClearMap.Visualization.Plot)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#ClearMap.Visualization.Plot.overlayPoints">overlayPoints() (in module ClearMap.Visualization.Plot)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.parallelProcessStack">parallelProcessStack() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelRecord.parent">parent (LabelRecord attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.parent">parent() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.parents">parents (LabelInfo attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.parse_nrrdvector">parse_nrrdvector() (in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.parse_optional_nrrdvector">parse_optional_nrrdvector() (in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.parseElastixOutputPoints">parseElastixOutputPoints() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#ClearMap.Visualization.Plot.plotOverlayLabel">plotOverlayLabel() (in module ClearMap.Visualization.Plot)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#ClearMap.Visualization.Plot.plotOverlayPoints">plotOverlayPoints() (in module ClearMap.Visualization.Plot)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Visualization.html#ClearMap.Visualization.Plot.plotTiling">plotTiling() (in module ClearMap.Visualization.Plot)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointFileExtensions">pointFileExtensions (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointFileExtensionToType">pointFileExtensionToType (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointFileNameToModule">pointFileNameToModule() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointFileNameToType">pointFileNameToType() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointFileTypes">pointFileTypes (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointShiftFromRange">pointShiftFromRange() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointsToCoordinates">pointsToCoordinates() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointsToCoordinatesAndProperties">pointsToCoordinatesAndProperties() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointsToCoordinatesAndPropertiesFileNames">pointsToCoordinatesAndPropertiesFileNames() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointsToProperties">pointsToProperties() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.pointsToRange">pointsToRange() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer.printElapsedTime">printElapsedTime() (Timer method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.printSettings">printSettings() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.printSubStackInfo">printSubStackInfo() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ProcessWriter.ProcessWriter.process">process (ProcessWriter attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#ClearMap.Parameter.processStackParameter">processStackParameter (in module ClearMap.Parameter)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ProcessWriter.ProcessWriter">ProcessWriter (class in ClearMap.Utils.ProcessWriter)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.readData">readData() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.readData">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.readData">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.readData">(in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.readData">(in module ClearMap.IO.RAW)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.TIF.readData">(in module ClearMap.IO.TIF)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.readDataFiles">readDataFiles() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.readDataGroup">readDataGroup() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.readDataSet">readDataSet() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.readFileList">readFileList() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.readHeader">readHeader() (in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.CSV.readPoints">readPoints() (in module ClearMap.IO.CSV)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.readPoints">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.readPoints">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NPY.readPoints">(in module ClearMap.IO.NPY)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.VTK.readPoints">(in module ClearMap.IO.VTK)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.readPointsGroup">readPointsGroup() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.GreyReconstruction.reconstruct">reconstruct() (in module ClearMap.ImageProcessing.GreyReconstruction)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.BackgroundRemoval.removeBackground">removeBackground() (in module ClearMap.ImageProcessing.BackgroundRemoval)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.resampleData">resampleData() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.resampleDataInverse">resampleDataInverse() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.resampleDataSize">resampleDataSize() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.resamplePoints">resamplePoints() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.resamplePointsInverse">resamplePointsInverse() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.resampleXY">resampleXY() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#ClearMap.Parameter.ResamplingParameter">ResamplingParameter (in module ClearMap.Parameter)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.rescaleSizeAndSpacing">rescaleSizeAndSpacing() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer.reset">reset() (Timer method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Resampling.sagittalToCoronalData">sagittalToCoronalData() (in module ClearMap.Alignment.Resampling)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.sequentiallyProcessStack">sequentiallyProcessStack() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.setElastixLibraryPath">setElastixLibraryPath() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.setPathTransformParameterFiles">setPathTransformParameterFiles() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.setTransformFileSizeAndSpacing">setTransformFileSizeAndSpacing() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Settings.html#ClearMap.Settings.setup">setup() (in module ClearMap.Settings)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.splitFileExpression">splitFileExpression() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer.start">start() (Timer method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.std">std() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElement">structureElement() (in module ClearMap.ImageProcessing.Filter.StructureElement)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElement2D">structureElement2D() (in module ClearMap.ImageProcessing.Filter.StructureElement)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElement3D">structureElement3D() (in module ClearMap.ImageProcessing.Filter.StructureElement)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.StructureElement.structureElementOffsets">structureElementOffsets() (in module ClearMap.ImageProcessing.Filter.StructureElement)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.test">test() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.test">(in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.test">(in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Voxelization.test">(in module ClearMap.Analysis.Voxelization)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.CSV.test">(in module ClearMap.IO.CSV)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.test">(in module ClearMap.IO.FileList)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.test">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NPY.test">(in module ClearMap.IO.NPY)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.test">(in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.test">(in module ClearMap.IO.RAW)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.TIF.test">(in module ClearMap.IO.TIF)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.ImageProcessing.Filter.html#ClearMap.ImageProcessing.Filter.FilterKernel.test">(in module ClearMap.ImageProcessing.Filter.FilterKernel)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.SpotDetection.test">(in module ClearMap.ImageProcessing.SpotDetection)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.Visualization.html#ClearMap.Visualization.Plot.test">(in module ClearMap.Visualization.Plot)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.testCompletedCumulatives">testCompletedCumulatives() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.testCompletedCumulativesInSpheres">testCompletedCumulativesInSpheres() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.testCompletedInvertedCumulatives">testCompletedInvertedCumulatives() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.Tools.html#ClearMap.Analysis.Tools.StatisticalTests.testCramerVonMises2Sample">testCramerVonMises2Sample() (in module ClearMap.Analysis.Tools.StatisticalTests)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.thresholdPoints">thresholdPoints() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer.time">time (Timer attribute)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.Timer.Timer">Timer (class in ClearMap.Utils.Timer)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.toDataRange">toDataRange() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.toDataSize">toDataSize() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapse">toLabelAtCollapse() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.toLabelAtCollapseMap">toLabelAtCollapseMap() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.LabelInfo.toLabelAtLevel">toLabelAtLevel() (LabelInfo method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.toMultiChannelData">toMultiChannelData() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.transformData">transformData() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.TransformixBinary">TransformixBinary (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.transformPoints">transformPoints() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.transformPointsToImaris">transformPointsToImaris() (in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.tTestPointsInRegions">tTestPointsInRegions() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.tTestVoxelization">tTestVoxelization() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.var">var() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Parameter.html#ClearMap.Parameter.VoxelizationParameter">VoxelizationParameter (in module ClearMap.Parameter)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Voxelization.voxelize">voxelize() (in module ClearMap.Analysis.Voxelization)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Voxelization.voxelizePixel">voxelizePixel() (in module ClearMap.Analysis.Voxelization)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Statistics.weightsFromPrecentiles">weightsFromPrecentiles() (in module ClearMap.Analysis.Statistics)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ProcessWriter.ProcessWriter.write">write() (ProcessWriter method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.FileList.writeData">writeData() (in module ClearMap.IO.FileList)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.writeData">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.writeData">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NRRD.writeData">(in module ClearMap.IO.NRRD)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.writeData">(in module ClearMap.IO.RAW)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.TIF.writeData">(in module ClearMap.IO.TIF)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.writeHeader">writeHeader() (in module ClearMap.IO.RAW)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.writeLUT">writeLUT() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Analysis.html#ClearMap.Analysis.Label.writePAL">writePAL() (in module ClearMap.Analysis.Label)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ParameterTools.writeParameter">writeParameter() (in module ClearMap.Utils.ParameterTools)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Alignment.html#ClearMap.Alignment.Elastix.writePoints">writePoints() (in module ClearMap.Alignment.Elastix)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.CSV.writePoints">(in module ClearMap.IO.CSV)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.writePoints">(in module ClearMap.IO.IO)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.Imaris.writePoints">(in module ClearMap.IO.Imaris)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.NPY.writePoints">(in module ClearMap.IO.NPY)</a>
+  </dt>
+
+        
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.VTK.writePoints">(in module ClearMap.IO.VTK)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.RAW.writeRawData">writeRawData() (in module ClearMap.IO.RAW)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.Utils.html#ClearMap.Utils.ProcessWriter.ProcessWriter.writeString">writeString() (ProcessWriter method)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.ImageProcessing.html#ClearMap.ImageProcessing.StackProcessing.writeSubStack">writeSubStack() (in module ClearMap.ImageProcessing.StackProcessing)</a>
+  </dt>
+
+      
+  <dt><a href="api/ClearMap.IO.html#ClearMap.IO.IO.writeTable">writeTable() (in module ClearMap.IO.IO)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="#" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+       <li><a href="index.html">home</a>|&nbsp;</li>
+       <li><a href="search.html">search</a>|&nbsp;</li>
+       <li><a href="api/ClearMap.html">documentation </a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2015 Christoph Kirst.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
+    </div>
+  </body>
+</html>
