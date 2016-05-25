@@ -1,5 +1,5 @@
-ClearMap Registration, Image Analysis and Statistics Library
-============================================================
+ClearMap
+========
 
 ClearMap is a toolbox for the analysis and registration of volumetric data
 from cleared tissues.
