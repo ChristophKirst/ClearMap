@@ -31,6 +31,12 @@ Quickstart
    * see the html documentation at ./docs/_build/html/index.html 
    * see the template scripts in the ./ClearMap/Scripts folder 
 
+Documentation
+-------------
+
+The ClearMap documentation can be found `here <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`
+
+
 Copyright
 ---------
     (c) 2016 Christoph Kirst
