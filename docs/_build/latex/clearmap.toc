@@ -52,6 +52,9 @@
 \contentsline {subsection}{\numberline {2.4.4}Image Filter}{27}{subsection.2.4.4}
 \contentsline {subsection}{\numberline {2.4.5}Maxima Detection}{28}{subsection.2.4.5}
 \contentsline {subsection}{\numberline {2.4.6}Cell Shape Detection}{31}{subsection.2.4.6}
+\contentsline {section}{\numberline {2.5}Roadmap}{33}{section.2.5}
+\contentsline {subsection}{\numberline {2.5.1}Plans for future developoment:}{33}{subsection.2.5.1}
+\contentsline {section}{\numberline {2.6}Issues}{34}{section.2.6}
 \contentsline {chapter}{\numberline {3}ClearMap functions}{35}{chapter.3}
 \contentsline {section}{\numberline {3.1}ClearMap package}{35}{section.3.1}
 \contentsline {subsection}{\numberline {3.1.1}Subpackages}{35}{subsection.3.1.1}

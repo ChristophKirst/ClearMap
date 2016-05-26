@@ -1664,6 +1664,60 @@ and plot those:
 \includegraphics{imageanalysis-11.pdf}
 
 
+\section{Roadmap}
+\label{roadmap::doc}\label{roadmap:roadmap}
+ClearMap is going to develop further to extend its functionality and useability.
+
+
+\subsection{Plans for future developoment:}
+\label{roadmap:plans-for-future-developoment}
+We plan to add following items to ClearMap in the future:
+\begin{itemize}
+\item {} 
+Graphical User Interface
+
+\item {} 
+Flexible pipeline generation
+
+\item {} 
+Colocalization tools
+
+\item {} 
+Tracing tools
+
+\item {} 
+Support for very large data sets and memmaps
+
+\end{itemize}
+
+Together with those changes some additional changes will be done to the code
+under the hood:
+\begin{itemize}
+\item {} 
+reorganization of the IO module
+
+\item {} 
+reorganization of the parameter specifications
+
+\item {} 
+reorganization of the parallel processing
+
+\end{itemize}
+
+
+\section{Issues}
+\label{issues::doc}\label{issues:issues}
+This is a list of know issues in Clearmap:
+\begin{itemize}
+\item {} 
+for very large stiched images the watershed results shows a cutoff at large coordinates
+
+\item {} 
+for multipage tiff files the resampling method can get stuck, use sequential tiff stacks instead
+
+\end{itemize}
+
+
 \chapter{ClearMap functions}
 \label{index:clearmap-functions}
 
