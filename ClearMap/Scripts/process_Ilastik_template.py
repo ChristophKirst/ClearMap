@@ -4,7 +4,7 @@ Template to run the processing pipeline
 """
 
 #load the parameters:
-execfile('/home/mtllab/Programs/ClearMap/idisco/ClearMap/Scripts/parameter_file_Ilastik_template.py')
+execfile('/home/mtllab/Programs/ClearMap0.5/ClearMap/Scripts/parameter_file_Ilastik_template.py')
 
 
 #resampling operations:

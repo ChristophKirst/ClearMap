@@ -18,11 +18,19 @@ To install ClearMap, first create a folder to contain all the files for the prog
 
 If you’re starting from a fresh Ubuntu 16.04LTS install, for instance, here are the steps to complete the installation. Open a terminal window and type the following instructions:
 
-- Install pip:
+- Installation tools:
 .. code-block:: bash
     
     $ sudo apt-get update
+    $ sudo apt-get install git
     $ sudo apt-get install python-pip
+    $ sudo -H pip install --upgrade pip
+
+- Download ClearMap:
+.. code-block:: bash
+    
+    $ git clone https://github.com/ChristophKirst/ClearMap.git
+
 
 - Install Spyder:
 .. code-block:: bash
@@ -34,11 +42,11 @@ If you’re starting from a fresh Ubuntu 16.04LTS install, for instance, here ar
 
     $ sudo apt-get install python-opencv
     $ sudo apt-get install cython
-    $ sudo -H pip install --upgrade pip
+    $ sudo apt-get install python-tifffile
+    $ sudo apt-get install python-h5py
+    $ sudo apt-get install python-natsort
     $ sudo -H pip install scikit-image
-    $ sudo -H pip install h5py
-    $ sudo apt-get install python-vigra
-
+   
 We use `Spyder <https://pythonhosted.org/spyder/>`_ to run the code. Set the project explorer and working environment in the ClearMap folder.
 
 Configuration
@@ -46,21 +54,21 @@ Configuration
 
 Open the file ``ClearMap/Settings.py`` to set the paths of installations for Ilastik and Elastix:
 
-    >>> IlastikPath = '/yourpath/ilastik-05-rc-final';
+    >>> IlastikPath = '/yourpath/ilastik';
     >>> ElastixPath = '/yourpath/elastix';
 
 Note that Ilastik is optional. If you haven’t installed it, you can set the path to ``None``. You can also set the installation to run on multiple machines by setting a host specific path:
 
     >>> if hostname == 'kagalaska.nld':  #Christoph’s Laptop 
-    >>>     IlastikPath = '/home/ckirst/programs/ilastik-05/';
+    >>>     IlastikPath = '/home/ckirst/programs/ilastik/';
     >>>     ElastixPath = '/home/ckirst/programs/elastix/';
     >>> elif hostname == 'mtllab-Ubuntu': #Nico’s Workstation
-    >>>     IlastikPath = '/usr/local/ilastik-05-rc-final';
+    >>>     IlastikPath = '/usr/local/ilastik';
     >>>     ElastixPath = '/usr/local/elastix';       
 
 Additionnal Informations:
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-The following libraries are used by ClearMap:
+We run ClearMap on Ubuntu 16.04LTS using the following libraries:
 
 - Matplotlib 1.5.1
 - Numpy 1.11.0
@@ -71,8 +79,6 @@ The following libraries are used by ClearMap:
 - openCV 2.4.9.1
 - PyQt4
 - tifffile 0.6.2
-- EVTK (`website <https://bitbucket.org/pauloh/pyevtk/overview>`_) (only necessary, for output to vtk files)
 - Cython 0.23.1
-- `Vigra <http://ukoethe.github.io/vigra/>`_ (used for the original Ilastik integration).
 
 

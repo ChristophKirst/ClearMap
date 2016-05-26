@@ -33,7 +33,7 @@ cFosFile = '/home/mtllab/Documents/bicuculline/2/160502_CFos_19-42-30/19-42-30_C
 AutofluoFile = os.path.join(BaseDirectory, 'channel2/ref-Z\d{4}.ome.tif');
 
 #Specify the range for the cell detection. This doesn't affect the resampling and registration operations
-cFosFileRange = {'x' : (1000,1200), 'y' : (1000, 1200), 'z' : (1000,1200)};
+cFosFileRange = {'x' : (400,1200), 'y' : (500, 1200), 'z' : (500,1900)};
 
 #Resolution of the Raw Data (in um / pixel)
 OriginalResolution = (4.0625, 4.0625, 3);
@@ -61,7 +61,7 @@ ImageProcessingMethod = "Ilastik";
 ilastikParameter = {
     "classifier" : "/home/mtllab/Documents/bicuculline/2/MyProject.ilp",
     "classindex" : 0,
-    "save"       : os.path.join(BaseDirectory, 'IlastikClasses/Z\d{4}.ome.tif'),      # (str or None)       file name to save result of this operation if None dont save to file 
+    "save"       : None, #os.path.join(BaseDirectory, 'IlastikClasses/Z\d{4}.ome.tif'),      # (str or None)       file name to save result of this operation if None dont save to file 
     "verbose"    : True       # (bool or int)       print / plot information about this step
 }
 
@@ -123,8 +123,8 @@ StackProcessingParameter = {
     "processes" : 6,
    
     #chunk sizes: number of planes processed at once
-    "chunkSizeMax" : 100,
-    "chunkSizeMin" : 50,
+    "chunkSizeMax" : 1500,
+    "chunkSizeMin" : 1400,
     "chunkOverlap" : 32,
 
     #optimize chunk size and number to number of processes to limit the number of cycles
