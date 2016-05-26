@@ -24,7 +24,7 @@ For a developer / programmer:
 	
 	`cd basedirectory`
 
-	`git clone https://github.com/ChristophKirst/ClearMap.git`
+	`git clone https://github.com/<your username>/ClearMap.git`
 	
   * configure remotes (named upstream)
         
@@ -38,7 +38,7 @@ For a developer / programmer:
 Backup
 ------
 
-To backup your version in case you followed the developer / proogrammer route:
+To backup your version in case you followed the developer / programmer route:
 
   * in terminal in the ClearMap directory execute:
 
@@ -69,7 +69,7 @@ in case you want to update your code from the upstream repository
       
       `git merge upstream/master`
 
-  * if mergin fails, some files will be highlighted with <<<<<< >>>>>> entries, fix this manually
+  * if merging fails, some files will be highlighted with <<<<<< >>>>>> entries, fix this manually
 
   * if you dont care about your own changes and simply want the plain new version:
 
