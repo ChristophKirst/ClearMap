@@ -28,7 +28,7 @@ Quickstart
 ----------
 
    * see the template scripts in the `./ClearMap/Scripts <https://github.com/ChristophKirst/ClearMap/tree/master/ClearMap/Scripts>`_ folder 
-   * see the `ClearMap documentation` <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_ for help 
+   * see the `ClearMap documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_ for help 
 
 
 Copyright
