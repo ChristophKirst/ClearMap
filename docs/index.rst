@@ -57,6 +57,8 @@ Using ClearMap
    installation
    tutorial
    imageanalysis
+   roadmap
+   issues
 
 ClearMap functions
 ------------------
