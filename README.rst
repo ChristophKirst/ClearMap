@@ -27,14 +27,8 @@ See the documentation for more details. See GIT.md for help with git.
 Quickstart
 ----------
 
-   * see the ClearMap documentation for help
-   * see the html documentation at ./docs/_build/html/index.html 
-   * see the template scripts in the ./ClearMap/Scripts folder 
-
-Documentation
--------------
-
-The ClearMap documentation can be found `here <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`
+   * see the template scripts in the [./ClearMap/Scripts](https://github.com/ChristophKirst/ClearMap/tree/master/ClearMap/Scripts) folder 
+   * see the [ClearMap documentation](https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html) for help 
 
 
 Copyright
