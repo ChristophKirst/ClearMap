@@ -20,7 +20,7 @@
 
 
 \title{ClearMap Documentation}
-\date{May 25, 2016}
+\date{May 26, 2016}
 \release{0.9.2}
 \author{Christoph Kirst}
 \newcommand{\sphinxlogo}{}
@@ -491,13 +491,24 @@ If you wish to use the machine learning filters, download \href{http://ilastik.o
 If you’re starting from a fresh Ubuntu 16.04LTS install, for instance, here are the steps to complete the installation. Open a terminal window and type the following instructions:
 \begin{itemize}
 \item {} 
-Install pip:
+Installation tools:
 
 \end{itemize}
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get update
+\PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install git
 \PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install python\PYGZhy{}pip
+\PYG{n+nv}{\PYGZdl{} }sudo \PYGZhy{}H pip install \PYGZhy{}\PYGZhy{}upgrade pip
+\end{Verbatim}
+\begin{itemize}
+\item {} 
+Download ClearMap:
+
+\end{itemize}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nv}{\PYGZdl{} }git clone https://github.com/ChristophKirst/ClearMap.git
 \end{Verbatim}
 \begin{itemize}
 \item {} 
@@ -517,10 +528,10 @@ Install the necessary libraries:
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install python\PYGZhy{}opencv
 \PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install cython
-\PYG{n+nv}{\PYGZdl{} }sudo \PYGZhy{}H pip install \PYGZhy{}\PYGZhy{}upgrade pip
+\PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install python\PYGZhy{}tifffile
+\PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install python\PYGZhy{}h5py
+\PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install python\PYGZhy{}natsort
 \PYG{n+nv}{\PYGZdl{} }sudo \PYGZhy{}H pip install scikit\PYGZhy{}image
-\PYG{n+nv}{\PYGZdl{} }sudo \PYGZhy{}H pip install h5py
-\PYG{n+nv}{\PYGZdl{} }sudo apt\PYGZhy{}get install python\PYGZhy{}vigra
 \end{Verbatim}
 
 We use \href{https://pythonhosted.org/spyder/}{Spyder} to run the code. Set the project explorer and working environment in the ClearMap folder.
@@ -531,7 +542,7 @@ We use \href{https://pythonhosted.org/spyder/}{Spyder} to run the code. Set the 
 Open the file \code{ClearMap/Settings.py} to set the paths of installations for Ilastik and Elastix:
 
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{IlastikPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/yourpath/ilastik\PYGZhy{}05\PYGZhy{}rc\PYGZhy{}final}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{IlastikPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/yourpath/ilastik}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{n}{ElastixPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/yourpath/elastix}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
 \end{Verbatim}
 
@@ -539,17 +550,17 @@ Note that Ilastik is optional. If you haven’t installed it, you can set the pa
 
 \begin{Verbatim}[commandchars=\\\{\}]
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{if} \PYG{n}{hostname} \PYG{o}{==} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{kagalaska.nld}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:}  \PYG{c}{\PYGZsh{}Christoph’s Laptop}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{IlastikPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/home/ckirst/programs/ilastik\PYGZhy{}05/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{IlastikPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/home/ckirst/programs/ilastik/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{ElastixPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/home/ckirst/programs/elastix/}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }\PYG{k}{elif} \PYG{n}{hostname} \PYG{o}{==} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{mtllab\PYGZhy{}Ubuntu}\PYG{l+s}{\PYGZsq{}}\PYG{p}{:} \PYG{c}{\PYGZsh{}Nico’s Workstation}
-\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{IlastikPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/usr/local/ilastik\PYGZhy{}05\PYGZhy{}rc\PYGZhy{}final}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
+\PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{IlastikPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/usr/local/ilastik}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
 \PYG{g+gp}{\PYGZgt{}\PYGZgt{}\PYGZgt{} }    \PYG{n}{ElastixPath} \PYG{o}{=} \PYG{l+s}{\PYGZsq{}}\PYG{l+s}{/usr/local/elastix}\PYG{l+s}{\PYGZsq{}}\PYG{p}{;}
 \end{Verbatim}
 
 
 \subsection{Additionnal Informations:}
 \label{installation:additionnal-informations}
-The following libraries are used by ClearMap:
+We run ClearMap on Ubuntu 16.04LTS using the following libraries:
 \begin{itemize}
 \item {} 
 Matplotlib 1.5.1
@@ -579,13 +590,7 @@ PyQt4
 tifffile 0.6.2
 
 \item {} 
-EVTK (\href{https://bitbucket.org/pauloh/pyevtk/overview}{website}) (only necessary, for output to vtk files)
-
-\item {} 
 Cython 0.23.1
-
-\item {} 
-\href{http://ukoethe.github.io/vigra/}{Vigra} (used for the original Ilastik integration).
 
 \end{itemize}
 

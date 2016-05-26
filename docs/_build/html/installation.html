@@ -158,10 +158,18 @@ For typical use, we recommend a workstation running Ubuntu 14 or later with at l
 </div></blockquote>
 <p>If you’re starting from a fresh Ubuntu 16.04LTS install, for instance, here are the steps to complete the installation. Open a terminal window and type the following instructions:</p>
 <ul class="simple">
-<li>Install pip:</li>
+<li>Installation tools:</li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get update
+<span class="nv">$ </span>sudo apt-get install git
 <span class="nv">$ </span>sudo apt-get install python-pip
+<span class="nv">$ </span>sudo -H pip install --upgrade pip
+</pre></div>
+</div>
+<ul class="simple">
+<li>Download ClearMap:</li>
+</ul>
+<div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/ChristophKirst/ClearMap.git
 </pre></div>
 </div>
 <ul class="simple">
@@ -175,10 +183,10 @@ For typical use, we recommend a workstation running Ubuntu 14 or later with at l
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install python-opencv
 <span class="nv">$ </span>sudo apt-get install cython
-<span class="nv">$ </span>sudo -H pip install --upgrade pip
+<span class="nv">$ </span>sudo apt-get install python-tifffile
+<span class="nv">$ </span>sudo apt-get install python-h5py
+<span class="nv">$ </span>sudo apt-get install python-natsort
 <span class="nv">$ </span>sudo -H pip install scikit-image
-<span class="nv">$ </span>sudo -H pip install h5py
-<span class="nv">$ </span>sudo apt-get install python-vigra
 </pre></div>
 </div>
 <p>We use <a class="reference external" href="https://pythonhosted.org/spyder/">Spyder</a> to run the code. Set the project explorer and working environment in the ClearMap folder.</p>
@@ -186,23 +194,23 @@ For typical use, we recommend a workstation running Ubuntu 14 or later with at l
 <div class="section" id="configuration">
 <h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
 <p>Open the file <code class="docutils literal"><span class="pre">ClearMap/Settings.py</span></code> to set the paths of installations for Ilastik and Elastix:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/yourpath/ilastik-05-rc-final&#39;</span><span class="p">;</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/yourpath/ilastik&#39;</span><span class="p">;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/yourpath/elastix&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>Note that Ilastik is optional. If you haven’t installed it, you can set the path to <code class="docutils literal"><span class="pre">None</span></code>. You can also set the installation to run on multiple machines by setting a host specific path:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="n">hostname</span> <span class="o">==</span> <span class="s">&#39;kagalaska.nld&#39;</span><span class="p">:</span>  <span class="c">#Christoph’s Laptop</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/ilastik-05/&#39;</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/ilastik/&#39;</span><span class="p">;</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/home/ckirst/programs/elastix/&#39;</span><span class="p">;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">elif</span> <span class="n">hostname</span> <span class="o">==</span> <span class="s">&#39;mtllab-Ubuntu&#39;</span><span class="p">:</span> <span class="c">#Nico’s Workstation</span>
-<span class="gp">&gt;&gt;&gt; </span>    <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/ilastik-05-rc-final&#39;</span><span class="p">;</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">IlastikPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/ilastik&#39;</span><span class="p">;</span>
 <span class="gp">&gt;&gt;&gt; </span>    <span class="n">ElastixPath</span> <span class="o">=</span> <span class="s">&#39;/usr/local/elastix&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="additionnal-informations">
 <h2>Additionnal Informations:<a class="headerlink" href="#additionnal-informations" title="Permalink to this headline">¶</a></h2>
-<p>The following libraries are used by ClearMap:</p>
+<p>We run ClearMap on Ubuntu 16.04LTS using the following libraries:</p>
 <ul class="simple">
 <li>Matplotlib 1.5.1</li>
 <li>Numpy 1.11.0</li>
@@ -213,9 +221,7 @@ For typical use, we recommend a workstation running Ubuntu 14 or later with at l
 <li>openCV 2.4.9.1</li>
 <li>PyQt4</li>
 <li>tifffile 0.6.2</li>
-<li>EVTK (<a class="reference external" href="https://bitbucket.org/pauloh/pyevtk/overview">website</a>) (only necessary, for output to vtk files)</li>
 <li>Cython 0.23.1</li>
-<li><a class="reference external" href="http://ukoethe.github.io/vigra/">Vigra</a> (used for the original Ilastik integration).</li>
 </ul>
 </div>
 </div>
@@ -248,7 +254,7 @@ For typical use, we recommend a workstation running Ubuntu 14 or later with at l
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &copy; Copyright 2015 Christoph Kirst.
+        &copy; Copyright 2016 Christoph Kirst.
       Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.3.
     </div>
   </body>
