@@ -8,7 +8,9 @@ ClearMap is targeted towards large lightsheet volumetric imaging data
 of iDISCO+ cleared mouse brains samples, their registration to the Allen brain atlas,
 volumetric image processing and statistical analysis.
 
-For more information visit the `iDISCO website <https://idisco.info/>`_.
+The method is fully described in this `Cell paper <http://www.cell.com/cell/abstract/S0092-8674%2816%2930555-4>`_ 
+For further details visit the `iDISCO website <https://idisco.info/>`_ and 
+the `ClearMap documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_.
 
 
 Installation
