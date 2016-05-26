@@ -22,13 +22,13 @@ classify pixels via ilastik configure the file ./ClearMap/Settings.py
 You will most likely also need to install several python packages e.g. via 
 pip or apt-get.
 
-See the documentation for more details. See GIT.md for help with git.
+See the `documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_ for more details. See `GIT.md <https://github.com/ChristophKirst/ClearMap/blob/master/GIT.md>`_ for help with git.
 
 Quickstart
 ----------
 
-   * see the template scripts in the [./ClearMap/Scripts](https://github.com/ChristophKirst/ClearMap/tree/master/ClearMap/Scripts) folder 
-   * see the [ClearMap documentation](https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html) for help 
+   * see the template scripts in the `./ClearMap/Scripts <https://github.com/ChristophKirst/ClearMap/tree/master/ClearMap/Scripts>`_ folder 
+   * see the `ClearMap documentation` <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_ for help 
 
 
 Copyright
