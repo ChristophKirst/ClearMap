@@ -63,6 +63,11 @@ def dataZSize(filename, z = all, **args):
     """
     
     t = tiff.TiffFile(filename);
+    
+    d2 = t.pages[0].shape;
+    if len(d2) == 3:
+      return io.toDataSize(d2[0], r = z);
+    
     d3 = len(t.pages);
     if d3 > 1:
         return io.toDataSize(d3, r = z);
