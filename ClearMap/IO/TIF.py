@@ -35,12 +35,15 @@ def dataSize(filename, **args):
     Returns:
         tuple: data size
     """
-    
     t = tiff.TiffFile(filename);
     d3 = len(t.pages);
     d2 = t.pages[0].shape;
     #d2 = (d2[0], d2[1]);
-    d2 = (d2[1], d2[0]);
+    if len(d2) == 3:
+      d2 = (d2[2], d2[1], d2[0]);
+    else:
+      d2 = (d2[1], d2[0]);
+    
     if d3 > 1:
         dims = d2 + (d3,);
     else:
