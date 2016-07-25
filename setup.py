@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from setuptools import setup, find_packages
+from setuptools.extension import Extension
+from Cython.Build import cythonize
 
 import ClearMap
 
@@ -9,6 +11,12 @@ with open('README.rst') as fptr:
 
 with open('LICENSE.txt') as fptr:
     license = fptr.read()
+
+extensions = [Extension(
+        "ClearMap/Analysis/VoxelizationCode",
+        ["ClearMap/Analysis/VoxelizationCode.pyx"],
+    )
+]
 
 setup(
     name             = ClearMap.__title__,
@@ -20,6 +28,7 @@ setup(
     url              = 'https://www.idisco.info/',
     license          = license,
     packages         = find_packages(exclude=('tests', 'docs')),
+    ext_modules      = cythonize(extensions),
     classifiers=(
         'Development Status :: 1- Beta',
         'Intended Audience :: Science/Research',
