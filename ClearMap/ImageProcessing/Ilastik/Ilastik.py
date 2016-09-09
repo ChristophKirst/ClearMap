@@ -88,20 +88,22 @@ def initialize(path = None):
     
     if path is None:
         path = settings.IlastikPath;
+        
+    if path is None:
+        path = '.';
     
     #search for elastix binary
     ilastikbin = os.path.join(path, 'run_ilastik.sh');
     if os.path.exists(ilastikbin):
+        print "Ilastik sucessfully initialized from path: %s" % path;
         IlastikBinary = ilastikbin;
+        Initialized = True;
+        return path;
     else:
-        raise RuntimeError("Cannot find ilastik binary %s, set path in Settings.py accordingly!" % ilastikbin);
-    
-    Initialized = True;
-    
-    print "Ilastik sucessfully initialized from path: %s" % path;
-    
-    return path;
-
+        print "Cannot find ilastik binary %s, set path in Settings.py accordingly!" % ilastikbin;
+        IlastikBinary = None;
+        Initialized = False;
+        return None;
 
 initialize();
 

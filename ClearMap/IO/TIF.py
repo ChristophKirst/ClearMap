@@ -18,7 +18,6 @@ Example:
 #:license: GNU, see LICENSE.txt for details.
 
 
-
 import numpy
 import tifffile as tiff
 
@@ -152,14 +151,15 @@ def writeData(filename, data):
     elif d == 3:   
         #tiff.imsave(filename, data.transpose([2,0,1]));
         tiff.imsave(filename, data.transpose([2,1,0]));
-    elif d == 4:
+    elif d == 4:        
         #tiffile (z,y,x,c)
-        t = tiff.TiffWriter(filename, bigtiff = True);
+        #t = tiff.TiffWriter(filename, bigtiff = True);
         #t.save(data.transpose([2,0,1,3]), photometric = 'minisblack',  planarconfig = 'contig');
-        t.save(data.transpose([2,1,0,3]), photometric = 'minisblack',  planarconfig = 'contig')
-        t.close();    
+        #t.save(data.transpose([2,1,0,3]), photometric = 'minisblack',  planarconfig = 'contig')
+        #t.close();    
+        tiff.imsave(filename, data.transpose([2,1,0,3]), photometric = 'minisblack',  planarconfig = 'contig', bigtiff = True);
     else:
-        raise RuntimeError('writing multiple channel data to tif not supported');
+        raise RuntimeError('writing multiple channel data to tif not supported!');
     
     return filename;
     
@@ -180,8 +180,8 @@ def copyData(source, sink):
 
 def test():    
     """Test TIF module"""  
-    import ClearMap.IO.TIF as self
-    reload(self)
+    import ClearMap.IO.TIF as tif
+    reload(tif)
     
     from ClearMap.Settings import ClearMapPath as basedir
     import os
@@ -196,10 +196,10 @@ def test():
 
     #reload(self)
     print "writing raw image to: " + fn;    
-    self.writeData(fn, data);
+    tif.writeData(fn, data);
 
     print "Loading raw image from: " + fn;
-    img = self.readData(fn);  
+    img = tif.readData(fn);  
     print "Image size: " + str(img.shape)
     
     diff = img - data;
@@ -207,7 +207,7 @@ def test():
     
     
     print "Loading raw image from %s with limited z range: " % fn;
-    img = self.readData(fn, z = (3,8));  
+    img = tif.readData(fn, z = (3,8));  
     print "Image size: " + str(img.shape)
     
     diff = img - data[:,:,3:8];
@@ -216,26 +216,26 @@ def test():
     
     fn = os.path.join(basedir,'Test/Data/OME/16-17-27_0_8X-s3-20HF_UltraII_C00_xyz-Table Z1000.ome.tif')        
     
-    ds = self.dataSize(fn);
+    ds = tif.dataSize(fn);
     print "Image size form dataSiZe: " + str(ds)    
     
     
-    img = self.readData(fn);  
+    img = tif.readData(fn);  
     print "Image size: " + str(img.shape)
     
     #dataSize
-    print "dataSize  is %s" % str(self.dataSize(fn))
-    print "dataZSize is %s" % str(self.dataZSize(fn))
+    print "dataSize  is %s" % str(tif.dataSize(fn))
+    print "dataZSize is %s" % str(tif.dataZSize(fn))
     
-    print "dataSize  is %s" % str(self.dataSize(fn, y = (10,20)))
-    print "dataZSize is %s" % str(self.dataZSize(fn))
+    print "dataSize  is %s" % str(tif.dataSize(fn, y = (10,20)))
+    print "dataZSize is %s" % str(tif.dataZSize(fn))
         
     #test writing multi channel image
     x = numpy.random.rand(50,100,30,4) * 10;
     x = x.astype('float32');
-    self.writeData(os.path.join(basedir,'Test/Data/Tif/composite.tif'), x)
+    tif.writeData(os.path.join(basedir,'Test/Data/Tif/composite.tif'), x)
 
-    y = self.readData(os.path.join(basedir,'Test/Data/Tif/composite.tif'));
+    y = tif.readData(os.path.join(basedir,'Test/Data/Tif/composite.tif'));
     y.shape
         
     diff = x - y;
@@ -243,8 +243,7 @@ def test():
 
 
 if __name__ == "__main__":
-    
-    self.test();
+    test();
     
 
 
