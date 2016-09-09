@@ -578,7 +578,7 @@ def resampleDataInverse(sink, source = None, dataSizeSource = None, orientation 
     interpolation = fixInterpolation(interpolation);
     
     resampledDataXY = numpy.zeros((dataSizeSinkI[0], dataSizeSinkI[1], dataSizeSource[2]), dtype = resampledData.dtype);    
-    fileExperssionToFileName
+    
     for i in range(dataSizeSinkI[0]):
         if verbose and i % 25 == 0:
             print "resampleDataInverse: processing %d/%d" % (i, dataSizeSinkI[0])

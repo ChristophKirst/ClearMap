@@ -15,7 +15,7 @@ import numpy
 import scipy.ndimage.measurements as sm;
 
 #import scipy
-#from skimage.filter.rank import tophat
+#from skimage.filters.rank import tophat
 #from skimage.measure import regionprops
 #from mahotas import regmin
 #from mahotas import locmax

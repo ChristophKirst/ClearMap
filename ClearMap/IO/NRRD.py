@@ -454,7 +454,7 @@ def _write_data(data, filehandle, options):
         raise NrrdError('Unsupported encoding: "%s"' % options['encoding'])
 
 
-def writeData(filename, data, options={}, separateHeader=False):
+def writeData(filename, data, options={}, separateHeader=False, x = all, y = all, z = all):
     """Write data to nrrd file
     
     Arguments:
@@ -466,9 +466,11 @@ def writeData(filename, data, options={}, separateHeader=False):
     Returns:
         str: nrrd output file name
 
-    To sample date use `options['spacings'] = [s1, s2, s3]` for
+    To sample data use `options['spacings'] = [s1, s2, s3]` for
     3d data with sampling deltas `s1`, `s2`, and `s3` in each dimension.
     """
+    
+    data = io.dataToRange(data, x = x, y = y, z = z);
     
     # Infer a number of fields from the ndarray and ignore values
     # in the options dictionary.
@@ -502,11 +504,13 @@ def writeData(filename, data, options={}, separateHeader=False):
         else:
             datafilename = options['data file']
     elif filename[-5:] == '.nrrd' and separate_header:
+        separate_header = True
         datafilename = filename
         filename = filename[:-4] + str('nhdr')
     else:
         # Write header & data as one file
-        datafilename = filename
+        datafilename = filename;
+        separate_header = False;
 
     with open(filename,'wb') as filehandle:
         filehandle.write(b'NRRD0005\n')

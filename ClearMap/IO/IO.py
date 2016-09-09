@@ -109,7 +109,6 @@ def isFileExpression(source):
             return True;
   
 
-def isPointFile(source):
     """Checks if a file is a valid point data file
      
     Arguments:
@@ -358,7 +357,7 @@ def dataSizeFromDataRange(dataSize, x = all, y = all, z = all, **args):
     
     Arguments:
         dataSize (tuple): data size
-        x,z,y (tuple or all): range specifications, ``all`` is full range
+        x,y,z (tuple or all): range specifications, ``all`` is full range
         
     Returns:
         tuple: data size as tuple of integers
@@ -386,7 +385,7 @@ def dataToRange(data, x = all, y = all, z = all, **args):
     
     Arguments:
         data (array): full data array
-        x,z,y (tuple or all): range specifications, ``all`` is full range
+        x,y,z (tuple or all): range specifications, ``all`` is full range
         
     Returns:
         array: reduced data
@@ -431,7 +430,7 @@ def readData(source, **args):
     
     Arguments:
         source (str, array or None): full data array, if numpy array simply reduce its range
-        x,z,y (tuple or all): range specifications, ``all`` is full range
+        x,y,z (tuple or all): range specifications, ``all`` is full range
         **args: further arguments specific to image data format reader
     
     Returns:

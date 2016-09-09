@@ -55,8 +55,7 @@ def readFileList(filename):
     if fl == []:
         raise RuntimeError('no files found in ' + fpath + ' match ' + fname + ' !');
     
-    fl.sort();
-        
+    #fl.sort();
     return fpath, natsort.natsorted(fl);
     
 
@@ -65,7 +64,7 @@ def splitFileExpression(filename, fileext = '.tif'):
 
     Arguments:
         filename (str): file name as regular expression
-        fileext (str or None): file extension tu use if filename is a fileheader only
+        fileext (str or None): file extension to use if filename is a fileheader only
 
     Returns:
         tuple: file header, file extension, digit format

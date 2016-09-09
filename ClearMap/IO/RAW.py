@@ -225,7 +225,7 @@ def writeData(filename, data, **args):
     meta_dict['DimSize'] = ' '.join([str(i) for i in dsize])
     meta_dict['ElementDataFile'] = os.path.split(fname)[1].replace('.mhd','.raw')
     writeHeader(fname, meta_dict)
-
+    
     pwd = os.path.split(fname)[0]
     if pwd:
         data_file = pwd +'/' + meta_dict['ElementDataFile']

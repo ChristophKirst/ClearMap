@@ -58,7 +58,7 @@ import ClearMap.Settings as settings
 import ClearMap.IO as io
 
 ##############################################################################
-# Initialization and Enviroment Settings
+### Initialization and Enviroment Settings
 ##############################################################################
 
 ElastixBinary = None;
@@ -195,7 +195,7 @@ def checkElastixInitialized():
 
 
 ##############################################################################
-# Basic interface routines
+### Basic interface routines
 ##############################################################################
 
 def getTransformParameterFile(resultdir):
@@ -425,7 +425,7 @@ def rescaleSizeAndSpacing(size, spacing, scale):
 
 
 ##############################################################################
-# Elastix Runs
+### Elastix Runs
 ##############################################################################
 
 def alignData(fixedImage, movingImage, affineParameterFile, bSplineParameterFile = None, resultDirectory = None):
@@ -769,7 +769,7 @@ def transformPoints(source, sink = None, transformParameterFile = None, transfor
  
 
 ##############################################################################
-# Test
+### Test
 ##############################################################################
 
      

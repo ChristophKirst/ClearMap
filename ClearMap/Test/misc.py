@@ -170,7 +170,7 @@ import numpy
 from mahotas import open
 from scipy.ndimage.morphology import binary_opening, grey_opening
 from skimage.morphology import opening, white_tophat
-from skimage.filter.rank import tophat
+from skimage.filters.rank import tophat
 import cv2
 
 from iDISCO.ImageProcessing.Filter.StructureElement import structureElement

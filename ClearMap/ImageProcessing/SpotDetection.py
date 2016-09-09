@@ -76,7 +76,7 @@ def detectSpots(img, detectSpotsParameter = None, correctIlluminationParameter =
         * cell shape detection via :func:`~ClearMap.ImageProcessing.CellSizeDetection.detectCellShape`
         * cell intensity and size measurements via: :func:`~ClearMap.ImageProcessing.CellSizeDetection.findCellIntensity`,
           :func:`~ClearMap.ImageProcessing.CellSizeDetection.findCellSize`. 
-    detectCells
+    
     Note: 
         Processing steps are done in place to save memory.
         

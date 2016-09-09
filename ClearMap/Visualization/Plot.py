@@ -128,7 +128,7 @@ def overlayLabel(dataSource, labelSource, sink = None,  alpha = False, labelColo
     label = io.readData(labelSource, x= x, y = y, z = z);
     image = io.readData(dataSource, x= x, y = y, z = z);
     
-    lmax = labelSource.max();
+    lmax = label.max();
     
     if lmax <= 1:
         carray = numpy.array([[1,0,0,1]]);
