@@ -62,6 +62,10 @@ def removeBackground(img, removeBackgroundParameter = None, size = None, save = 
         
     img = io.readData(img);
     
+    # change type to float in order to prevent 
+    dtype = img.dtype;
+    img = np.array(img, dtype = float);
+    
     timer = Timer();
     # background subtraction in each slice
     se = structureElement('Disk', size).astype('uint8');
@@ -69,6 +73,9 @@ def removeBackground(img, removeBackgroundParameter = None, size = None, save = 
          #img[:,:,z] = img[:,:,z] - grey_opening(img[:,:,z], structure = structureElement('Disk', (30,30)));
          #img[:,:,z] = img[:,:,z] - morph.grey_opening(img[:,:,z], structure = self.structureELement('Disk', (150,150)));
          img[:,:,z] = img[:,:,z] - cv2.morphologyEx(img[:,:,z], cv2.MORPH_OPEN, se)
+    
+    img[img < 0] = 0;
+    img = np.array(img, dtype = dtype);
     
     if not save is None:
         writeSubStack(save, img, subStack = subStack)
