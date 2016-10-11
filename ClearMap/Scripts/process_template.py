@@ -46,7 +46,7 @@ io.writePoints(FilteredCellsFile, (points, intensities));
 
 ## Check Cell detection (For the testing phase only, remove when running on the full size dataset)
 #######################
-#import iDISCO.Visualization.Plot as plt;
+#import ClearMap.Visualization.Plot as plt;
 #pointSource= os.path.join(BaseDirectory, FilteredCellsFile[0]);
 #data = plt.overlayPoints(cFosFile, pointSource, pointColor = None, **cFosFileRange);
 #io.writeData(os.path.join(BaseDirectory, 'cells_check.tif'), data);
