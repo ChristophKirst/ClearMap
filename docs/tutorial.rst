@@ -361,7 +361,7 @@ So here we use column 3 for both boundaries, which is the volume in voxel of eac
 
 Finally, you can now check that the cell detection worked as expected by plotting the result of the detection and thresholding onto the raw data. This should be disabled if you're running the detection on the whole stack, and should only be used while testing. Just delete or comment out (with #) if you don't need it. To run the cell detection check:
 
-   >>> import iDISCO.Visualization.Plot as plt;
+   >>> import ClearMap.Visualization.Plot as plt;
    >>> pointSource= os.path.join(BaseDirectory, FilteredCellsFile[0]);
    >>> data = plt.overlayPoints(cFosFile, pointSource, pointColor = None, **cFosFileRange);
    >>> io.writeData(os.path.join(BaseDirectory, 'cells_check.tif'), data);
@@ -459,7 +459,7 @@ In this example, we will compare a group of control mice injected with a saline 
 First, let's import the modules necessary to run the statistics, and set the working directory:
 
    >>> import ClearMap.Analysis.Statistics as stat
-   >>> import iDISCO.Analysis.Tools.MultipleComparisonCorrection as mc
+   >>> import ClearMap.Analysis.Tools.MultipleComparisonCorrection as mc
    >>> import ClearMap.Analysis.Label as lbl
    >>> import ClearMap.IO.IO as io
    >>> import numpy, os
