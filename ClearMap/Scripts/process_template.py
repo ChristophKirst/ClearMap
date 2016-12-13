@@ -91,16 +91,18 @@ if not isinstance(vox, basestring):
 ##################
 #With integrated weigths from the intensity file (here raw intensity):
 ids, counts = countPointsInRegions(points, labeledImage = AnnotationFile, intensities = intensities, intensityRow = 0);
-table = numpy.zeros(ids.shape, dtype=[('id','int64'),('counts','f8'),('name', 'a256')])
+table = numpy.zeros(ids.shape, dtype=[('id','int64'), ('structureOrder', 'int64'), ('counts','f8'),('name', 'a256')])
 table["id"] = ids;
+table["structureOrder"] = labelToStructureOrder(ids);
 table["counts"] = counts;
 table["name"] = labelToName(ids);
 io.writeTable(os.path.join(BaseDirectory, 'Annotated_counts_intensities.csv'), table);
 
 #Without weigths (pure cell number):
 ids, counts = countPointsInRegions(points, labeledImage = AnnotationFile, intensities = None);
-table = numpy.zeros(ids.shape, dtype=[('id','int64'),('counts','f8'),('name', 'a256')])
+table = numpy.zeros(ids.shape, dtype=[('id','int64'), ('structureOrder', 'int64'), ('counts','f8'),('name', 'a256')])
 table["id"] = ids;
+table["structureOrder"] = labelToStructureOrder(ids);
 table["counts"] = counts;
 table["name"] = labelToName(ids);
 io.writeTable(os.path.join(BaseDirectory, 'Annotated_counts.csv'), table);
