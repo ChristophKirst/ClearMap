@@ -85,9 +85,6 @@ group2 = ['/home/yourname/experiment/sample6/cells_transformed_to_Atlas.npy',
           '/home/yourname/experiment/sample9/cells_transformed_to_Atlas.npy',
           '/home/yourname/experiment/sample10/cells_transformed_to_Atlas.npy']
 
-
-
-
 group1i = [fn.replace('cells_transformed_to_Atlas', 'intensities') for fn in group1];
 group2i = [fn.replace('cells_transformed_to_Atlas', 'intensities') for fn in group2];
 
@@ -157,7 +154,7 @@ ii = numpy.argsort(pvalsi0);
 tableSorted = table.copy();
 tableSorted = tableSorted[ii];
 
-with open(('/home/mtllab/Documents/bicuculline/counts-intensity_table.csv'),'w') as f:
+with open(os.path.join(baseDirectory, 'counts-intensity_table.csv'),'w') as f:
     f.write(', '.join([str(item) for item in table.dtype.names]));
     f.write('\n');
     for sublist in tableSorted:
@@ -199,7 +196,7 @@ ii = numpy.argsort(pvals0);
 tableSorted = table.copy();
 tableSorted = tableSorted[ii];
 
-with open(('/home/mtllab/Documents/bicuculline/counts_table.csv'),'w') as f:
+with open(os.path.join(baseDirectory, 'counts_table.csv'),'w') as f:
     f.write(', '.join([str(item) for item in table.dtype.names]));
     f.write('\n');
     for sublist in tableSorted:
@@ -298,7 +295,7 @@ ii = numpy.argsort(pvalsi0);
 tableSorted = table.copy();
 tableSorted = tableSorted[ii];
 
-with open(('/home/mtllab/Documents/bicuculline/counts-intensity_table_slow.csv'),'w') as f:
+with open(os.path.join(baseDirectory, 'counts-intensity_table_slow.csv'),'w') as f:
     f.write(', '.join([str(item) for item in table.dtype.names]));
     f.write('\n');
     for sublist in tableSorted:
@@ -340,13 +337,10 @@ ii = numpy.argsort(pvals0);
 tableSorted = table.copy();
 tableSorted = tableSorted[ii];
 
-with open(('/home/mtllab/Documents/bicuculline/counts_table_slow.csv'),'w') as f:
+with open(os.path.join(baseDirectory, 'counts_table_slow.csv','w') as f:
     f.write(', '.join([str(item) for item in table.dtype.names]));
     f.write('\n');
     for sublist in tableSorted:
         f.write(', '.join([str(item) for item in sublist]));
         f.write('\n');
     f.close();
-
-
-
