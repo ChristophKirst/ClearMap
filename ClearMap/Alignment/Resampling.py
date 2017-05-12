@@ -738,7 +738,7 @@ def resamplePointsInverse(pointSource, pointSink = None, dataSizeSource = None, 
         
         for i in range(3):
             if iorientation[i] < 0:
-                rpoints[:,i] = dataSizeSink[i] - rpoints[:,i];
+                rpoints[:,i] = dataSizeSinkI[i] - rpoints[:,i];
     
     #scale points
     for i in range(3):   
