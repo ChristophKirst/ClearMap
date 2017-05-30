@@ -5,6 +5,7 @@ from setuptools.extension import Extension
 from Cython.Build import cythonize
 
 import ClearMap
+import numpy
 
 with open('README.rst') as fptr:
     readme = fptr.read()
@@ -15,6 +16,7 @@ with open('LICENSE.txt') as fptr:
 extensions = [Extension(
         "ClearMap/Analysis/VoxelizationCode",
         ["ClearMap/Analysis/VoxelizationCode.pyx"],
+        include_dirs=[numpy.get_include()],
     )
 ]
 
