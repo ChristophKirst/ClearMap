@@ -117,12 +117,22 @@ def setElastixLibraryPath(path = None):
     if path is None:
         path = settings.ElastixPath;
     
-    if os.environ.has_key('LD_LIBRARY_PATH'):
-        lp = os.environ['LD_LIBRARY_PATH'];
-        if not path in lp.split(':'):
-            os.environ['LD_LIBRARY_PATH'] = lp + ':' + path;
+    import platform
+    systemname = platform.system()
+    if systemname == 'Linux':
+        ldpath = 'LD_LIBRARY_PATH';
     else:
-        os.environ['LD_LIBRARY_PATH'] = path
+        ldpath = 'DYLD_LIBRARY_PATH';
+    print(ldpath)
+    
+    if os.environ.has_key(ldpath):
+        lp = os.environ[ldpath];
+        if not path in lp.split(':'):
+            os.environ[ldpath] = lp + ':' + path;
+    else:
+        os.environ[ldpath] = path
+        
+    print(os.environ[ldpath])
 
 
 def initializeElastix(path = None):
@@ -169,6 +179,14 @@ def initializeElastix(path = None):
     Initialized = True;
     
     print "Elastix sucessfully initialized from path: %s" % path;
+    
+    import platform
+    systemname = platform.system()
+    if systemname != 'Linux':
+        ElastixBinary = 'DYLD_LIBRARY_PATH='+elastixlib+' '+ElastixBinary
+        TransformixBinary = 'DYLD_LIBRARY_PATH='+elastixlib+' '+TransformixBinary
+ 
+    printSettings()
     
     return path;
 
