@@ -22,6 +22,7 @@ the `ClearMap documentation <http://christophkirst.github.io/ClearMap/build/html
 
 Note
 ----
+   
    :exclamation: This is ClearMap 1.0. ClearMap 2.0 with WobblyStitcher and TubeMap 
    for our `Cell paper <https://doi.org/10.1016/j.cell.2020.01.028>`_ can be found under
    `ClearMap2 <https://github.com/ChristophKirst/ClearMap2>`_. :exclamation:
