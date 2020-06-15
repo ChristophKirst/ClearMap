@@ -18,7 +18,7 @@ volumetric image processing and statistical analysis.
 
 The method is fully described in this `Cell paper <http://www.cell.com/cell/abstract/S0092-8674%2816%2930555-4>`_. 
 For further details visit the `iDISCO website <https://idisco.info/>`_ and 
-the `ClearMap documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_.
+the `ClearMap documentation <http://christophkirst.github.io/ClearMap/build/html/index.html>`_.
 
 Note
 ----
@@ -41,7 +41,7 @@ classify pixels via ilastik configure the /ClearMap/Settings.py file.
 You will most likely also need to install several python packages e.g. via 
 pip or apt-get.
 
-See the `documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_ for more details.
+See the `documentation <http://christophkirst.github.io/ClearMap/build/html/index.html>`_ for more details.
 
 Additional files for mouse brain registration can be found on the `iDISCO website <https://idisco.info/>`_.
 
@@ -50,7 +50,7 @@ Quickstart
 ----------
 
    * see the template scripts in the `./ClearMap/Scripts <https://github.com/ChristophKirst/ClearMap/tree/master/ClearMap/Scripts>`_ folder 
-   * see the `ClearMap documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_ 
+   * see the `ClearMap documentation <http://christophkirst.github.io/ClearMap/build/html/index.html>`_ 
 
 
 Copyright
