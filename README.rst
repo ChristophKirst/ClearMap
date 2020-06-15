@@ -1,6 +1,8 @@
 ClearMap
 ========
 
+[![DOI](https://zenodo.org/badge/59701678.svg)](https://zenodo.org/badge/latestdoi/59701678)
+
 ClearMap is a toolbox for the analysis and registration of volumetric data
 from cleared tissues.
 
@@ -12,6 +14,11 @@ The method is fully described in this `Cell paper <http://www.cell.com/cell/abst
 For further details visit the `iDISCO website <https://idisco.info/>`_ and 
 the `ClearMap documentation <https://rawgit.com/ChristophKirst/ClearMap/master/docs/_build/html/index.html>`_.
 
+Note
+----
+This is ClearMap 1.0. ClearMap 2.0 with WobblyStitcher and TubeMap 
+for our `Cell paper <https://doi.org/10.1016/j.cell.2020.01.028>`_ can be found under
+`ClearMap2 <https://github.com/ChristophKirst/ClearMap2`_.
 
 Installation
 ------------
