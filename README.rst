@@ -20,7 +20,8 @@ The method is fully described in this `Cell paper <http://www.cell.com/cell/abst
 For further details visit the `iDISCO website <https://idisco.info/>`_ and 
 the `ClearMap documentation <http://christophkirst.github.io/ClearMap/build/html/index.html>`_.
 
-.. note::
+:exclamation: Note :exclamation:
+--------------------------------
    This is ClearMap 1.0. ClearMap 2.0 with WobblyStitcher and TubeMap 
    for our `Cell paper <https://doi.org/10.1016/j.cell.2020.01.028>`_ can be found under
    `ClearMap2 <https://github.com/ChristophKirst/ClearMap2>`_.
