@@ -5,7 +5,7 @@ ClearMap
    :target: https://zenodo.org/badge/latestdoi/59701678
 
 
-.. imgae:: https://img.shields.io/twitter/follow/clearmap_idisco?style=social&logo=twitter
+.. image:: https://img.shields.io/twitter/follow/clearmap_idisco?style=social&logo=twitter
    :target: https://twitter.com/intent/follow?screen_name=clearmap_idisco
 
 
