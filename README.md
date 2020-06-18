@@ -1,7 +1,7 @@
 ClearMap
 ========
 
-[![DOI](https://zenodo.org/badge/59701678.svg)][https://zenodo.org/badge/latestdoi/59701678]
+[![DOI](https://zenodo.org/badge/59701678.svg)](https://zenodo.org/badge/latestdoi/59701678)
 [![Twitter](https://img.shields.io/twitter/follow/clearmap_idisco?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=clearmap_idisco)
 
 
