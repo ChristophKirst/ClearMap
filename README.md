@@ -16,7 +16,7 @@ The method is fully described in this [2016 Cell paper](http://www.cell.com/cell
 For further details visit the [iDISCO website](https://idisco.info/)_ and 
 the [ClearMap documentation](http://christophkirst.github.io/ClearMap/build/html/index.html).
 
-# :exclamation: :bom: Note :bomb: :exclamation:
+# :exclamation: :bomb: Note :bomb: :exclamation:
 
 **This is ClearMap 1.0. ClearMap 2.0 with WobblyStitcher and TubeMap 
 for our [2020 Cell paper](https://doi.org/10.1016/j.cell.2020.01.028) can be found under
