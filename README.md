@@ -18,9 +18,12 @@ the [ClearMap documentation](http://christophkirst.github.io/ClearMap/build/html
 
 # :exclamation: :bomb: Note :bomb: :exclamation:
 
-**This is ClearMap 1.0. ClearMap 2.0 with WobblyStitcher and TubeMap 
-for our [2020 Cell paper](https://doi.org/10.1016/j.cell.2020.01.028) can be found under
-[ClearMap2](https://github.com/ChristophKirst/ClearMap2).**
+**This is ClearMap 1.0. :exclamation:**
+
+**ClearMap 2.0 with WobblyStitcher and TubeMap 
+for our [2020 Cell paper](https://doi.org/10.1016/j.cell.2020.01.028) can be found under**
+
+**[ClearMap2](https://github.com/ChristophKirst/ClearMap2).**
 
 Installation
 ------------
