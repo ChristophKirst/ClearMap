@@ -18,7 +18,7 @@ from ClearMap.Analysis.Label import countPointsInRegions
 from ClearMap.Analysis.Voxelization import voxelize
 from ClearMap.Analysis.Statistics import thresholdPoints
 from ClearMap.Utils.ParameterTools import joinParameter
-from ClearMap.Analysis.Label import labelToName
+from ClearMap.Analysis.Label import labelToName, labelToStructureOrder
 
 
 ######################### Data parameters

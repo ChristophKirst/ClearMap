@@ -55,7 +55,7 @@ the different brain regions if the ``collapse`` option is given.
 """
 
 
-LabelRecord = collections.namedtuple('LabelRecord', 'id, name, acronym, color, parent, collapse');
+LabelRecord = collections.namedtuple('LabelRecord', 'id, name, acronym, color, structureOrder, parent, collapse');
 """Structure of a label for a annotated region"""
 
 
@@ -77,6 +77,7 @@ class LabelInfo(object):
     names = None;
     acronyms = None;
     colors = None;
+    structureOrder = None;
     parents = None;
     levels = None;
     collapse = None;
@@ -92,7 +93,7 @@ class LabelInfo(object):
             reader = csv.reader(dfile);
             #skip header
             reader.next();
-            labels = [LabelRecord._make((int(row[0]), row[1], row[2], [int(row[3]), int(row[4]), int(row[5])], _labelToInt(row[7]), _collapseToBool(row[9]))) for row in reader];
+            labels = [LabelRecord._make((int(row[0]), row[1], row[2], [int(row[3]), int(row[4]), int(row[5])], _labelToInt(row[6]), _labelToInt(row[7]), _collapseToBool(row[9]))) for row in reader];
             
             dfile.close();
         
@@ -100,6 +101,7 @@ class LabelInfo(object):
         slf.names = { x.id : x.name for x in labels};
         slf.acronyms = { x.id : x.acronym for x in labels};
         slf.colors = { x.id : x.color for x in labels};
+        slf.structureOrders = { x.id : x.structureOrder for x in labels};
         slf.parents = { x.id : x.parent for x in labels};
         slf.collapse = { x.id : x.collapse for x in labels};
                 
@@ -124,6 +126,9 @@ class LabelInfo(object):
         
     def color(slf, iid):
         return slf.colors[iid];
+        
+    def structureOrder(slf, iid):
+        return slf.structureOrders[iid];
         
     def parent(slf, iid):
         return slf.parents[iid];
@@ -290,6 +295,10 @@ def labelToAcronym(label):
 def labelToColor(label):
     global Label;
     return [Label.color(x) for x in label];
+    
+def labelToStructureOrder(label):
+    global Label;
+    return [Label.structureOrder(x) for x in label];
 
 
 
