@@ -89,8 +89,8 @@ def filterKernel2D(ftype = 'Gaussian', size = (5,5), sigma = None, sigma2 = None
         
         g = numpy.mgrid[-o[0,0]:o[0,1], -o[1,0]:o[1,1]];
         add = ((size + 1) % 2) / 2.;
-        x = g[0,:,:,:] + add[0];
-        y = g[1,:,:,:] + add[1];
+        x = g[0,:,:] + add[0];
+        y = g[1,:,:] + add[1];
         
         ker = numpy.exp(-(x * x / 2. / (sigma[0] * sigma[0]) + y * y / 2. / (sigma[1] * sigma[1])));
         return ker/ker.sum();
@@ -108,8 +108,8 @@ def filterKernel2D(ftype = 'Gaussian', size = (5,5), sigma = None, sigma2 = None
         
         g = numpy.mgrid[-o[0,0]:o[0,1], -o[1,0]:o[1,1]];
         add = ((size + 1) % 2) / 2.;
-        x = g[0,:,:,:] + add[0];
-        y = g[1,:,:,:] + add[1];
+        x = g[0,:,:] + add[0];
+        y = g[1,:,:] + add[1];
         
         ker = 1 - (x * x / 2. / (radius[0] * radius[0]) + y * y / 2. / (radius[1] * radius[1]));
         ker[ker < 0] = 0.;
@@ -128,8 +128,8 @@ def filterKernel2D(ftype = 'Gaussian', size = (5,5), sigma = None, sigma2 = None
             
         g = numpy.mgrid[-o[0,0]:o[0,1], -o[1,0]:o[1,1]];
         add = ((size + 1) % 2) / 2.;
-        x = g[0,:,:,:] + add[0];
-        y = g[1,:,:,:] + add[1];
+        x = g[0,:,:] + add[0];
+        y = g[1,:,:] + add[1];
         
         ker = 1 - (x * x / 2. / (radius[0] * radius[0]) + y * y / 2. / (radius[1] * radius[1]));
         ker[ker < 0] = 0.;
@@ -137,7 +137,11 @@ def filterKernel2D(ftype = 'Gaussian', size = (5,5), sigma = None, sigma2 = None
         return ker / ker.sum();
     
     elif ftype == 'log':  # laplacian of gaussians
-        
+
+        if radius == None:
+            radius = mo;
+        radius = numpy.array(radius);
+
         if sigma == None:
             sigma = size / 4. / math.sqrt(2 * math.log(2));
         
@@ -150,9 +154,8 @@ def filterKernel2D(ftype = 'Gaussian', size = (5,5), sigma = None, sigma2 = None
         
         g = numpy.mgrid[-o[0,0]:o[0,1], -o[1,0]:o[1,1]];
         add = ((size + 1) % 2) / 2.;
-        x = g[0,:,:,:] + add[0];
-        y = g[1,:,:,:] + add[1];
-        
+        x = g[0,:,:] + add[0];
+        y = g[1,:,:] + add[1];
         ker = numpy.exp(-(x * x / 2. / (radius[0] * radius[0]) + y * y / 2. / (radius[1] * radius[1])));
         ker /= ker.sum();
         arg = x * x / math.pow(sigma[0], 4) + y * y/ math.pow(sigma[1],4) - (1/(sigma[0] * sigma[0]) + 1/(sigma[1] * sigma[1]));
@@ -179,8 +182,8 @@ def filterKernel2D(ftype = 'Gaussian', size = (5,5), sigma = None, sigma2 = None
          
         g = numpy.mgrid[-o[0,0]:o[0,1], -o[1,0]:o[1,1]];
         add = ((size + 1) % 2) / 2.;
-        x = g[0,:,:,:] + add[0];
-        y = g[1,:,:,:] + add[1];
+        x = g[0,:,:] + add[0];
+        y = g[1,:,:] + add[1];
         
         ker = numpy.exp(-(x * x / 2. / (sigma[0] * sigma[0]) + y * y / 2. / (sigma[1] * sigma[1])));
         ker /= ker.sum();
@@ -279,6 +282,10 @@ def filterKernel3D(ftype = 'Gaussian', size = (5,5,5), sigma = None, sigma2 = No
         return ker / ker.sum();
         
     elif ftype == 'log':  # laplacian of gaussians
+
+        if radius == None:
+            radius = mo;
+        radius = numpy.array(radius);
         
         if sigma == None:
             sigma = size / 4. / math.sqrt(2 * math.log(2));
@@ -340,6 +347,7 @@ def test():
     """Test FilterKernel module"""
     fk = filterKernel(ftype = 'Gaussian', size = (5,5), sigma = None, radius = None, sigma2 = None);
     print fk
+
     
     
     
